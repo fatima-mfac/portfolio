@@ -30,7 +30,7 @@ export const componentMetadata = {
   },
   composition: {
     slots: {},
-    nestedComponents: ['NavItem', 'ExternalLink'],
+    nestedComponents: ['NavItem'],
     commonPartners: [],
     parentConstraints: ['Place at the top of every page layout'],
   },

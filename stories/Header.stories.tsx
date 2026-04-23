@@ -3,7 +3,7 @@ import React from 'react';
 import { Header } from '../src/components/Header/Header';
 
 const meta = {
-  title: 'Composites/Header',
+  title: 'Components/Header',
   component: Header,
   parameters: { layout: 'fullscreen' },
   tags: ['autodocs'],
@@ -21,10 +21,10 @@ export const Desktop: Story = {
       { label: 'Contact', href: '/contact' },
     ],
     projectLinks: [
-      { url: 'patinascreen.com', href: 'https://patinascreen.com' },
-      { url: 'somefont.com', href: 'https://somefont.com' },
-      { url: 'someproject.com', href: 'https://someproject.com' },
-      { url: 'anotherproject.io', href: 'https://anotherproject.io' },
+      { label: 'Patina', href: '/patina' },
+      { label: 'Vodafone', href: '/vodafone' },
+      { label: 'Zebra Finch', href: '/zebra-finch' },
+      { label: 'Herc Rentals', href: '/herc-rentals' },
     ],
   },
   decorators: [
@@ -41,7 +41,8 @@ export const Mobile: Story = {
     breakpoint: 'mobile',
     navLinks: [
       { label: 'Index', href: '/' },
-      { label: 'About', href: '/about', active: true },
+      { label: 'Work', href: '/work', active: true },
+      { label: 'About', href: '/about' },
       { label: 'Contact', href: '/contact' },
     ],
   },
