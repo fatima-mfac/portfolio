@@ -1,5 +1,4 @@
 'use client';
-import styles from './FilterTag.module.css';
 
 export type FilterTagState = 'default' | 'active';
 
@@ -11,12 +10,17 @@ interface FilterTagProps {
 }
 
 export function FilterTag({ label, state = 'default', onClick, className }: FilterTagProps) {
+  const stateClasses =
+    state === 'active'
+      ? 'text-text-accent border-border-accent'
+      : 'text-text-secondary border-border-tertiary hover:text-text-primary hover:border-border-secondary';
+
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`${styles.tag} ${state === 'active' ? styles.active : ''} ${className ?? ''}`}
       aria-pressed={state === 'active'}
+      className={`inline-flex items-center py-1 px-3 bg-transparent border rounded-sm cursor-pointer transition-[color,border-color] duration-fast ease-out text-body-sm ${stateClasses} ${className ?? ''}`}
     >
       {label}
     </button>

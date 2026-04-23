@@ -1,5 +1,4 @@
 'use client';
-import styles from './NavItem.module.css';
 
 export type NavItemState = 'default' | 'active';
 
@@ -11,11 +10,16 @@ interface NavItemProps {
 }
 
 export function NavItem({ label, href = '#', state = 'default', className }: NavItemProps) {
+  const color =
+    state === 'active'
+      ? 'text-text-accent'
+      : 'text-text-secondary hover:text-text-primary';
+
   return (
     <a
       href={href}
-      className={`${styles.navItem} ${state === 'active' ? styles.active : ''} ${className ?? ''}`}
       aria-current={state === 'active' ? 'page' : undefined}
+      className={`inline-flex items-center py-1 no-underline transition-colors duration-fast ease-out text-body-md ${color} ${className ?? ''}`}
     >
       {label}
     </a>

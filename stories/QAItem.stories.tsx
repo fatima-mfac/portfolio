@@ -3,7 +3,7 @@ import React from 'react';
 import { QAItem } from '../src/components/QAItem/QAItem';
 
 const meta = {
-  title: 'Composites/QAItem',
+  title: 'Components/QAItem',
   component: QAItem,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],

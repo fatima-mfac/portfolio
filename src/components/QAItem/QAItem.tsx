@@ -1,5 +1,3 @@
-import styles from './QAItem.module.css';
-
 export type QAItemSize = 'sm' | 'lg';
 
 interface QAItemProps {
@@ -10,10 +8,13 @@ interface QAItemProps {
 }
 
 export function QAItem({ question, answer, size = 'sm', className }: QAItemProps) {
+  const questionClass = size === 'lg' ? 'text-heading-md' : 'text-body-lg-medium';
+  const answerClass = size === 'lg' ? 'text-body-xl' : 'text-body-lg-book';
+
   return (
-    <div className={`${styles.item} ${size === 'lg' ? styles.lg : styles.sm} ${className ?? ''}`}>
-      <p className={styles.question}>{question}</p>
-      <p className={styles.answer}>{answer}</p>
+    <div className={`flex flex-col w-full ${className ?? ''}`}>
+      <p className={`${questionClass} text-text-primary`}>{question}</p>
+      <p className={`${answerClass} text-text-primary`}>{answer}</p>
     </div>
   );
 }

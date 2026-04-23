@@ -19,7 +19,15 @@
   --font-family-primary: 'BL Melody', system-ui, sans-serif;
   --font-family-mono: 'Roboto Mono', monospace;
 
-  /* Spacing primitives */
+  /* Spacing primitives
+     Tailwind v4 computes every `p-N`, `m-N`, `gap-N`, `py-N`, etc. as
+     calc(var(--spacing) * N). The `--spacing` base unit below is what
+     drives those utilities. Named multiples (`--spacing-3` etc.) are
+     kept for non-Tailwind references only — they do NOT generate
+     utilities on their own. If you remove `--spacing` below, every
+     Tailwind spacing utility silently becomes 0. */
+  --spacing: 4px;
+
   --spacing-1: 4px;
   --spacing-2: 8px;
   --spacing-3: 12px;
@@ -156,4 +164,136 @@
   --ease-in:      cubic-bezier(0.4, 0, 1, 1);
   --ease-out:     cubic-bezier(0, 0, 0.2, 1);
   --ease-linear:  linear;
+}
+
+/* ─────────────────────────────────────────────
+   TYPOGRAPHY UTILITIES
+   ─────────────────────────────────────────────
+   Tailwind v4 auto-generates utilities from @theme for atomic tokens:
+     --color-*   → bg-*, text-*, border-*
+     --spacing-* → p-*, m-*, gap-*
+     --radius-*  → rounded-*
+     --font-family-*, --font-weight-*, --duration-*, --ease-*
+   BUT compound typography (family + size + line-height + letter-spacing +
+   weight) cannot be expressed as a single @theme token. Using raw CSS
+   variables in components would force CSS Modules or inline styles — both
+   violate the Tailwind-only rule in CLAUDE.md.
+   The @utility directive solves this: each typography tier below bundles
+   all 5 properties into one utility class (e.g. `text-heading-md`) that
+   components can apply alongside other Tailwind utilities. All values still
+   reference the tokens above — no hardcoding.
+   When a new typography tier is added to @theme, add a matching @utility
+   here. Keep the name aligned with the token (`text-{tier-name}`).
+───────────────────────────────────────────── */
+
+@utility text-heading-xl {
+  font-family: var(--font-heading-xl-family);
+  font-size: var(--font-heading-xl-size);
+  line-height: var(--font-heading-xl-line-height);
+  letter-spacing: var(--font-heading-xl-letter-spacing);
+  font-weight: var(--font-weight-medium);
+}
+
+@utility text-heading-xl-semibold {
+  font-family: var(--font-heading-xl-semibold-family);
+  font-size: var(--font-heading-xl-semibold-size);
+  line-height: var(--font-heading-xl-semibold-line-height);
+  letter-spacing: var(--font-heading-xl-semibold-letter-spacing);
+  font-weight: var(--font-weight-semibold);
+}
+
+@utility text-heading-lg {
+  font-family: var(--font-heading-lg-family);
+  font-size: var(--font-heading-lg-size);
+  line-height: var(--font-heading-lg-line-height);
+  letter-spacing: var(--font-heading-lg-letter-spacing);
+  font-weight: var(--font-weight-medium);
+}
+
+@utility text-heading-md {
+  font-family: var(--font-heading-md-family);
+  font-size: var(--font-heading-md-size);
+  line-height: var(--font-heading-md-line-height);
+  letter-spacing: var(--font-heading-md-letter-spacing);
+  font-weight: var(--font-weight-medium);
+}
+
+@utility text-heading-sm {
+  font-family: var(--font-heading-sm-family);
+  font-size: var(--font-heading-sm-size);
+  line-height: var(--font-heading-sm-line-height);
+  letter-spacing: var(--font-heading-sm-letter-spacing);
+  font-weight: var(--font-weight-medium);
+}
+
+@utility text-body-xl {
+  font-family: var(--font-body-xl-family);
+  font-size: var(--font-body-xl-size);
+  line-height: var(--font-body-xl-line-height);
+  letter-spacing: var(--font-body-xl-letter-spacing);
+  font-weight: var(--font-weight-book);
+}
+
+@utility text-body-lg {
+  font-family: var(--font-body-lg-family);
+  font-size: var(--font-body-lg-size);
+  line-height: var(--font-body-lg-line-height);
+  letter-spacing: var(--font-body-lg-letter-spacing);
+  font-weight: var(--font-weight-book);
+}
+
+@utility text-body-lg-medium {
+  font-family: var(--font-body-lg-medium-family);
+  font-size: var(--font-body-lg-medium-size);
+  line-height: var(--font-body-lg-medium-line-height);
+  letter-spacing: var(--font-body-lg-medium-letter-spacing);
+  font-weight: var(--font-weight-medium);
+}
+
+@utility text-body-lg-book {
+  font-family: var(--font-body-lg-book-family);
+  font-size: var(--font-body-lg-book-size);
+  line-height: var(--font-body-lg-book-line-height);
+  letter-spacing: var(--font-body-lg-book-letter-spacing);
+  font-weight: var(--font-weight-book);
+}
+
+@utility text-body-md {
+  font-family: var(--font-body-md-family);
+  font-size: var(--font-body-md-size);
+  line-height: var(--font-body-md-line-height);
+  letter-spacing: var(--font-body-md-letter-spacing);
+  font-weight: var(--font-weight-medium);
+}
+
+@utility text-body-sm {
+  font-family: var(--font-body-sm-family);
+  font-size: var(--font-body-sm-size);
+  line-height: var(--font-body-sm-line-height);
+  letter-spacing: var(--font-body-sm-letter-spacing);
+  font-weight: var(--font-weight-book);
+}
+
+@utility text-label-sm {
+  font-family: var(--font-label-sm-family);
+  font-size: var(--font-label-sm-size);
+  line-height: var(--font-label-sm-line-height);
+  letter-spacing: var(--font-label-sm-letter-spacing);
+  font-weight: var(--font-weight-book);
+}
+
+@utility text-metadata-lg {
+  font-family: var(--font-metadata-lg-family);
+  font-size: var(--font-metadata-lg-size);
+  line-height: var(--font-metadata-lg-line-height);
+  letter-spacing: var(--font-metadata-lg-letter-spacing);
+  font-weight: var(--font-weight-book);
+}
+
+@utility text-metadata-md {
+  font-family: var(--font-metadata-md-family);
+  font-size: var(--font-metadata-md-size);
+  line-height: var(--font-metadata-md-line-height);
+  letter-spacing: var(--font-metadata-md-letter-spacing);
+  font-weight: var(--font-weight-book);
 }

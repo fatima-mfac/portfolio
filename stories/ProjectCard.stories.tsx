@@ -3,7 +3,7 @@ import React from 'react';
 import { ProjectCard } from '../src/components/ProjectCard/ProjectCard';
 
 const meta = {
-  title: 'Composites/ProjectCard',
+  title: 'Components/ProjectCard',
   component: ProjectCard,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
