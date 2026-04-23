@@ -1,0 +1,42 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: transparent;
+}
+
+.logoAndNav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-6);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logoMark {
+  width: 24px;
+  height: 24px;
+  background: var(--color-text-primary);
+  border-radius: 2px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-6);
+}
+
+.projectLinks {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-6);
+}

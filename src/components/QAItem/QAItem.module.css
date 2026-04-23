@@ -1,0 +1,43 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Size=sm */
+.sm .question {
+  font-family: var(--font-body-lg-medium-family);
+  font-size: var(--font-body-lg-medium-size);
+  line-height: var(--font-body-lg-medium-line-height);
+  letter-spacing: var(--font-body-lg-medium-letter-spacing);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.sm .answer {
+  font-family: var(--font-body-lg-book-family);
+  font-size: var(--font-body-lg-book-size);
+  line-height: var(--font-body-lg-book-line-height);
+  letter-spacing: var(--font-body-lg-book-letter-spacing);
+  font-weight: var(--font-weight-book);
+  color: var(--color-text-primary);
+}
+
+/* Size=lg */
+.lg .question {
+  font-family: var(--font-heading-md-family);
+  font-size: var(--font-heading-md-size);
+  line-height: var(--font-heading-md-line-height);
+  letter-spacing: var(--font-heading-md-letter-spacing);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.lg .answer {
+  font-family: var(--font-body-xl-family);
+  font-size: var(--font-body-xl-size);
+  line-height: var(--font-body-xl-line-height);
+  letter-spacing: var(--font-body-xl-letter-spacing);
+  font-weight: var(--font-weight-book);
+  color: var(--color-text-primary);
+}

@@ -1,0 +1,159 @@
+@theme {
+  /* ─────────────────────────────────────────────
+     PRIMITIVES — raw values
+     (mirrored from Figma Primitives collection,
+      hidden from publishing)
+  ───────────────────────────────────────────── */
+
+  /* Color primitives */
+  --color-ink-900: #111111;
+  --color-ink-500: #65656a;
+  --color-ink-300: #b2b3bf;
+  --color-slate-100: #f0f1fa;
+  --color-orange-500: #fc3a16;
+  --color-orange-600: #bb4822;
+  --color-white: #ffffff;
+  --color-white-70: rgba(255, 255, 255, 0.70);
+
+  /* Typography primitives */
+  --font-family-primary: 'BL Melody', system-ui, sans-serif;
+  --font-family-mono: 'Roboto Mono', monospace;
+
+  /* Spacing primitives */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+
+  /* ─────────────────────────────────────────────
+     SEMANTIC TOKENS — decisions
+     (mirrored from Figma Tokens collection)
+  ───────────────────────────────────────────── */
+
+  /* Color — Background */
+  --color-background-primary:          var(--color-slate-100);
+  --color-background-secondary:        var(--color-white-70);
+  --color-background-dark:             var(--color-ink-900);
+  --color-background-card:             var(--color-white);
+  --color-background-card-translucent: var(--color-white-70);
+  --color-background-hero:             var(--color-orange-600);
+  --color-accent-primary:              var(--color-orange-500);
+  --color-accent-secondary:            var(--color-orange-600);
+
+  /* Color — Text */
+  --color-text-primary:    var(--color-ink-900);
+  --color-text-secondary:  var(--color-ink-500);
+  --color-text-tertiary:   var(--color-ink-300);
+  --color-text-on-dark:    var(--color-white);
+  --color-text-accent:     var(--color-orange-500);
+
+  /* Color — Border */
+  --color-border-primary:   var(--color-ink-900);
+  --color-border-secondary: var(--color-ink-500);
+  --color-border-tertiary:  var(--color-ink-300);
+  --color-border-on-dark:   var(--color-white);
+  --color-border-accent:    var(--color-orange-500);
+
+  /* Radius */
+  --radius-sm:   8px;
+  --radius-md:   16px;
+  --radius-pill: 9999px;
+
+  /* Typography — Heading */
+  --font-heading-xl-family:         var(--font-family-primary);
+  --font-heading-xl-size:           32px;
+  --font-heading-xl-line-height:    1.25;
+  --font-heading-xl-letter-spacing: -0.02em;
+
+  --font-heading-lg-family:         var(--font-family-primary);
+  --font-heading-lg-size:           24px;
+  --font-heading-lg-line-height:    1.1667;
+  --font-heading-lg-letter-spacing: -0.02em;
+
+  --font-heading-md-family:         var(--font-family-primary);
+  --font-heading-md-size:           22px;
+  --font-heading-md-line-height:    1.2727;
+  --font-heading-md-letter-spacing: -0.02em;
+
+  --font-heading-sm-family:         var(--font-family-primary);
+  --font-heading-sm-size:           20px;
+  --font-heading-sm-line-height:    1.2;
+  --font-heading-sm-letter-spacing: -0.02em;
+
+  --font-heading-xl-semibold-family:         var(--font-family-primary);
+  --font-heading-xl-semibold-size:           32px;
+  --font-heading-xl-semibold-line-height:    1.25;
+  --font-heading-xl-semibold-letter-spacing: -0.02em;
+
+  /* Typography — Body */
+  --font-body-xl-family:         var(--font-family-primary);
+  --font-body-xl-size:           18px;
+  --font-body-xl-line-height:    1.7778;
+  --font-body-xl-letter-spacing: -0.005em;
+
+  --font-body-lg-family:         var(--font-family-primary);
+  --font-body-lg-size:           14px;
+  --font-body-lg-line-height:    1.4286;
+  --font-body-lg-letter-spacing: -0.02em;
+
+  --font-body-lg-medium-family:         var(--font-family-primary);
+  --font-body-lg-medium-size:           14px;
+  --font-body-lg-medium-line-height:    1.5714;
+  --font-body-lg-medium-letter-spacing: -0.02em;
+
+  --font-body-lg-book-family:         var(--font-family-primary);
+  --font-body-lg-book-size:           14px;
+  --font-body-lg-book-line-height:    1.5714;
+  --font-body-lg-book-letter-spacing: -0.02em;
+
+  --font-body-md-family:         var(--font-family-primary);
+  --font-body-md-size:           13px;
+  --font-body-md-line-height:    1.6923;
+  --font-body-md-letter-spacing: -0.01em;
+
+  --font-body-sm-family:         var(--font-family-primary);
+  --font-body-sm-size:           11px;
+  --font-body-sm-line-height:    2;
+  --font-body-sm-letter-spacing: -0.01em;
+
+  /* Typography — Label */
+  --font-label-sm-family:         var(--font-family-mono);
+  --font-label-sm-size:           11px;
+  --font-label-sm-line-height:    2;
+  --font-label-sm-letter-spacing: -0.01em;
+
+  /* Typography — Metadata */
+  --font-metadata-lg-family:         var(--font-family-mono);
+  --font-metadata-lg-size:           16px;
+  --font-metadata-lg-line-height:    2;
+  --font-metadata-lg-letter-spacing: -0.02em;
+
+  --font-metadata-md-family:         var(--font-family-mono);
+  --font-metadata-md-size:           14px;
+  --font-metadata-md-line-height:    2.2857;
+  --font-metadata-md-letter-spacing: -0.01em;
+
+  /* Typography — Weight */
+  --font-weight-book:     400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+
+  /* Animation — Duration */
+  --duration-instant: 0ms;
+  --duration-fast:    150ms;
+  --duration-base:    300ms;
+  --duration-slow:    600ms;
+
+  /* Animation — Easing */
+  --ease-default: cubic-bezier(0.4, 0, 0.6, 1);
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-linear:  linear;
+}

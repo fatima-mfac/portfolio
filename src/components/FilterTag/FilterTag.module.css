@@ -1,0 +1,32 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-1) var(--spacing-3);
+  font-family: var(--font-body-sm-family);
+  font-size: var(--font-body-sm-size);
+  line-height: var(--font-body-sm-line-height);
+  letter-spacing: var(--font-body-sm-letter-spacing);
+  font-weight: var(--font-weight-book);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid var(--color-border-tertiary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.tag:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-border-secondary);
+}
+
+.active {
+  color: var(--color-text-accent);
+  border-color: var(--color-border-accent);
+}
+
+.active:hover {
+  color: var(--color-text-accent);
+  border-color: var(--color-border-accent);
+}

@@ -1,0 +1,20 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-metadata-lg-family);
+  font-size: var(--font-metadata-lg-size);
+  line-height: var(--font-metadata-lg-line-height);
+  letter-spacing: var(--font-metadata-lg-letter-spacing);
+  font-weight: var(--font-weight-book);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.link:hover {
+  color: var(--color-text-accent);
+}
+
+.active {
+  color: var(--color-text-accent);
+}

@@ -1,0 +1,39 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--color-background-card-translucent);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.card:hover {
+  background: var(--color-background-card);
+}
+
+.title {
+  font-family: var(--font-label-sm-family);
+  font-size: var(--font-label-sm-size);
+  line-height: var(--font-label-sm-line-height);
+  letter-spacing: var(--font-label-sm-letter-spacing);
+  font-weight: var(--font-weight-book);
+  color: var(--color-text-secondary);
+}
+
+.role {
+  font-family: var(--font-body-lg-family);
+  font-size: var(--font-body-lg-size);
+  line-height: var(--font-body-lg-line-height);
+  letter-spacing: var(--font-body-lg-letter-spacing);
+  font-weight: var(--font-weight-book);
+  color: var(--color-text-secondary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.card:hover .role {
+  color: var(--color-text-primary);
+}
