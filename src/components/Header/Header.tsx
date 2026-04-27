@@ -18,6 +18,17 @@ interface HeaderProps {
   breakpoint?: HeaderBreakpoint;
   navLinks?: NavLink[];
   projectLinks?: ProjectLink[];
+  /**
+   * Active href for the primary nav (Index/About/Contact). Use this on
+   * project pages to keep "Index" active while a project is open on the right.
+   */
+  activeNavHref?: string;
+  /** Active href for the right-side project links (Patina/Vodafone/etc.). */
+  activeProjectHref?: string;
+  /**
+   * Fallback active href applied to both nav and project links.
+   * Prefer `activeNavHref` and `activeProjectHref` for explicit control.
+   */
   activeHref?: string;
   logoHref?: string;
   className?: string;
@@ -47,6 +58,8 @@ export function Header({
   breakpoint = 'desktop',
   navLinks,
   projectLinks = DEFAULT_PROJECTS,
+  activeNavHref,
+  activeProjectHref,
   activeHref,
   logoHref = '/',
   className,
@@ -54,14 +67,17 @@ export function Header({
   const baseNavLinks =
     navLinks ?? (breakpoint === 'mobile' ? DEFAULT_NAV_MOBILE : DEFAULT_NAV_DESKTOP);
 
+  const resolvedNavActive = activeNavHref ?? activeHref;
+  const resolvedProjectActive = activeProjectHref ?? activeHref;
+
   const resolvedNavLinks = baseNavLinks.map((link) => ({
     ...link,
-    active: link.active ?? link.href === activeHref,
+    active: link.active ?? link.href === resolvedNavActive,
   }));
 
   const resolvedProjectLinks = projectLinks.map((link) => ({
     ...link,
-    active: link.active ?? link.href === activeHref,
+    active: link.active ?? link.href === resolvedProjectActive,
   }));
 
   return (

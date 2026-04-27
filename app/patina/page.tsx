@@ -222,15 +222,14 @@ export default function PatinaPage() {
   return (
     <div className="min-h-screen md:h-screen md:overflow-hidden bg-background-primary flex flex-col">
       <div className="mx-auto w-full max-w-[1680px] px-4 md:px-5 pt-8 flex flex-col md:flex-1 md:min-h-0">
+        {/* Header is desktop-only on use-case pages — mobile shows the use
+            case as a full-bleed overlay with just a back button. */}
         <div className="hidden md:block">
-          <Header breakpoint="desktop" activeHref="/patina" />
-        </div>
-        <div className="md:hidden">
-          <Header breakpoint="mobile" activeHref="/patina" />
+          <Header breakpoint="desktop" activeNavHref="/" activeProjectHref="/patina" />
         </div>
 
-        {/* Mobile flow — back button on top, then hero, then article (right column only) */}
-        <main className="md:hidden mt-6 flex flex-col gap-8">
+        {/* Mobile flow — full-bleed overlay: back button on top, then hero, then article */}
+        <main className="md:hidden flex flex-col gap-8">
           <BackButton href="/work" ariaLabel="Back to Work" />
           <HeroImage />
           <Article />
