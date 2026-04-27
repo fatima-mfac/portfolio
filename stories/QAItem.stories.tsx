@@ -34,3 +34,12 @@ export const Large: Story = {
     size: 'lg',
   },
 };
+
+export const LargeMultiParagraph: Story = {
+  args: {
+    question: 'Can colour actually change an automatic impulse?',
+    answer:
+      "Reaching for the phone is a deep habit that's difficult to break, which is why I chose colour, it carries meaning we don't have to learn.\n\nFirst users said the colour made them pause before unlocking. Some put the phone down without checking, so the results are promising but I'm still measuring whether it holds up over time.",
+    size: 'lg',
+  },
+};

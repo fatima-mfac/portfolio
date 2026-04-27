@@ -14,11 +14,12 @@ interface QAItemProps {
 export function QAItem({ question, answer, size = 'sm', className }: QAItemProps) {
   const questionClass = size === 'lg' ? 'text-heading-md' : 'text-body-lg-medium';
   const answerClass = size === 'lg' ? 'text-body-xl' : 'text-body-lg-book';
+  const gapClass = size === 'lg' ? 'gap-2' : 'gap-1';
 
   const paragraphs = answer.split(/\n\n+/);
 
   return (
-    <div className={`flex flex-col w-full ${className ?? ''}`}>
+    <div className={`flex flex-col w-full ${gapClass} ${className ?? ''}`}>
       <p className={`${questionClass} text-text-primary`}>{question}</p>
       {paragraphs.map((paragraph, i) => (
         <p key={i} className={`${answerClass} text-text-primary`}>
