@@ -164,6 +164,14 @@
   --ease-in:      cubic-bezier(0.4, 0, 1, 1);
   --ease-out:     cubic-bezier(0, 0, 0.2, 1);
   --ease-linear:  linear;
+
+  /* Breakpoints
+     `md` is overridden to 828px — the viewport width at which the right
+     column of the two-column layout (370px left + 48px gap + 1fr right,
+     inside max-w-[1680px] px-5) reaches the same 370px width as the left.
+     Below 828px the right column would be narrower than the left, so the
+     page switches to the single-column mobile flow. */
+  --breakpoint-md: 828px;
 }
 
 /* ─────────────────────────────────────────────
