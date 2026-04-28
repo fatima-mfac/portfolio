@@ -78,7 +78,9 @@ export function Header({
   // Right project nav: stay on the current pathname, change ?project=.
   const buildProjectHref = (slug: string) => `${pathname}?project=${slug}`;
 
-  const homeHref = project ? `${logoHref}?project=${project}` : logoHref;
+  // The logo always returns to the bare homepage — it's the "reset" affordance,
+  // dropping any selected project so the right column goes back to the default.
+  const homeHref = logoHref;
 
   return (
     <header
