@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { NavItem } from '../NavItem/NavItem';
 
@@ -84,10 +85,15 @@ export function Header({
       className={`flex flex-row items-center justify-between w-full bg-transparent ${className ?? ''}`}
     >
       <div className="flex flex-row items-center gap-6">
-        <a href={homeHref} aria-label="Home" className="flex items-center no-underline">
+        <Link
+          href={homeHref}
+          aria-label="Home"
+          scroll={false}
+          className="flex items-center no-underline"
+        >
           {/* TODO: replace with <Logo /> atom once synced from Figma. */}
           <div className="w-6 h-6 bg-text-primary rounded-[2px]" />
-        </a>
+        </Link>
         <nav aria-label="Primary navigation" className="flex flex-row items-center gap-6">
           {baseNavLinks.map((link) => {
             const isActive = link.active ?? pathname === link.href;

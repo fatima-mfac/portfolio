@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Header } from '../../src/components/Header/Header';
 
 const PROJECTS = [
@@ -21,15 +22,16 @@ interface WorkCardProps {
  */
 function WorkCard({ label, href }: WorkCardProps) {
   return (
-    <a
+    <Link
       href={href}
+      scroll={false}
       aria-label={`Open ${label} use case`}
       className="block w-full aspect-[358/176] rounded-sm bg-ink-300/30 relative no-underline transition-colors duration-fast ease-out hover:bg-ink-300/40"
     >
       <span className="absolute bottom-6 left-6 text-body-md text-text-secondary">
         {label}
       </span>
-    </a>
+    </Link>
   );
 }
 

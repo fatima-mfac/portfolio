@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 interface ProjectCardProps {
   title: string;
   role: string;
@@ -19,9 +21,9 @@ export function ProjectCard({ title, role, href, className }: ProjectCardProps) 
 
   if (href) {
     return (
-      <a href={href} className={cardClasses}>
+      <Link href={href} scroll={false} className={cardClasses}>
         {content}
-      </a>
+      </Link>
     );
   }
 
