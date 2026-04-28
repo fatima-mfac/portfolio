@@ -30,7 +30,7 @@ export function BackButton({ href, ariaLabel = 'Go back', className }: BackButto
       type="button"
       aria-label={ariaLabel}
       onClick={handleClick}
-      className={`inline-flex items-center justify-center text-text-primary hover:text-text-accent transition-colors duration-fast ease-out ${className ?? ''}`}
+      className={`self-start inline-flex items-center justify-center text-text-secondary hover:text-text-accent transition-colors duration-fast ease-out ${className ?? ''}`}
     >
       {/* Material Design "arrow_back" icon (24×24) */}
       <svg
