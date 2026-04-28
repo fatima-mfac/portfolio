@@ -1,6 +1,5 @@
-import { FilterTag } from '../src/components/FilterTag/FilterTag';
-import { ProjectCard } from '../src/components/ProjectCard/ProjectCard';
-import { Shell } from './_shell/Shell';
+import { FilterTag } from '../../src/components/FilterTag/FilterTag';
+import { ProjectCard } from '../../src/components/ProjectCard/ProjectCard';
 
 const FILTERS = ['Leadership', 'Complex systems', 'Vibe Coding'];
 
@@ -80,17 +79,14 @@ function ProjectsSection() {
 }
 
 /**
- * Index — left column shows the heading + projects list. The right column
- * is driven by `?project=` (HomeHero by default, project content otherwise).
- *
- * On mobile, when `?project=` is set we render the project as a full-bleed
- * overlay with a back button that returns to /work.
+ * Index — left column content. The shared (shell) layout wraps this in
+ * the two-column shell with the right column driven by `?project=`.
  */
 export default function Home() {
   return (
-    <Shell mobileOverlayWhenProjectSet>
+    <>
       <Heading />
       <ProjectsSection />
-    </Shell>
+    </>
   );
 }

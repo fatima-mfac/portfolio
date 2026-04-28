@@ -1,5 +1,4 @@
-import { QAItem } from '../../src/components/QAItem/QAItem';
-import { Shell } from '../_shell/Shell';
+import { QAItem } from '../../../src/components/QAItem/QAItem';
 
 const HEADING = 'Fellow humans and AI, this is who I am.';
 
@@ -90,15 +89,9 @@ function AboutContent() {
 }
 
 /**
- * About — left column shows the About content. The right column is driven
- * by `?project=` (HomeHero by default, project content otherwise), so
- * navigating from a project page (e.g. `/?project=patina`) to `/about`
- * preserves the project on the right.
+ * About — left column content. The shared (shell) layout wraps this in
+ * the two-column shell.
  */
 export default function AboutPage() {
-  return (
-    <Shell>
-      <AboutContent />
-    </Shell>
-  );
+  return <AboutContent />;
 }

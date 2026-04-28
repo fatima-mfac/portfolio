@@ -16,13 +16,6 @@ const PROJECT_COMPONENTS: Record<string, ComponentType> = {
 interface ShellProps {
   /** The left-column content for this route. */
   children: ReactNode;
-  /**
-   * Mobile-only: when true, the page is shown as a full-bleed overlay
-   * with a back button and the project content (right column) takes the
-   * whole screen. Used by the home route when `?project=` is set so
-   * mobile visitors get the use-case overlay.
-   */
-  mobileOverlayWhenProjectSet?: boolean;
 }
 
 /**
@@ -34,14 +27,19 @@ interface ShellProps {
  * `?project=` search param, or `HomeHero` as the default. Because both
  * columns derive from the URL, navigating between sections (e.g. /
  * → /about) preserves the right-column selection automatically.
+ *
+ * On mobile, when `?project=` is set on the home route (`/`) the page
+ * collapses to a full-bleed project overlay with a back button. Other
+ * sections keep showing their own content on mobile regardless of
+ * `?project=` (the project state is only visible on desktop).
  */
-export function Shell({ children, mobileOverlayWhenProjectSet = false }: ShellProps) {
+export function Shell({ children }: ShellProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const project = searchParams.get('project');
 
   const RightContent = project && PROJECT_COMPONENTS[project] ? PROJECT_COMPONENTS[project] : HomeHero;
-  const showMobileOverlay = mobileOverlayWhenProjectSet && Boolean(project);
+  const showMobileOverlay = pathname === '/' && Boolean(project);
 
   return (
     <div className="min-h-screen md:h-screen md:overflow-hidden bg-background-primary flex flex-col">
