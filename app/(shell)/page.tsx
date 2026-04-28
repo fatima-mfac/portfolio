@@ -1,5 +1,6 @@
 import { FilterTag } from '../../src/components/FilterTag/FilterTag';
 import { ProjectCard } from '../../src/components/ProjectCard/ProjectCard';
+import { HomeHero } from '../_shell/HomeHero';
 
 const FILTERS = ['Leadership', 'Complex systems', 'Vibe Coding'];
 
@@ -81,11 +82,18 @@ function ProjectsSection() {
 /**
  * Index — left column content. The shared (shell) layout wraps this in
  * the two-column shell with the right column driven by `?project=`.
+ *
+ * Home is the only section that also shows the hero stack inline on
+ * mobile (between heading and projects) — other sections leave the
+ * mobile flow uncluttered.
  */
 export default function Home() {
   return (
     <>
       <Heading />
+      <div className="md:hidden flex flex-col gap-8">
+        <HomeHero />
+      </div>
       <ProjectsSection />
     </>
   );
