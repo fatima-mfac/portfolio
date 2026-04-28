@@ -16,7 +16,7 @@
   --color-white-70: rgba(255, 255, 255, 0.70);
 
   /* Typography primitives */
-  --font-family-primary: 'BL Melody', system-ui, sans-serif;
+  --font-family-primary: var(--font-bl-melody), system-ui, sans-serif;
   --font-family-mono: 'Roboto Mono', monospace;
 
   /* Spacing primitives
@@ -149,7 +149,8 @@
   --font-metadata-md-letter-spacing: -0.01em;
 
   /* Typography — Weight */
-  --font-weight-book:     400;
+  --font-weight-book:     350;
+  --font-weight-regular:  400;
   --font-weight-medium:   500;
   --font-weight-semibold: 600;
 
@@ -199,7 +200,7 @@
   font-size: var(--font-heading-xl-size);
   line-height: var(--font-heading-xl-line-height);
   letter-spacing: var(--font-heading-xl-letter-spacing);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-book);
 }
 
 @utility text-heading-xl-semibold {
@@ -287,7 +288,7 @@
   font-size: var(--font-label-sm-size);
   line-height: var(--font-label-sm-line-height);
   letter-spacing: var(--font-label-sm-letter-spacing);
-  font-weight: var(--font-weight-book);
+  font-weight: var(--font-weight-regular);
 }
 
 @utility text-metadata-lg {
@@ -295,7 +296,7 @@
   font-size: var(--font-metadata-lg-size);
   line-height: var(--font-metadata-lg-line-height);
   letter-spacing: var(--font-metadata-lg-letter-spacing);
-  font-weight: var(--font-weight-book);
+  font-weight: var(--font-weight-regular);
 }
 
 @utility text-metadata-md {
@@ -303,5 +304,5 @@
   font-size: var(--font-metadata-md-size);
   line-height: var(--font-metadata-md-line-height);
   letter-spacing: var(--font-metadata-md-letter-spacing);
-  font-weight: var(--font-weight-book);
+  font-weight: var(--font-weight-regular);
 }

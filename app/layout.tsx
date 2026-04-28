@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const blMelody = localFont({
+  src: [
+    { path: "../public/fonts/BLMelody-Book.otf",     weight: "350", style: "normal" },
+    { path: "../public/fonts/BLMelody-Regular.otf",  weight: "400", style: "normal" },
+    { path: "../public/fonts/BLMelody-Medium.otf",   weight: "500", style: "normal" },
+    { path: "../public/fonts/BLMelody-SemiBold.otf", weight: "600", style: "normal" },
+  ],
+  variable: "--font-bl-melody",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={blMelody.variable}>
       <body>{children}</body>
     </html>
   );
