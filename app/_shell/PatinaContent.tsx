@@ -108,7 +108,7 @@ function PatinaBrandPlaceholder() {
 
 function ArticleDescription() {
   return (
-    <p className="text-body-xl text-text-primary">
+    <p className="text-heading-xl text-text-primary">
       <span className="text-heading-xl-semibold">Patina,</span> a screen time awareness app
       that tints your wallpaper as you use your phone. I designed, vibe coded and shipped
       it. Created its brand identity, and website. Solo human + AI, zero to one.
