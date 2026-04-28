@@ -3,10 +3,10 @@
 import { Header } from '../../src/components/Header/Header';
 
 const PROJECTS = [
-  { label: 'Patina', href: '/patina' },
-  { label: 'Vodafone', href: '/vodafone' },
-  { label: 'Zebra Finch', href: '/zebra-finch' },
-  { label: 'Herc Rentals', href: '/herc-rentals' },
+  { label: 'Patina', href: '/?project=patina' },
+  { label: 'Vodafone', href: '/?project=vodafone' },
+  { label: 'Zebra Finch', href: '/?project=zebra-finch' },
+  { label: 'Herc Rentals', href: '/?project=herc-rentals' },
 ];
 
 interface WorkCardProps {
@@ -40,11 +40,11 @@ export default function WorkPage() {
         {/* Desktop fallback header — /work isn't in the desktop nav, so
             "Index" stays active as the closest section. */}
         <div className="hidden md:block">
-          <Header breakpoint="desktop" activeNavHref="/" />
+          <Header breakpoint="desktop"  />
         </div>
         {/* Mobile header — "Work" is active here. */}
         <div className="md:hidden">
-          <Header breakpoint="mobile" activeNavHref="/work" />
+          <Header breakpoint="mobile"  />
         </div>
 
         <main className="w-full max-w-[420px] mx-auto mt-4 flex flex-col gap-4 pb-12">

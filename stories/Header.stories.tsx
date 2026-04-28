@@ -21,10 +21,10 @@ export const Desktop: Story = {
       { label: 'Contact', href: '/contact' },
     ],
     projectLinks: [
-      { label: 'Patina', href: '/patina' },
-      { label: 'Vodafone', href: '/vodafone' },
-      { label: 'Zebra Finch', href: '/zebra-finch' },
-      { label: 'Herc Rentals', href: '/herc-rentals' },
+      { label: 'Patina', slug: 'patina' },
+      { label: 'Vodafone', slug: 'vodafone' },
+      { label: 'Zebra Finch', slug: 'zebra-finch' },
+      { label: 'Herc Rentals', slug: 'herc-rentals' },
     ],
   },
   decorators: [

@@ -1,7 +1,5 @@
-'use client';
-
-import { Header } from '../../src/components/Header/Header';
 import { QAItem } from '../../src/components/QAItem/QAItem';
+import { Shell } from '../_shell/Shell';
 
 const HEADING = 'Fellow humans and AI, this is who I am.';
 
@@ -91,59 +89,16 @@ function AboutContent() {
   );
 }
 
-function HeroStack() {
-  return (
-    <>
-      <div
-        aria-hidden="true"
-        className="w-full rounded-md bg-background-hero aspect-[358/235] md:aspect-[1214/903] shrink-0"
-      />
-      <div
-        aria-hidden="true"
-        className="w-full rounded-md bg-background-dark aspect-[358/235] md:aspect-[1214/903] shrink-0"
-      />
-    </>
-  );
-}
-
+/**
+ * About — left column shows the About content. The right column is driven
+ * by `?project=` (HomeHero by default, project content otherwise), so
+ * navigating from a project page (e.g. `/?project=patina`) to `/about`
+ * preserves the project on the right.
+ */
 export default function AboutPage() {
   return (
-    <div className="min-h-screen md:h-screen md:overflow-hidden bg-background-primary flex flex-col">
-      <div className="mx-auto w-full max-w-[1680px] px-4 md:px-5 pt-8 flex flex-col md:flex-1 md:min-h-0">
-        <div className="hidden md:block">
-          <Header breakpoint="desktop" activeNavHref="/about" />
-        </div>
-        <div className="md:hidden">
-          <Header breakpoint="mobile" activeNavHref="/about" />
-        </div>
-
-        {/* Mobile flow — natural page scroll, About content only (no hero) */}
-        <main className="md:hidden mt-12 flex flex-col gap-8">
-          <AboutContent />
-        </main>
-
-        {/* Desktop flow — two columns, each scrolls independently */}
-        <main className="hidden md:grid md:grid-cols-[370px_1fr] md:gap-12 md:flex-1 md:min-h-0 md:mt-12">
-          <div
-            className="
-              flex flex-col gap-8
-              h-full overflow-y-auto pr-2 pb-8
-              [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-            "
-          >
-            <AboutContent />
-          </div>
-          <div
-            className="
-              flex flex-col gap-6
-              h-full overflow-y-auto pb-8
-              [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-            "
-          >
-            <HeroStack />
-          </div>
-        </main>
-      </div>
-    </div>
+    <Shell>
+      <AboutContent />
+    </Shell>
   );
 }
