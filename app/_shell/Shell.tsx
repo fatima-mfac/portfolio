@@ -6,11 +6,16 @@ import { Header } from '../../src/components/Header/Header';
 import { BackButton } from '../../src/components/BackButton/BackButton';
 import { HomeHero } from './HomeHero';
 import { PatinaContent } from './PatinaContent';
+import { VodafoneContent } from './VodafoneContent';
+import { ZebraFinchContent } from './ZebraFinchContent';
+import { HercRentalsContent } from './HercRentalsContent';
 
 /** Map of project slugs to the component rendered in the right column. */
 const PROJECT_COMPONENTS: Record<string, ComponentType> = {
   patina: PatinaContent,
-  // future: vodafone, zebra-finch, herc-rentals
+  vodafone: VodafoneContent,
+  'zebra-finch': ZebraFinchContent,
+  'herc-rentals': HercRentalsContent,
 };
 
 interface ShellProps {
