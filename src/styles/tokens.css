@@ -103,7 +103,7 @@
   /* Typography — Body */
   --font-body-xl-family:         var(--font-family-primary);
   --font-body-xl-size:           18px;
-  --font-body-xl-line-height:    1.7778;
+  --font-body-xl-line-height:    1.5556;
   --font-body-xl-letter-spacing: -0.005em;
 
   --font-body-lg-family:         var(--font-family-primary);
