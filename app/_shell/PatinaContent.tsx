@@ -118,7 +118,7 @@ function ArticleDescription() {
 
 function ArticleMetadata() {
   return (
-    <div className="flex flex-col text-metadata-lg text-text-primary">
+    <div className="flex flex-col text-metadata-md text-text-primary">
       {METADATA_LINES.map((line) => (
         <span key={line} className="whitespace-pre">
           {line}

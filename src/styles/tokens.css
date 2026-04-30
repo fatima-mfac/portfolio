@@ -138,11 +138,6 @@
   --font-label-sm-letter-spacing: -0.01em;
 
   /* Typography — Metadata */
-  --font-metadata-lg-family:         var(--font-family-mono);
-  --font-metadata-lg-size:           16px;
-  --font-metadata-lg-line-height:    2;
-  --font-metadata-lg-letter-spacing: -0.02em;
-
   --font-metadata-md-family:         var(--font-family-mono);
   --font-metadata-md-size:           14px;
   --font-metadata-md-line-height:    2.2857;
@@ -288,14 +283,6 @@
   font-size: var(--font-label-sm-size);
   line-height: var(--font-label-sm-line-height);
   letter-spacing: var(--font-label-sm-letter-spacing);
-  font-weight: var(--font-weight-regular);
-}
-
-@utility text-metadata-lg {
-  font-family: var(--font-metadata-lg-family);
-  font-size: var(--font-metadata-lg-size);
-  line-height: var(--font-metadata-lg-line-height);
-  letter-spacing: var(--font-metadata-lg-letter-spacing);
   font-weight: var(--font-weight-regular);
 }
 

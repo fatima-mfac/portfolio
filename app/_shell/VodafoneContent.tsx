@@ -20,16 +20,39 @@ const CONFIG: UseCaseConfig = {
     },
     {
       type: 'qa',
-      question:
-        'The app runs across multiple countries with different router models. How do you design for something that behaves differently depending on where you are?',
+      question: 'How complex was the product?',
       answer:
-        "The core experience was consistent but everything around it wasn't. Onboarding changed based on which router model you had. Legal copy was different in Italy than in Germany. Some flows were market specific entirely. The design system had to hold across all of that while the content changed underneath it.",
+        "Very. The app runs across multiple markets, with different router models, different legal content, and sometimes completely different flows. We needed to think that one design decision ripple across all of that variation. It required a level of attention to detail that most app projects don't demand.",
     },
     {
       type: 'qa',
-      question: "What did you push for that didn't make it in?",
+      question: 'How did you manage all that complexity?',
       answer:
-        "Two things. I had ownership of a feature where the value for users was genuinely questionable. It felt like one of those features that exists to signal something, environmental responsibility, more than to actually help anyone. The real saving was very low so we tried to communicate the value in a more abstract way, avoiding showing the actual number. Almost all users in testing pushed back on that. They wanted the real figure, not an abstraction. So that approach didn't work either. The feature was already in development when I joined and had some technical complexity behind it. Sometimes that's just the reality. You're not always in a position to question why something exists, especially as a contractor. If I had been a full employee I would have pushed harder to understand why we went with it despite the user testing pointing in the opposite direction. Either way I gave it my best because that's the job even when you don't fully believe in what you're designing.\n\nThe other one still bothers me. The Wi-Fi illustration, which is the foundation of the entire app, wasn't on the agency's illustration list. What we had looked like a cloud. In user testing people said upload, cloud storage. Not Wi-Fi. I pushed hard. No more resources. We launched with it. I was the only one who seemed to think that was a problem.",
+        'Our workflow was methodic. We worked in Figma branches, managed the design system carefully, and used Transifex to handle all the translation strings so we could design in English and trust the platform to distribute the rest. Every line of text had a specific string attached that we needed to carefully keep in check. Any slip in that process had consequences.',
+    },
+    {
+      type: 'qa',
+      question: 'Some features involved communicating very technical concepts. How did you handle that?',
+      answer:
+        "First you need to understand them yourself, and sometimes that was truly a challenge. Being close to the dev team on a daily basis was crucial for that. And then comes the harder part: taking something complex and making it feel safe and obvious to someone who just wants their Wi-Fi to work. Concepts like MAC address randomisation, for example, require the user to go into their phone settings and turn off a security feature. Explaining what that is and why it's safe to do on a home network is genuinely hard. You need a very balanced and simple communication between text and visuals. The technical detail has to disappear into the copy and the flow.",
+    },
+    {
+      type: 'qa',
+      question: "Did you ever have to design something you didn't fully believe in?",
+      answer:
+        "Oh yes, but that's part of the job sometimes. There are business decisions where the value is not correlated with core user needs but with brand positioning. In this case it was nothing that would harm the user, just a feature that didn't have real value for them. I was responsible for it, and despite that, I did my very best work to improve it.",
+    },
+    {
+      type: 'qa',
+      question: "Why didn't you push back harder?",
+      answer:
+        "I questioned and challenged but the feature was already in development when I joined and I wasn't in a position to question its existence. As a contractor your sphere of influence is limited. I understood it was a strategic positioning move and I have very present that I design for users primarily but also for the business. The key is balance.",
+    },
+    {
+      type: 'qa',
+      question: 'Tell me about a lost battle.',
+      answer:
+        "I have a funny one, so the app has a network status section with ilustrations at the top you see every time you open it. The Wi-Fi one was a cloud with arrows. An upload icon. Nothing to do with Wi-Fi, which is the foundation of the entire app. That bothered me. I pushed for a proper illustration and even suggested prompting AI to generate something. The answer was no, only what's in the design system. It still bothers me to this day.",
     },
   ],
 };
