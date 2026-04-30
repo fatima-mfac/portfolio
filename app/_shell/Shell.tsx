@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactNode, ComponentType } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation';
 import { Header } from '../../src/components/Header/Header';
 import { BackButton } from '../../src/components/BackButton/BackButton';
@@ -46,6 +47,21 @@ export function Shell({ children }: ShellProps) {
   const RightContent = project && PROJECT_COMPONENTS[project] ? PROJECT_COMPONENTS[project] : HomeHero;
   const showMobileOverlay = pathname === '/' && Boolean(project);
 
+  // Each column scrolls to top only when its own content changes:
+  //   left column  → on pathname change (section nav: Index/About/Contact)
+  //   right column → on ?project= change (project nav: Patina/Vodafone/…)
+  // Other column's scroll position is left alone.
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const rightColRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    leftColRef.current?.scrollTo({ top: 0 });
+  }, [pathname]);
+
+  useEffect(() => {
+    rightColRef.current?.scrollTo({ top: 0 });
+  }, [project]);
+
   return (
     <div className="min-h-screen md:h-screen md:overflow-hidden bg-background-primary flex flex-col">
       <div className="mx-auto w-full max-w-[1680px] px-4 md:px-5 pt-8 flex flex-col md:flex-1 md:min-h-0">
@@ -77,6 +93,7 @@ export function Shell({ children }: ShellProps) {
           className="hidden md:grid md:grid-cols-[370px_1fr] md:gap-12 md:flex-1 md:min-h-0 md:mt-12"
         >
           <div
+            ref={leftColRef}
             className="
               flex flex-col gap-8
               h-full overflow-y-auto pr-2 pb-8
@@ -86,6 +103,7 @@ export function Shell({ children }: ShellProps) {
             {children}
           </div>
           <div
+            ref={rightColRef}
             className="
               flex flex-col gap-12
               h-full overflow-y-auto pb-8
