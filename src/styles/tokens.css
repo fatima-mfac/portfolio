@@ -102,8 +102,8 @@
 
   /* Typography — Body */
   --font-body-xl-family:         var(--font-family-primary);
-  --font-body-xl-size:           18px;
-  --font-body-xl-line-height:    1.5556;
+  --font-body-xl-size:           16px;
+  --font-body-xl-line-height:    1.5;
   --font-body-xl-letter-spacing: -0.005em;
 
   --font-body-lg-family:         var(--font-family-primary);
@@ -140,7 +140,7 @@
   /* Typography — Metadata */
   --font-metadata-md-family:         var(--font-family-mono);
   --font-metadata-md-size:           14px;
-  --font-metadata-md-line-height:    2.2857;
+  --font-metadata-md-line-height:    2;
   --font-metadata-md-letter-spacing: -0.01em;
 
   /* Typography — Weight */
@@ -211,7 +211,7 @@
   font-size: var(--font-heading-lg-size);
   line-height: var(--font-heading-lg-line-height);
   letter-spacing: var(--font-heading-lg-letter-spacing);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
 }
 
 @utility text-heading-md {

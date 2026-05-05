@@ -77,7 +77,10 @@ export function UseCase({ config }: { config: UseCaseConfig }) {
 
         <div className="flex flex-col text-metadata-md text-text-primary">
           {config.metadata.map((line) => (
-            <span key={line} className="whitespace-pre">
+            <span
+              key={line}
+              className="whitespace-pre-wrap pl-[16ch] [text-indent:-16ch]"
+            >
               {line}
             </span>
           ))}
