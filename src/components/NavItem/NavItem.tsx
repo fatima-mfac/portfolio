@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 export type NavItemState = 'default' | 'active';
 
 interface NavItemProps {
@@ -16,12 +18,13 @@ export function NavItem({ label, href = '#', state = 'default', className }: Nav
       : 'text-text-secondary hover:text-text-primary';
 
   return (
-    <a
+    <Link
       href={href}
       aria-current={state === 'active' ? 'page' : undefined}
+      scroll={false}
       className={`inline-flex items-center py-1 no-underline transition-colors duration-fast ease-out text-body-md ${color} ${className ?? ''}`}
     >
       {label}
-    </a>
+    </Link>
   );
 }

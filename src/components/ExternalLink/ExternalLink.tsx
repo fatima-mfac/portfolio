@@ -18,7 +18,7 @@ export function ExternalLink({ url, href, state = 'default', className }: Extern
       href={href ?? `https://${url}`}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center no-underline transition-colors duration-fast ease-out text-metadata-lg ${color} ${className ?? ''}`}
+      className={`inline-flex items-center no-underline transition-colors duration-fast ease-out text-metadata-md ${color} ${className ?? ''}`}
     >
       {url}
     </a>

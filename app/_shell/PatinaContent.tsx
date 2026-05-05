@@ -1,49 +1,6 @@
-'use client';
-
 import Image from 'next/image';
-import { Header } from '../../src/components/Header/Header';
-import { FilterTag } from '../../src/components/FilterTag/FilterTag';
-import { ProjectCard } from '../../src/components/ProjectCard/ProjectCard';
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { ExternalLink } from '../../src/components/ExternalLink/ExternalLink';
-import { BackButton } from '../../src/components/BackButton/BackButton';
-
-const FILTERS = ['Leadership', 'Complex systems', 'Vibe Coding'];
-
-const PROJECTS = [
-  {
-    title: 'App Patina',
-    role: 'I built an app to make us put our phone down. I had the idea, designed it, built it and shipped it. Solo, end to end.',
-  },
-  {
-    title: 'App HERC RENTALS',
-    role: 'Took on the challenge of changing two of the most persistent human behaviours. Still measuring if it works.',
-  },
-  {
-    title: 'App Patina',
-    role: 'I built an app to make us put our phone down. I had the idea, designed it, built it and shipped it. Solo, end to end.',
-  },
-  {
-    title: 'App HERC RENTALS',
-    role: 'Took on the challenge of changing two of the most persistent human behaviours. Still measuring if it works.',
-  },
-  {
-    title: 'App Patina',
-    role: 'I built an app to make us put our phone down. I had the idea, designed it, built it and shipped it. Solo, end to end.',
-  },
-  {
-    title: 'App HERC RENTALS',
-    role: 'Took on the challenge of changing two of the most persistent human behaviours. Still measuring if it works.',
-  },
-  {
-    title: 'App Patina',
-    role: 'I built an app to make us put our phone down. I had the idea, designed it, built it and shipped it. Solo, end to end.',
-  },
-  {
-    title: 'App HERC RENTALS',
-    role: 'Took on the challenge of changing two of the most persistent human behaviours. Still measuring if it works.',
-  },
-];
 
 const METADATA_LINES = [
   'Role .......... Solo design and vibe coding, end to end',
@@ -112,26 +69,6 @@ const QAS_BOTTOM = [
   },
 ];
 
-function ProjectsSection() {
-  return (
-    <section aria-label="Projects" className="flex flex-col gap-6">
-      <div role="group" aria-label="Filters" className="flex flex-row flex-wrap gap-2">
-        {FILTERS.map((label) => (
-          <FilterTag key={label} label={label} />
-        ))}
-      </div>
-
-      <ul className="flex flex-col gap-2 list-none p-0 m-0">
-        {PROJECTS.map((project, i) => (
-          <li key={i}>
-            <ProjectCard title={project.title} role={project.role} />
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
 function HeroImage() {
   return (
     <div className="shrink-0 w-full aspect-[1217/809] rounded-md overflow-hidden bg-background-hero relative">
@@ -162,7 +99,6 @@ function ScreenshotImage() {
 }
 
 function PatinaBrandPlaceholder() {
-  // Stylised brand block — replace with real Figma asset when ready.
   return (
     <div className="shrink-0 w-full aspect-[717/692] rounded-md bg-background-hero flex items-center justify-center">
       <span className="text-heading-xl text-text-on-dark">patina</span>
@@ -172,7 +108,7 @@ function PatinaBrandPlaceholder() {
 
 function ArticleDescription() {
   return (
-    <p className="text-body-xl text-text-primary">
+    <p className="text-heading-xl text-text-primary">
       <span className="text-heading-xl-semibold">Patina,</span> a screen time awareness app
       that tints your wallpaper as you use your phone. I designed, vibe coded and shipped
       it. Created its brand identity, and website. Solo human + AI, zero to one.
@@ -182,7 +118,7 @@ function ArticleDescription() {
 
 function ArticleMetadata() {
   return (
-    <div className="flex flex-col text-metadata-lg text-text-primary">
+    <div className="flex flex-col text-metadata-md text-text-primary">
       {METADATA_LINES.map((line) => (
         <span key={line} className="whitespace-pre">
           {line}
@@ -218,46 +154,16 @@ function Article() {
   );
 }
 
-export default function PatinaPage() {
+/**
+ * Patina use-case content rendered in the right column when `?project=patina`.
+ * Hero image, article body (description + metadata + external link + 10 Q&As)
+ * with two embedded image placeholders.
+ */
+export function PatinaContent() {
   return (
-    <div className="min-h-screen md:h-screen md:overflow-hidden bg-background-primary flex flex-col">
-      <div className="mx-auto w-full max-w-[1680px] px-4 md:px-5 pt-8 flex flex-col md:flex-1 md:min-h-0">
-        {/* Header is desktop-only on use-case pages — mobile shows the use
-            case as a full-bleed overlay with just a back button. */}
-        <div className="hidden md:block">
-          <Header breakpoint="desktop" activeNavHref="/" activeProjectHref="/patina" />
-        </div>
-
-        {/* Mobile flow — full-bleed overlay: back button on top, then hero, then article */}
-        <main className="md:hidden flex flex-col gap-8">
-          <BackButton href="/work" ariaLabel="Back to Work" />
-          <HeroImage />
-          <Article />
-        </main>
-
-        {/* Desktop flow — two columns, each scrolls independently */}
-        <main className="hidden md:grid md:grid-cols-[370px_1fr] md:gap-12 md:flex-1 md:min-h-0 md:mt-12">
-          <div
-            className="
-              flex flex-col gap-8
-              h-full overflow-y-auto pr-2 pb-8
-              [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-            "
-          >
-            <ProjectsSection />
-          </div>
-          <div
-            className="
-              flex flex-col gap-12
-              h-full overflow-y-auto pb-8
-              [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-            "
-          >
-            <HeroImage />
-            <Article />
-          </div>
-        </main>
-      </div>
-    </div>
+    <>
+      <HeroImage />
+      <Article />
+    </>
   );
 }
