@@ -1,59 +1,189 @@
-import { UseCase, type UseCaseConfig } from './UseCase';
+import Image from 'next/image';
+import { QAItem } from '../../src/components/QAItem/QAItem';
+import { ExternalLink } from '../../src/components/ExternalLink/ExternalLink';
 
-const CONFIG: UseCaseConfig = {
-  heroLabel: 'Herc Rentals',
-  descriptionBoldPrefix: 'Herc Rentals,',
-  description:
-    'a B2B platform for renting and managing heavy equipment across app and website. I was part of the product team as Senior Product Designer, owning key features including real time tracking and monitoring of heavy machinery in the field.',
-  metadata: [
-    'Role .......... Senior Product Designer',
-    'Scope ......... Mobile app, web platform, design system',
-    'Tools ......... Figma',
-    'Results ....... 25% quarterly growth in new digital accounts, 150% telematics adoption growth in 12 months',
-  ],
-  externalLink: { url: 'hercrentals.com' },
-  sections: [
-    {
-      type: 'qa',
-      question: 'What was your role in the team?',
-      answer:
-        'I was responsible for co-creating the visual direction, creating the design system from scratch, designing multiple features and prototyping entire flows, and presenting to very demanding stakeholders. My main area was the fleet management and tracking side of the platform, the most technically complex and demanding part of the product to design for.',
-    },
-    {
-      type: 'qa',
-      question: 'What are the conditions someone uses this in?',
-      answer:
-        'Outdoors on a construction site. Noise, flashing lights, people moving around. Not someone sitting at a desk with time to think. That context shaped every decision about clarity and speed.',
-    },
-    { type: 'screenshot', label: 'Screenshot 1' },
-    {
-      type: 'qa',
-      question: 'What was the hardest design challenge?',
-      answer:
-        "The map. Users could draw geofences around jobsites and if a machine crossed that boundary it would trigger an alert. On that same map you'd have trucks, excavators, lifts, all kinds of heavy machinery, each moving or stationary, all in real time. Each with its own state. Working, idle, not working, with a problem. At scale that's a map full of dots stacking on top of each other. We solved that with clustering. Zoomed out you see the cluster. Zoom in and the individual machines appear with their states. A colour and shape system that let operators understand their fleet at a glance without reading anything. A lot of iteration to get there.",
-    },
-    {
-      type: 'qa',
-      question: 'There were also construction lights in the product. What was that about?',
-      answer:
-        'Those big lights that illuminate construction sites at night. Users could schedule them to turn on and off at specific times. Sounds simple but the scheduling logic had a lot of complexity and there was a lot of back and forth getting the toggle behaviour and states right. One of the more interesting problems on the project.',
-    },
-    { type: 'brand', label: 'Brand visual' },
-    {
-      type: 'qa',
-      question: 'Construction and heavy machinery is not a beautiful world. How did you approach the UI?',
-      answer:
-        "We spent a lot of time benchmarking and finding the right balance between functionality and sleekness. The standards were high. The colour palette was carefully planned because we had a lot of semantic elements, machine states, alerts, statuses, that needed their own place in the system and had to be used consistently. In an interface full of information and data points, decoration for its own sake wasn't an option. Typography scale, colour, every element had to earn its place. The goal was to strip it back as much as possible while still feeling considered and premium. Unsexy subject matter, sleek product.",
-    },
-    {
-      type: 'qa',
-      question: '150% adoption growth in 12 months. Do you take credit for that?',
-      answer:
-        'Our team was very focused on delivering the best product possible and the client was extremely demanding. The sessions were intense. When you work that hard with that much pressure and the numbers move like that, you believe the design had something to do with it. I do.',
-    },
-  ],
+// EXPLORATION — promote color to a token before merging.
+const QA_CARD_BG = '#FFFCF7';
+
+const METADATA_LINES = [
+  'Role .......... Senior Product Designer',
+  'Scope ......... Mobile app, web platform, design system',
+  'Tools ......... Figma',
+  'Results ....... 25% quarterly growth in new digital accounts, 150% management fleet platform adoption growth in 12 months',
+];
+
+const QA = {
+  whatItSolves: {
+    question: 'Beyond just browsing for construction gear, what does this platform actually solve for the user?',
+    answer:
+      " It acts as a command center for managing every piece of equipment and job sites, giving you total control from anywhere. You have real-time analytics, equipment utilization data, diagnostics, alerts.\n\nIt’s a predictive management platform. It takes the chaos of a billion-dollar construction site and shrinks it down into an intuitive interface where you can rent, track, secure, and pay for everything easily.",
+  },
+  role: {
+    question: 'What was your role in the team?',
+    answer:
+      'I was responsible for co-creating the visual direction, building the design system from scratch, designing and prototyping entire flows for complex features. I also handled presentations to very demanding stakeholders. My main focus was the fleet management and tracking side of the platform, which was the most technically demanding and complex part of the product to design for.',
+  },
+  ui: {
+    question: 'Construction is not a beautiful world. How did you approach the UI?',
+    answer:
+      "We spent a lot of time finding the right balance between functionality and sleekness because the standards were high. But we also had to design for the reality of a job site. This platform was being used on tablets and phones in direct sunlight by stressed project managers.\n\nIn an interface full of data visualization, decoration wasn't an option. We stripped it back as much as possible while still feeling intentional and premium, obsessing over typography scale, color balance, and attention to detail to ensure everything was readable in those harsh conditions.",
+  },
+  hardest: {
+    question: 'What was the hardest design challenge?',
+    answer:
+      "It was the fleet management system, a live map where users track dozens of pieces of equipment on one screen. You’ve got trucks, lifts, and excavators, some moving, some idling, and some broken. On top of that we had geofences and job sites. It was a visual mess.\n\nI was responsible for building that visual language from scratch. I started with shapes for categories and specific colors for equipment status. I also built the clustering logic so the screen didn’t explode when you zoomed out, creating all the rules and logic so the devs could build something that actually worked. It took a lot of testing, but we turned a chaotic map into a precision tool.",
+  },
+  adoption: {
+    question: '150% adoption growth in 12 months. Do you take credit for that?',
+    answer:
+      "I believe our design played a fundamental part. When clients saw the demos, they could instantly see that the platform was easy to use and extremely useful. We didn't just build an platform, we built a tool that sales teams were proud to demo and customers actually wanted to use every day.",
+  },
+  differently: {
+    question: 'Looking back, what would you do differently?',
+    answer:
+      "If I were designing this today, I would push much harder for the system to be color-blind proof. At the time, I tried really hard to come up with a system that used both color and text so the user didn't have to rely only on color to understand machine states, but the client decided not to focus on that.",
+  },
 };
 
+function HeroImage() {
+  return (
+    <div className="shrink-0 w-full aspect-[1217/809] rounded-sm overflow-hidden bg-background-hero relative">
+      {/* EXPLORATION — interactive geofence prototype as iframe so its
+          GSAP/SVG/event handlers stay isolated from the React tree. */}
+      <iframe
+        src="/herc/hero-animation.html"
+        title="Herc Rentals — geofence prototype"
+        className="absolute inset-0 w-full h-full border-0"
+        loading="lazy"
+      />
+    </div>
+  );
+}
+
+function DescriptionMetadata() {
+  return (
+    <div
+      className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
+      style={{ backgroundColor: QA_CARD_BG }}
+    >
+      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-14 text-heading-lg text-text-primary">
+        Herc Rentals, a B2B platform for renting and managing heavy equipment across app and website. I was part of the product team as Senior Product Designer, owning key features including real time tracking and monitoring of heavy machinery in the field.
+      </p>
+      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-14 flex flex-col text-metadata-md text-text-primary">
+        {METADATA_LINES.map((line) => (
+          <span
+            key={line}
+            className="whitespace-pre-wrap pl-[16ch] [text-indent:-16ch]"
+          >
+            {line}
+          </span>
+        ))}
+        <ExternalLink url="hercrentals.com" className="mt-10 @[768px]:mt-4" />
+      </div>
+    </div>
+  );
+}
+
+function QACard({ question, answer }: { question: string; answer: string }) {
+  return (
+    <div
+      className="rounded-sm p-8 @[1100px]:p-14 flex items-center"
+      style={{ backgroundColor: QA_CARD_BG }}
+    >
+      <QAItem question={question} answer={answer} size="lg" />
+    </div>
+  );
+}
+
+/** Full-width image whose height is driven by aspect-ratio. */
+function FlatImage({
+  src,
+  alt,
+  aspect,
+}: {
+  src: string;
+  alt: string;
+  aspect: string;
+}) {
+  return (
+    <div className={`w-full ${aspect} relative rounded-sm overflow-hidden`}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(min-width: 768px) 1217px, 100vw"
+        className="object-cover"
+      />
+    </div>
+  );
+}
+
+/** In-section image that stretches to fill its grid cell. */
+function FillImage({
+  src,
+  alt,
+  aspect,
+}: {
+  src: string;
+  alt: string;
+  aspect: string;
+}) {
+  return (
+    <div className={`w-full h-full ${aspect} relative rounded-sm overflow-hidden`}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(min-width: 768px) 605px, 100vw"
+        className="object-cover"
+      />
+    </div>
+  );
+}
+
+/**
+ * Herc Rentals use-case content rendered in the right column when
+ * `?project=herc-rentals`. Layout matches the Figma frame exactly.
+ */
 export function HercRentalsContent() {
-  return <UseCase config={CONFIG} />;
+  return (
+    <div className="@container flex flex-col gap-2">
+      <HeroImage />
+
+      <DescriptionMetadata />
+
+      {/* Section 1: phone card LEFT | two Q&As stacked RIGHT */}
+      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+        <FillImage src="/herc/phone-card.png" alt="Herc Rentals app — equipment list" aspect="aspect-[605/800]" />
+        <div className="grid grid-rows-2 gap-2 h-full">
+          <QACard {...QA.whatItSolves} />
+          <QACard {...QA.role} />
+        </div>
+      </section>
+
+      {/* Full-width fleet utilization dashboard */}
+      <FlatImage src="/herc/fleet-dashboard.png" alt="Fleet utilization dashboard" aspect="aspect-[1217/800]" />
+
+      {/* Section 2: 2x2 — Q&A + map / equipment phone + Q&A */}
+      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+        <div className="grid grid-rows-2 gap-2 h-full">
+          <QACard {...QA.ui} />
+          <FillImage src="/herc/map-pins.png" alt="Map view with equipment pins" aspect="aspect-[605/440]" />
+        </div>
+        <div className="grid grid-rows-2 gap-2 h-full">
+          <FillImage src="/herc/equipment-phone.png" alt="Herc Rentals app — equipment selected card" aspect="aspect-[605/440]" />
+          <QACard {...QA.hardest} />
+        </div>
+      </section>
+
+      {/* Section 3: phone with gradient LEFT | two Q&As stacked RIGHT */}
+      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+        <FillImage src="/herc/phone-gradient.png" alt="Herc Rentals app — phone mockup with brand gradient" aspect="aspect-[605/800]" />
+        <div className="grid grid-rows-2 gap-2 h-full">
+          <QACard {...QA.adoption} />
+          <QACard {...QA.differently} />
+        </div>
+      </section>
+    </div>
+  );
 }

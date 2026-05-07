@@ -47,14 +47,6 @@ const PROJECTS = [
   },
 ];
 
-function Heading() {
-  return (
-    <h1 className="text-heading-xl text-text-primary">
-      18 years designing and recently built an app, and an agentic design system.
-    </h1>
-  );
-}
-
 function ProjectsSection() {
   return (
     <section aria-label="Projects" className="flex flex-col gap-6">
@@ -90,7 +82,6 @@ function ProjectsSection() {
 export default function Home() {
   return (
     <>
-      <Heading />
       <div className="md:hidden flex flex-col gap-8">
         <HomeHero />
       </div>

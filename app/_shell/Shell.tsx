@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode, ComponentType } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation';
 import { Header } from '../../src/components/Header/Header';
 import { BackButton } from '../../src/components/BackButton/BackButton';
@@ -62,20 +62,62 @@ export function Shell({ children }: ShellProps) {
     rightColRef.current?.scrollTo({ top: 0 });
   }, [project]);
 
-  return (
-    <div className="min-h-screen md:h-screen md:overflow-hidden bg-background-primary flex flex-col">
-      <div className="mx-auto w-full max-w-[1680px] px-4 md:px-5 pt-8 flex flex-col md:flex-1 md:min-h-0">
-        {/* Desktop header — always shown on desktop. */}
-        <div className="hidden md:block">
-          <Header breakpoint="desktop" />
-        </div>
+  // Auto-hide header on scroll-down, reveal on scroll-up.
+  // Mobile uses window scroll; desktop tracks the right-column scroll
+  // (the primary scroll source for use-case content).
+  const [headerHidden, setHeaderHidden] = useState(false);
 
-        {/* Mobile header — hidden when the page is a project overlay. */}
-        {!showMobileOverlay && (
-          <div className="md:hidden">
-            <Header breakpoint="mobile" />
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = () => {
+      const current = window.scrollY;
+      if (Math.abs(current - last) < 5) return;
+      setHeaderHidden(current > last && current > 50);
+      last = current;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const el = rightColRef.current;
+    if (!el) return;
+    let last = el.scrollTop;
+    const onScroll = () => {
+      const current = el.scrollTop;
+      if (Math.abs(current - last) < 5) return;
+      setHeaderHidden(current > last && current > 50);
+      last = current;
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <div className="min-h-screen md:h-screen md:overflow-hidden bg-white flex flex-col">
+      <div className="mx-auto w-full px-4 md:px-0 flex flex-col md:flex-1 md:min-h-0">
+        {/* Header area — collapses to zero height on scroll-down so columns
+            extend to the top of the browser; reveals on scroll-up. The
+            grid-template-rows 1fr↔0fr trick gives a smooth height transition. */}
+        <div
+          className="grid transition-[grid-template-rows] duration-200 ease-out"
+          style={{ gridTemplateRows: headerHidden ? 'minmax(0,0fr)' : 'minmax(0,1fr)' }}
+          aria-hidden={headerHidden ? true : undefined}
+        >
+          <div className="overflow-hidden pt-6 md:px-20">
+            <div className="hidden md:block">
+              <Header breakpoint="desktop" />
+            </div>
+            {!showMobileOverlay && (
+              <div className="md:hidden">
+                <Header breakpoint="mobile" />
+              </div>
+            )}
+            {/* Spacer below header — collapses with the header on scroll
+                so columns reach the top edge. */}
+            <div className="h-6" />
           </div>
-        )}
+        </div>
 
         {/* Mobile flow */}
         {showMobileOverlay ? (
@@ -84,35 +126,57 @@ export function Shell({ children }: ShellProps) {
             <RightContent />
           </main>
         ) : (
-          <main className="md:hidden mt-12 flex flex-col gap-8">{children}</main>
+          <main className="md:hidden flex flex-col gap-8">{children}</main>
         )}
 
-        {/* Desktop flow — two columns, each scrolls independently. */}
-        <main
-          aria-label={pathname}
-          className="hidden md:grid md:grid-cols-[370px_1fr] md:gap-12 md:flex-1 md:min-h-0 md:mt-12"
-        >
-          <div
-            ref={leftColRef}
-            className="
-              flex flex-col gap-8
-              h-full overflow-y-auto pr-2 pb-8
-              [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-            "
+        {/* Desktop flow — two columns, each scrolls independently.
+            EXPLORATION: when a project is selected on home, render only
+            the project content centered (no left column) so it gets the
+            full viewport width. */}
+        {showMobileOverlay ? (
+          <main
+            aria-label={pathname}
+            className="hidden md:flex md:flex-col md:items-center md:flex-1 md:min-h-0"
           >
-            {children}
-          </div>
-          <div
-            ref={rightColRef}
-            className="
-              flex flex-col gap-12
-              h-full overflow-y-auto pb-8
-              [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-            "
+            <div
+              ref={rightColRef}
+              className="
+                w-full md:px-20
+                flex flex-col gap-12
+                h-full overflow-y-auto pb-8
+                [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+              "
+            >
+              <RightContent />
+            </div>
+          </main>
+        ) : (
+          <main
+            aria-label={pathname}
+            className="hidden md:grid md:grid-cols-[370px_1fr] md:gap-5 md:flex-1 md:min-h-0 md:px-20"
           >
-            <RightContent />
-          </div>
-        </main>
+            <div
+              ref={leftColRef}
+              className="
+                flex flex-col gap-8
+                h-full overflow-y-auto pb-8
+                [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+              "
+            >
+              {children}
+            </div>
+            <div
+              ref={rightColRef}
+              className="
+                flex flex-col gap-12
+                h-full overflow-y-auto pb-8
+                [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+              "
+            >
+              <RightContent />
+            </div>
+          </main>
+        )}
       </div>
     </div>
   );

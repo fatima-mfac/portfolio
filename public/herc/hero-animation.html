@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Herc pop animation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    font-family: system-ui, sans-serif;
+  }
+  .stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .map {
+    position: absolute;
+    inset: 0;
+    background-image: url('/herc/map.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+  }
+  .logo {
+    position: absolute;
+    top: 50%; left: 50%;
+    margin: -45px 0 0 -160px;
+    width: 320px;
+    opacity: 0;
+    z-index: 4;
+  }
+
+  .pin-group {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    margin: -13.5px 0 0 -13.5px;
+    height: 27px;
+    z-index: 2;
+  }
+  .pin {
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    flex-shrink: 0;
+    transform: scale(0);
+    position: relative;
+    z-index: 2;
+    box-sizing: border-box;
+  }
+  .pin-yellow { background: #FFB81C; }
+  .pin-blue   { background: #1F4FD9; }
+
+  .label {
+    background: #ffffff;
+    color: #111;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    padding: 6px 12px 6px 22px;
+    border-radius: 0 999px 999px 0;
+    margin-left: -16px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    transform: scale(0);
+    transform-origin: 0% 50%;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .draw-layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    cursor: crosshair;
+    pointer-events: all;
+  }
+  .draw-layer .freehand {
+    fill: none;
+    stroke: #1F4FD9;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .committed-shape {
+    fill: #1F4FD9;
+    fill-opacity: 0;
+    stroke: #1F4FD9;
+    stroke-width: 2.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .cursor-hint {
+    position: fixed;
+    top: 0; left: 0;
+    background: #111;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 999px;
+    z-index: 7;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    font-family: system-ui, -apple-system, sans-serif;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transform: translate(-9999px, -9999px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .cursor-hint.show { opacity: 1; }
+
+  .controls {
+    position: absolute;
+    top: 16px; right: 16px;
+    display: flex; gap: 8px;
+    z-index: 10;
+  }
+  .btn {
+    background: #ffffff;
+    color: #111;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: system-ui, sans-serif;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  }
+  .btn:hover { background: #f2f2f2; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="logo" id="logo">
+    <svg viewBox="0 0 320 90" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 22 32 Q 90 6, 175 24 Q 100 22, 22 36 Z" fill="#FFB81C"/>
+      <text x="22" y="68" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="44" fill="#ffffff">Herc</text>
+      <text x="128" y="68" font-family="Arial, sans-serif" font-weight="400" font-style="italic" font-size="44" fill="#ffffff">Rentals</text>
+      <text x="282" y="42" font-family="Arial, sans-serif" font-size="11" fill="#ffffff">&#174;</text>
+    </svg>
+  </div>
+
+  <div class="frame" id="frame">
+    <div class="map" id="map"></div>
+
+    <div class="pin-group" id="pin-blue" style="top: 20%; left: 30%;">
+      <div class="pin pin-blue"></div>
+      <div class="label">North Lot Geofence</div>
+    </div>
+
+    <div class="pin-group" id="pin-static-1" style="top: 28%; left: 40%;">
+      <div class="pin pin-yellow"></div>
+      <div class="label">South Lot Scissor</div>
+    </div>
+
+    <div class="pin-group" id="pin-vehicle-left" style="top: calc(46% + 15px); left: 8%;">
+      <div class="pin pin-yellow"></div>
+      <div class="label">Chevy Truck</div>
+    </div>
+
+    <div class="pin-group" id="pin-static-2" style="top: 30%; left: 55%;">
+      <div class="pin pin-yellow"></div>
+      <div class="label">North Lot Lift</div>
+    </div>
+
+    <div class="pin-group" id="pin-vehicle-bottom" style="top: calc(75% - 10px); left: 70%;">
+      <div class="pin pin-yellow"></div>
+      <div class="label">Big Boss Truck</div>
+    </div>
+
+    <div class="pin-group" id="pin-vehicle-bertha" style="top: 85%; left: 15%;">
+      <div class="pin pin-yellow"></div>
+      <div class="label">Old Bertha</div>
+    </div>
+
+    <div class="pin-group" id="pin-vehicle-yeller" style="top: 18%; left: 80%;">
+      <div class="pin pin-yellow"></div>
+      <div class="label">Lil' Yeller</div>
+    </div>
+
+    <div class="cursor-hint" id="cursor-hint">Draw a geofence</div>
+
+    <svg class="draw-layer" id="draw-layer" preserveAspectRatio="none">
+      <g id="committed-shapes"></g>
+      <path id="freehand-path" class="freehand" d=""/>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="clearShapes()">Clear shapes</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const PATHS = {
+    '#pin-vehicle-left': [
+      [8, 46], [60, 46], [60, 27], [75, 27], [75, 46], [8, 46]
+    ],
+    '#pin-vehicle-bottom': [
+      [70, 75], [55, 75], [55, 65], [45, 65], [45, 80], [70, 80], [70, 75]
+    ],
+    '#pin-vehicle-bertha': [
+      [15, 85], [38, 85], [38, 72], [15, 72], [15, 85]
+    ],
+    '#pin-vehicle-yeller': [
+      [80, 18], [94, 18], [94, 32], [78, 32], [78, 18], [80, 18]
+    ]
+  };
+  const SPEED = 18;
+
+  let masterTl;
+  let vehicleTimelines = new Map();
+  let committedShapes = [];
+  let trappedVehicles = new Set();
+
+  function buildVehicleTimeline(selector, path, startIdx = 0) {
+    const frame = document.getElementById('frame');
+    const w = frame.offsetWidth;
+    const h = frame.offsetHeight;
+    const start = path[0];
+    const tl = gsap.timeline({ repeat: -1 });
+
+    const closedPath = path[0][0] === path[path.length-1][0] && path[0][1] === path[path.length-1][1];
+    const waypoints = [];
+    for (let i = startIdx; i < path.length; i++) waypoints.push(path[i]);
+    const wrapFrom = closedPath ? 1 : 0;
+    for (let i = wrapFrom; i <= startIdx; i++) waypoints.push(path[i]);
+
+    const pauseAt = new Set();
+    if (waypoints.length > 2) {
+      pauseAt.add(2 + Math.floor(Math.random() * (waypoints.length - 2)));
+    }
+    for (let i = 2; i < waypoints.length; i++) {
+      if (Math.random() < 0.4) pauseAt.add(i);
+    }
+
+    for (let i = 1; i < waypoints.length; i++) {
+      const dxFromStart = (waypoints[i][0] - start[0]) / 100 * w;
+      const dyFromStart = (waypoints[i][1] - start[1]) / 100 * h;
+      const segDx = Math.abs((waypoints[i][0] - waypoints[i-1][0]) / 100 * w);
+      const segDy = Math.abs((waypoints[i][1] - waypoints[i-1][1]) / 100 * h);
+      const duration = (segDx + segDy) / SPEED;
+      const pause = pauseAt.has(i) ? '+=5' : undefined;
+      tl.to(selector, { x: dxFromStart, y: dyFromStart, duration, ease: 'none' }, pause);
+    }
+    return tl;
+  }
+
+  function killVehicles() {
+    vehicleTimelines.forEach(tl => tl.kill());
+    vehicleTimelines.clear();
+    trappedVehicles.clear();
+    gsap.set(Object.keys(PATHS), { x: 0, y: 0 });
+  }
+
+  function startVehicles() {
+    Object.entries(PATHS).forEach(([sel, path]) => {
+      vehicleTimelines.set(sel, buildVehicleTimeline(sel, path));
+    });
+  }
+
+  function build(rate) {
+    if (masterTl) masterTl.kill();
+    killVehicles();
+    document.getElementById('cursor-hint').classList.remove('show');
+    document.getElementById('committed-shapes').innerHTML = '';
+    committedShapes = [];
+    interactionReady = false;
+    hintRetired = false;
+
+    gsap.set('#logo', { opacity: 0 });
+    gsap.set('.pin', { scale: 0 });
+    gsap.set('.label', { scale: 0 });
+    gsap.set('#map', { opacity: 0 });
+
+    masterTl = gsap.timeline();
+    masterTl
+      .to('#logo', { opacity: 1, duration: 0.5, ease: 'power2.out' })
+      .to('#logo', { opacity: 0, duration: 0.3, ease: 'power2.in' }, '+=0.6')
+      .to('.pin', {
+        scale: 1, duration: 0.45, ease: 'back.out(2.6)',
+        stagger: { amount: 0.35, from: 'random' }
+      }, '-=0.05')
+      .add(() => startVehicles(), '+=0.3')
+      .to('#pin-vehicle-bottom .label', { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=3')
+      .to('#pin-static-2 .label',       { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=0.06')
+      .to('#pin-blue .label',           { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=0.45')
+      .to('#pin-static-1 .label',       { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=0.08')
+      .to('#pin-vehicle-left .label',   { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=0.5')
+      .to('#pin-vehicle-bertha .label', { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=0.4')
+      .to('#pin-vehicle-yeller .label', { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=0.07')
+      .to('#map', { opacity: 1, duration: 1.8, ease: 'power2.inOut' }, '+=0.6')
+      .add(() => { interactionReady = true; }, '<');
+
+    masterTl.timeScale(rate);
+  }
+
+  function play() { build(1); }
+
+  const drawLayer = document.getElementById('draw-layer');
+  const freehand = document.getElementById('freehand-path');
+  const committed = document.getElementById('committed-shapes');
+  const cursorHint = document.getElementById('cursor-hint');
+  let drawing = false;
+  let points = [];
+  let interactionReady = false;
+  let hintRetired = false;
+
+  function moveCursorHint(e) {
+    cursorHint.style.transform = `translate(${e.clientX + 8}px, ${e.clientY + 8}px)`;
+  }
+  function showCursorHintIfEligible() {
+    if (interactionReady && !hintRetired && !drawing) {
+      cursorHint.classList.add('show');
+    }
+  }
+  function hideCursorHint() {
+    cursorHint.classList.remove('show');
+  }
+
+  function getPoint(e) {
+    const rect = drawLayer.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return [t.clientX - rect.left, t.clientY - rect.top];
+  }
+
+  function startDraw(e) {
+    if (!interactionReady) return;
+    e.preventDefault();
+    drawing = true;
+    points = [getPoint(e)];
+    freehand.setAttribute('d', '');
+    hideCursorHint();
+  }
+
+  function moveDraw(e) {
+    if (!drawing && interactionReady && !hintRetired) {
+      moveCursorHint(e);
+      cursorHint.classList.add('show');
+    }
+    if (!drawing) return;
+    e.preventDefault();
+    points.push(getPoint(e));
+    const d = points.map(([x,y], i) => (i===0?'M':'L') + x + ' ' + y).join(' ');
+    freehand.setAttribute('d', d);
+  }
+
+  function endDraw(e) {
+    if (!drawing) return;
+    drawing = false;
+    if (points.length < 8) { freehand.setAttribute('d', ''); return; }
+    const shape = recognize(points);
+    fadeOutFreehand();
+    drawCleanShape(shape);
+    hintRetired = true;
+  }
+
+  drawLayer.addEventListener('mousedown', startDraw);
+  drawLayer.addEventListener('mousemove', moveDraw);
+  drawLayer.addEventListener('mouseup', endDraw);
+  drawLayer.addEventListener('mouseleave', (e) => { endDraw(e); hideCursorHint(); });
+  drawLayer.addEventListener('mouseenter', (e) => {
+    if (interactionReady) moveCursorHint(e);
+    showCursorHintIfEligible();
+  });
+  drawLayer.addEventListener('touchstart', startDraw, { passive: false });
+  drawLayer.addEventListener('touchmove', moveDraw, { passive: false });
+  drawLayer.addEventListener('touchend', endDraw);
+
+  function countSharpTurns(pts) {
+    const window = Math.max(3, Math.floor(pts.length / 40));
+    let count = 0;
+    let lastCornerIdx = -window * 3;
+    for (let i = window; i < pts.length - window; i++) {
+      const v1x = pts[i][0] - pts[i-window][0];
+      const v1y = pts[i][1] - pts[i-window][1];
+      const v2x = pts[i+window][0] - pts[i][0];
+      const v2y = pts[i+window][1] - pts[i][1];
+      const m1 = Math.hypot(v1x, v1y);
+      const m2 = Math.hypot(v2x, v2y);
+      if (m1 < 2 || m2 < 2) continue;
+      const cosA = (v1x*v2x + v1y*v2y) / (m1 * m2);
+      const angle = Math.acos(Math.max(-1, Math.min(1, cosA))) * 180 / Math.PI;
+      if (angle > 50 && i - lastCornerIdx > window * 2) {
+        count++;
+        lastCornerIdx = i;
+      }
+    }
+    return count;
+  }
+
+  function recognize(pts) {
+    let minX=Infinity, minY=Infinity, maxX=-Infinity, maxY=-Infinity;
+    for (const [x,y] of pts) {
+      if (x<minX) minX=x; if (y<minY) minY=y;
+      if (x>maxX) maxX=x; if (y>maxY) maxY=y;
+    }
+    const w = maxX-minX, h = maxY-minY;
+    const cx = (minX+maxX)/2, cy = (minY+maxY)/2;
+    const aspect = w / h;
+    const corners = countSharpTurns(pts);
+
+    if (corners >= 3) {
+      if (aspect > 0.82 && aspect < 1.22) {
+        const side = Math.max(w, h);
+        return { kind: 'square', x: cx - side/2, y: cy - side/2, w: side, h: side };
+      }
+      return { kind: 'rect', x: minX, y: minY, w, h };
+    }
+
+    const dists = pts.map(([x,y]) => Math.hypot(x-cx, y-cy));
+    const mean = dists.reduce((a,b)=>a+b,0) / dists.length;
+    const variance = dists.reduce((s,d)=>s+(d-mean)**2,0) / dists.length;
+    const cv = Math.sqrt(variance) / mean;
+
+    if (cv < 0.18 && aspect > 0.7 && aspect < 1.4) {
+      const r = (w + h) / 4;
+      return { kind: 'circle', cx, cy, r };
+    }
+
+    if (aspect > 0.82 && aspect < 1.22) {
+      const side = Math.max(w, h);
+      return { kind: 'square', x: cx - side/2, y: cy - side/2, w: side, h: side };
+    }
+    return { kind: 'rect', x: minX, y: minY, w, h };
+  }
+
+  function fadeOutFreehand() {
+    gsap.to(freehand, { opacity: 0, duration: 0.18, ease: 'power2.out',
+      onComplete: () => { freehand.setAttribute('d',''); freehand.style.opacity = 1; }
+    });
+  }
+
+  function drawCleanShape(s) {
+    const ns = 'http://www.w3.org/2000/svg';
+    let el, perimeter;
+    if (s.kind === 'circle') {
+      el = document.createElementNS(ns, 'circle');
+      el.setAttribute('cx', s.cx); el.setAttribute('cy', s.cy); el.setAttribute('r', s.r);
+      perimeter = 2 * Math.PI * s.r;
+    } else {
+      el = document.createElementNS(ns, 'rect');
+      el.setAttribute('x', s.x); el.setAttribute('y', s.y);
+      el.setAttribute('width', s.w); el.setAttribute('height', s.h);
+      perimeter = 2 * (s.w + s.h);
+    }
+    el.setAttribute('class', 'committed-shape');
+    el.style.strokeDasharray = perimeter;
+    el.style.strokeDashoffset = perimeter;
+    committed.appendChild(el);
+
+    gsap.to(el, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' });
+    gsap.to(el, { fillOpacity: 0.18, duration: 0.4, ease: 'power2.out', delay: 0.45 });
+
+    committedShapes.push(s);
+    setTimeout(() => checkAndTrapVehicles(s), 600);
+  }
+
+  function getVehicleCenter(selector) {
+    const el = document.querySelector(selector);
+    const elRect = el.getBoundingClientRect();
+    const frameRect = document.getElementById('frame').getBoundingClientRect();
+    return {
+      x: elRect.left + elRect.width / 2 - frameRect.left,
+      y: elRect.top + elRect.height / 2 - frameRect.top
+    };
+  }
+
+  function isInsideShape(p, s) {
+    if (s.kind === 'circle') {
+      return Math.hypot(p.x - s.cx, p.y - s.cy) < s.r;
+    }
+    return p.x >= s.x && p.x <= s.x + s.w && p.y >= s.y && p.y <= s.y + s.h;
+  }
+
+  function checkAndTrapVehicles(shape) {
+    Object.keys(PATHS).forEach(sel => {
+      if (trappedVehicles.has(sel)) return;
+      const center = getVehicleCenter(sel);
+      if (isInsideShape(center, shape)) trapVehicle(sel, shape, center);
+    });
+  }
+
+  function trapVehicle(selector, shape, currentCenter) {
+    trappedVehicles.add(selector);
+    const existing = vehicleTimelines.get(selector);
+    if (existing) existing.kill();
+
+    const margin = 18;
+    let leftBound, rightBound;
+    if (shape.kind === 'circle') {
+      const dy = currentCenter.y - shape.cy;
+      const halfChord = Math.sqrt(Math.max(0, shape.r ** 2 - dy ** 2));
+      leftBound = shape.cx - halfChord + margin;
+      rightBound = shape.cx + halfChord - margin;
+    } else {
+      leftBound = shape.x + margin;
+      rightBound = shape.x + shape.w - margin;
+    }
+
+    const el = document.querySelector(selector);
+    const baseLeft = el.offsetLeft;
+    const baseTop = el.offsetTop;
+    const leftX = leftBound - baseLeft;
+    const rightX = rightBound - baseLeft;
+    const yLockedTo = currentCenter.y - el.offsetHeight / 2 - baseTop;
+
+    const TRAP_SPEED = 14;
+    const distance = Math.abs(rightX - leftX);
+    const duration = Math.max(1.5, distance / TRAP_SPEED);
+
+    const currentX = gsap.getProperty(selector, 'x');
+    const farFirst = Math.abs(currentX - leftX) > Math.abs(currentX - rightX) ? leftX : rightX;
+    const otherEnd = farFirst === leftX ? rightX : leftX;
+    const partialDur = Math.abs(currentX - farFirst) / TRAP_SPEED;
+
+    const tl = gsap.timeline({ repeat: -1, yoyo: true });
+    tl.to(selector, { x: farFirst, y: yLockedTo, duration: Math.max(0.5, partialDur), ease: 'power1.inOut' })
+      .to(selector, { x: otherEnd, duration, ease: 'power1.inOut' });
+
+    vehicleTimelines.set(selector, tl);
+  }
+
+  function releaseVehicle(selector) {
+    const existing = vehicleTimelines.get(selector);
+    if (existing) existing.kill();
+    trappedVehicles.delete(selector);
+
+    const path = PATHS[selector];
+    const frame = document.getElementById('frame');
+    const w = frame.offsetWidth;
+    const h = frame.offsetHeight;
+    const start = path[0];
+
+    const currentX = gsap.getProperty(selector, 'x') || 0;
+    const currentY = gsap.getProperty(selector, 'y') || 0;
+    const currentXPct = (currentX / w) * 100 + start[0];
+    const currentYPct = (currentY / h) * 100 + start[1];
+
+    let closestIdx = 0;
+    let closestDistSq = Infinity;
+    for (let i = 0; i < path.length; i++) {
+      const dx = path[i][0] - currentXPct;
+      const dy = path[i][1] - currentYPct;
+      const d = dx*dx + dy*dy;
+      if (d < closestDistSq) { closestDistSq = d; closestIdx = i; }
+    }
+
+    const closestX = (path[closestIdx][0] - start[0]) / 100 * w;
+    const closestY = (path[closestIdx][1] - start[1]) / 100 * h;
+    const slideDx = Math.abs((path[closestIdx][0] - currentXPct) / 100 * w);
+    const slideDy = Math.abs((path[closestIdx][1] - currentYPct) / 100 * h);
+    const slideDur = Math.max(0.4, (slideDx + slideDy) / SPEED);
+
+    const slide = gsap.to(selector, {
+      x: closestX, y: closestY,
+      duration: slideDur, ease: 'power1.inOut',
+      onComplete: () => {
+        const loopTl = buildVehicleTimeline(selector, PATHS[selector], closestIdx);
+        vehicleTimelines.set(selector, loopTl);
+      }
+    });
+    vehicleTimelines.set(selector, slide);
+  }
+
+  function clearShapes() {
+    committed.innerHTML = '';
+    committedShapes = [];
+    hintRetired = false;
+    Array.from(trappedVehicles).forEach(sel => releaseVehicle(sel));
+  }
+
+  window.addEventListener('resize', () => {
+    if (vehicleTimelines.size) { killVehicles(); startVehicles(); }
+  });
+
+  play();
+</script>
+</body>
+</html>

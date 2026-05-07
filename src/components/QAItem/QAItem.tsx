@@ -14,7 +14,7 @@ interface QAItemProps {
 export function QAItem({ question, answer, size = 'sm', className }: QAItemProps) {
   const questionClass = size === 'lg' ? 'text-heading-lg' : 'text-body-lg-medium';
   const answerClass = size === 'lg' ? 'text-body-xl' : 'text-body-lg-book';
-  const gapClass = size === 'lg' ? 'gap-2' : 'gap-1';
+  const gapClass = size === 'lg' ? 'gap-4' : 'gap-1';
 
   const paragraphs = answer.split(/\n\n+/);
 

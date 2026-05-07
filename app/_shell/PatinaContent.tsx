@@ -1,6 +1,11 @@
 import Image from 'next/image';
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { ExternalLink } from '../../src/components/ExternalLink/ExternalLink';
+import { PatinaHeroAnimation } from './PatinaHeroAnimation';
+
+// EXPLORATION — promote colors to tokens before merging.
+// Cream background used inside Q&A cards; matches the article-container fill in Figma.
+const QA_CARD_BG = '#FFFCF7';
 
 const METADATA_LINES = [
   'Role .......... Solo design and vibe coding, end to end',
@@ -9,161 +14,213 @@ const METADATA_LINES = [
   'Published ..... April 2026',
 ];
 
-const QAS_TOP = [
-  {
+const QA = {
+  whyBuild: {
     question: 'Why did you build Patina?',
     answer:
       "I wanted to use my phone less, and I was tired of seeing other people get lost into a device. Other apps solve this through notifications or restrictions, but notifications are easy to ignore, we get too many to notice one more, and restrictions feel like punishment. So I thought about colour, something that changes gradually through the day so you notice it before you even unlock. Simple, quiet, no judgment. For people who want awareness, not discipline tools.",
   },
-  {
+  validate: {
     question: 'How did you validate the concept before starting?',
     answer:
-      "Before designing anything I spent one hour manually creating tinted versions of the same wallpaper and set up Android's automation tool to swap them at different times of day. Then I lived with it for two days. The colour shifts were noticeable and not annoying, so I decided it was worth building it, at least for myself, and it was a chance to experiment with vibe coding and ship a real product solo.",
+      "Before designing anything I spent one hour manually creating tinted versions of the same wallpaper and set up Android's automation tool to swap them at different times of day. Then I tried it for two days. The colour shifts were noticeable and not annoying, so I decided it was worth building it, at least for myself, and it was a chance to experiment with vibe coding and ship a real product solo.",
   },
-];
-
-const QAS_MID = [
-  {
+  impulse: {
     question: 'Can colour actually change an automatic impulse?',
     answer:
-      "Reaching for the phone is a deep habit that's difficult to break, which is why I chose colour, it carries meaning we don't have to learn. Yellow and red signal warning across cultures, so my bet was that something this embedded could hold meaning even after repeated exposure, when most signals lose their impact.\n\nFirst users said the colour made them pause before unlocking. Some put the phone down without checking, so the results are promising but I'm still measuring whether it holds up over time, and what could make the signal stronger.",
+      "Reaching for the phone is a deep habit that's difficult to break, which is why I chose colour, it carries meaning we don't have to learn. Yellow and red signal warning across cultures, so my bet was that something this embedded could hold meaning even after repeated exposure, when most signals lose their impact.\n\nFirst users said the colour made them pause before unlocking. Some put the phone down, so the results are promising but I'm still measuring whether it holds up over time, and what could make the signal stronger.",
   },
-  {
+  colourBlind: {
     question: 'What if you are colour blind?',
     answer:
-      "Yeah, I saw that limitation from the beginning and I tested the colours for colour blindness. They read differently but not differently enough to make the signal clear. I made the decision to design for most users first and ship. I'm working now on a solution for people with colour vision differences.",
+      "I thought about that limitation from the beginning and I tested the colours for colour blindness. They read differently but not differently enough to make the signal clear. I made the decision to design for most users first and ship. I'm working now on a solution for people with colour vision differences.",
   },
-  {
-    question: 'What almost made you give up?',
+  minimalist: {
+    question: 'The app experience is very minimalist. Why?',
     answer:
-      "The tint wasn't resetting overnight automatically. You had to open the app, which destroyed the core concept. The whole point was that it works silently in the background without you doing anything.\n\nI kept pushing with AI until we found the answer together. But that solution added some friction. So I had to make a decision: accept some friction at onboarding so the core concept could live. While testing with users I realised that tradeoff might cost me more than I thought. I iterated and I'm still measuring the results.",
+      "Every decision followed three rules: quiet, simple, no friction. Anything that didn't meet them was removed. Visually, the app had to feel warm, calm, and easy to use. The homepage reflects that: your daily screen time limit and active wallpaper are visible upfront, with no need to open a settings page.\n\nAt the same time, there's a subtle living element that shifts colour over time, mirroring the wallpaper. It's just colour and shape moving slowly, intended to create a calming effect and gently slow you down.",
   },
-];
-
-const QAS_BOTTOM = [
-  {
+  name: {
     question: 'Why the name Patina?',
     answer:
       "Patina is the layer that forms on materials over time. It's a process I hear about a lot in architecture. After a few ideas this one felt right immediately. Something that accumulates with use and time. That's exactly what the app does to your wallpaper.",
   },
-  {
-    question: 'The app experience is very minimalist. Did you ever feel the pull to add more?',
-    answer:
-      "Every decision followed three rules: quiet, simple, no friction. Anything that didn't meet them was removed. Visually, the app had to feel warm, calm, and easy to use. The homepage reflects that: your daily screen time limit and active wallpaper are visible upfront, with no need to open a settings page.\n\nAt the same time, there's a subtle living element that shifts colour over time, mirroring the wallpaper. It's just colour and shape moving slowly, intended to create a calming effect and gently slow you down.",
-  },
-  {
-    question: 'Why Figma first and not vibe design it from the start?',
-    answer:
-      "For me defining an identity is something very tactile. The most human part of a product. Seeing shapes and colours side by side, feeling how they interact with typography, testing voice through words. My process always starts with writing. The north star, what the product is and is not. After that I explore organically in Figma. It's faster than asking AI and much easier to compare. Sometimes you just need to change a colour. Two seconds in Figma. In AI it's a prompt, a wait, and a result you can't easily compare to what you had before.",
-  },
-  {
+  websiteIntro: {
     question:
       "The website intro has a completely different visual style from Patina's colour palette and vibe. Why?",
     answer:
       'I wanted to tell a story of a problem that meets a solution. So I thought about what visual environment could express the feeling of being trapped, of repetition with no control. Black and white felt right for that, it reinforces the heaviness of it. Then colour arrives as the solution. You snap out of the repetition and back into the real colourful world. That contrast is intentional.',
   },
-  {
+  giveUp: {
+    question: 'What almost made you give up?',
+    answer:
+      "The tint wasn't resetting overnight automatically. You had to open the app, which destroyed the core concept. The whole point was that it works silently in the background without you doing anything.\n\nI kept pushing with AI until we found the answer together. But that solution added some friction. So I had to make a decision: accept some friction at onboarding so the core concept could live.\n\nWhile testing with users I realised that tradeoff might cost me more than I thought. I iterated and I'm still measuring the results.",
+  },
+  next: {
     question: "What's the next version of Patina?",
     answer:
       "After gathering more feedback and analysing analytics, the next version focuses on three things. A 14-day free trial followed by a paid tier for continued use. A colour vision accessibility solution for users the current version doesn't serve well enough. And better instrumentation to actually measure whether the signal is changing behaviour, not just whether it's being noticed.",
   },
-];
+};
 
 function HeroImage() {
   return (
-    <div className="shrink-0 w-full aspect-[1217/809] rounded-md overflow-hidden bg-background-hero relative">
+    <div className="shrink-0 w-full aspect-[1217/809] rounded-sm overflow-hidden bg-background-hero relative">
+      <video
+        src="/patina/patina-hero-video.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster="/patina/hero.png"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+    </div>
+  );
+}
+
+function DescriptionMetadata() {
+  return (
+    <div
+      className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
+      style={{ backgroundColor: QA_CARD_BG }}
+    >
+      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-14 text-heading-lg text-text-primary">
+        Patina, a screen time awareness app that tints your wallpaper as you use your phone. I designed, vibe coded and shipped it. Solo human + AI, zero to one.
+      </p>
+      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-14 flex flex-col text-metadata-md text-text-primary">
+        {METADATA_LINES.map((line) => (
+          <span
+            key={line}
+            className="whitespace-pre-wrap pl-[16ch] [text-indent:-16ch]"
+          >
+            {line}
+          </span>
+        ))}
+        <ExternalLink url="patinascreen.com" className="mt-10 @[768px]:mt-4" />
+      </div>
+    </div>
+  );
+}
+
+function QACard({ question, answer }: { question: string; answer: string }) {
+  return (
+    <div
+      className="rounded-sm p-8 @[1100px]:p-14 flex items-center"
+      style={{ backgroundColor: QA_CARD_BG }}
+    >
+      <QAItem question={question} answer={answer} size="lg" />
+    </div>
+  );
+}
+
+function FlatImage({
+  src,
+  alt,
+  aspect,
+}: {
+  src: string;
+  alt: string;
+  aspect: string;
+}) {
+  return (
+    <div
+      className={`w-full ${aspect} relative rounded-sm overflow-hidden`}
+    >
       <Image
-        src="/patina-hero.png"
-        alt="Patina hero"
+        src={src}
+        alt={alt}
         fill
         sizes="(min-width: 768px) 1217px, 100vw"
         className="object-cover"
-        priority
       />
     </div>
   );
 }
 
-function ScreenshotImage() {
+/** In-section image that stretches to fill its grid cell. The source image
+ * is expected to include a safe-area margin around the focal point — that
+ * margin gets cropped at any cell aspect ratio while the focal point stays
+ * centered in view. */
+function FillImage({
+  src,
+  alt,
+  aspect,
+}: {
+  src: string;
+  alt: string;
+  /** Minimum aspect ratio so single-image rows still have a height. */
+  aspect: string;
+}) {
   return (
-    <div className="shrink-0 w-full aspect-[717/753] rounded-md bg-background-card flex items-center justify-center p-2 overflow-hidden">
+    <div className={`w-full h-full ${aspect} relative rounded-sm overflow-hidden`}>
       <Image
-        src="/patina-screenshot.png"
-        alt="Patina app screenshot"
-        width={301}
-        height={627}
-        className="h-full w-auto object-contain rounded-[28px] shadow-[0_0_64px_8px_rgba(81,61,28,0.10)]"
+        src={src}
+        alt={alt}
+        fill
+        sizes="(min-width: 768px) 605px, 100vw"
+        className="object-cover"
       />
     </div>
-  );
-}
-
-function PatinaBrandPlaceholder() {
-  return (
-    <div className="shrink-0 w-full aspect-[717/692] rounded-md bg-background-hero flex items-center justify-center">
-      <span className="text-heading-xl text-text-on-dark">patina</span>
-    </div>
-  );
-}
-
-function ArticleDescription() {
-  return (
-    <p className="text-heading-xl text-text-primary">
-      <span className="text-heading-xl-semibold">Patina,</span> a screen time awareness app
-      that tints your wallpaper as you use your phone. I designed, vibe coded and shipped
-      it. Created its brand identity, and website. Solo human + AI, zero to one.
-    </p>
-  );
-}
-
-function ArticleMetadata() {
-  return (
-    <div className="flex flex-col text-metadata-md text-text-primary">
-      {METADATA_LINES.map((line) => (
-        <span key={line} className="whitespace-pre">
-          {line}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function Article() {
-  return (
-    <article className="w-full max-w-[717px] mx-auto flex flex-col gap-12 pb-12">
-      <ArticleDescription />
-      <ArticleMetadata />
-      <ExternalLink url="patinascreen.com" />
-
-      {QAS_TOP.map((qa) => (
-        <QAItem key={qa.question} question={qa.question} answer={qa.answer} size="lg" />
-      ))}
-
-      <ScreenshotImage />
-
-      {QAS_MID.map((qa) => (
-        <QAItem key={qa.question} question={qa.question} answer={qa.answer} size="lg" />
-      ))}
-
-      <PatinaBrandPlaceholder />
-
-      {QAS_BOTTOM.map((qa) => (
-        <QAItem key={qa.question} question={qa.question} answer={qa.answer} size="lg" />
-      ))}
-    </article>
   );
 }
 
 /**
  * Patina use-case content rendered in the right column when `?project=patina`.
- * Hero image, article body (description + metadata + external link + 10 Q&As)
- * with two embedded image placeholders.
+ * EXPLORATION layout — bespoke 50/50 grid with flat-image visual blocks
+ * (mockups, brand panels, quote cards) interleaved with QACard text blocks.
  */
 export function PatinaContent() {
   return (
-    <>
+    <div className="@container flex flex-col gap-2">
       <HeroImage />
-      <Article />
-    </>
+
+      <DescriptionMetadata />
+
+      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+        <FillImage src="/patina/phone-card.png" alt="Patina app — wallpaper tints with screen time" aspect="aspect-[605/800]" />
+        <div className="grid grid-rows-2 gap-2 h-full">
+          <QACard {...QA.whyBuild} />
+          <QACard {...QA.validate} />
+        </div>
+      </section>
+
+      <PatinaHeroAnimation />
+
+      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+        <FillImage src="/patina/patina-logo.jpg" alt="Patina brand mark over warm gradient" aspect="aspect-[605/800]" />
+        <div className="grid grid-rows-2 gap-2 h-full">
+          <QACard {...QA.impulse} />
+          <QACard {...QA.colourBlind} />
+        </div>
+      </section>
+
+      <FlatImage src="/patina/three-phones.png" alt="Three Patina app screens" aspect="aspect-[1217/808]" />
+
+      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+        <FillImage src="/patina/patina-logo.jpg" alt="Patina brand mark over warm gradient" aspect="aspect-[605/800]" />
+        <div className="grid grid-rows-2 gap-2 h-full">
+          <QACard {...QA.minimalist} />
+          <QACard {...QA.name} />
+        </div>
+      </section>
+
+      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+        <div className="grid grid-rows-2 gap-2 h-full">
+          <FillImage src="/patina/quote-card-2.png" alt="Been living in your phone? quote card" aspect="aspect-[605/440]" />
+          <FillImage src="/patina/quote-card-3.png" alt="Been living in your phone? quote card" aspect="aspect-[605/440]" />
+        </div>
+        <div className="grid grid-rows-2 gap-2 h-full">
+          <QACard {...QA.websiteIntro} />
+          <FillImage src="/patina/quote-card-1.png" alt="Been living in your phone? quote card" aspect="aspect-[605/440]" />
+        </div>
+      </section>
+
+      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+        <QACard {...QA.giveUp} />
+        <QACard {...QA.next} />
+      </section>
+    </div>
   );
 }

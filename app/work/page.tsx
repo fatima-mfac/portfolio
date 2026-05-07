@@ -38,7 +38,7 @@ function WorkCard({ label, href }: WorkCardProps) {
 export default function WorkPage() {
   return (
     <div className="min-h-screen bg-background-primary flex flex-col">
-      <div className="mx-auto w-full max-w-[1680px] px-4 md:px-5 pt-8 flex flex-col">
+      <div className="mx-auto w-full px-4 md:px-5 pt-8 flex flex-col">
         {/* Desktop fallback header — /work isn't in the desktop nav, so
             "Index" stays active as the closest section. */}
         <div className="hidden md:block">
