@@ -6,6 +6,7 @@ import { useSearchParams, usePathname } from 'next/navigation';
 import { Header } from '../../src/components/Header/Header';
 import { BackButton } from '../../src/components/BackButton/BackButton';
 import { HomeHero } from './HomeHero';
+import { HomeStack } from './HomeStack';
 import { PatinaContent } from './PatinaContent';
 import { VodafoneContent } from './VodafoneContent';
 import { ZebraFinchContent } from './ZebraFinchContent';
@@ -46,6 +47,8 @@ export function Shell({ children }: ShellProps) {
 
   const RightContent = project && PROJECT_COMPONENTS[project] ? PROJECT_COMPONENTS[project] : HomeHero;
   const showMobileOverlay = pathname === '/' && Boolean(project);
+  // EXPLORATION (homepage v3) — scroll-locked card stack on `/` with no project.
+  const showHomeStack = pathname === '/' && !project;
 
   // Each column scrolls to top only when its own content changes:
   //   left column  → on pathname change (section nav: Index/About/Contact)
@@ -94,8 +97,8 @@ export function Shell({ children }: ShellProps) {
   }, []);
 
   return (
-    <div className="min-h-screen md:h-screen md:overflow-hidden bg-white flex flex-col">
-      <div className="mx-auto w-full px-4 md:px-0 flex flex-col md:flex-1 md:min-h-0">
+    <div className={`min-h-screen md:h-screen md:overflow-hidden flex flex-col ${showHomeStack ? '' : 'bg-white'}`}>
+      <div className="mx-auto w-full px-4 md:px-0 flex flex-col md:flex-1 md:min-h-0 relative">
         {/* Header area — collapses to zero height on scroll-down so columns
             extend to the top of the browser; reveals on scroll-up. The
             grid-template-rows 1fr↔0fr trick gives a smooth height transition. */}
@@ -104,7 +107,7 @@ export function Shell({ children }: ShellProps) {
           style={{ gridTemplateRows: headerHidden ? 'minmax(0,0fr)' : 'minmax(0,1fr)' }}
           aria-hidden={headerHidden ? true : undefined}
         >
-          <div className="overflow-hidden pt-6 md:px-20">
+          <div className="overflow-hidden pt-6 md:px-5">
             <div className="hidden md:block">
               <Header breakpoint="desktop" />
             </div>
@@ -119,21 +122,33 @@ export function Shell({ children }: ShellProps) {
           </div>
         </div>
 
-        {/* Mobile flow */}
-        {showMobileOverlay ? (
+        {/* Home stack — single main spanning mobile + desktop so only
+            ONE HomeStack instance mounts. The component handles its
+            own responsive layout internally. */}
+        {showHomeStack ? (
+          <main
+            aria-label={pathname}
+            className="flex-1 min-h-0 md:px-5"
+          >
+            <HomeStack />
+          </main>
+        ) : null}
+
+        {/* Mobile flow (non-home) */}
+        {!showHomeStack && (showMobileOverlay ? (
           <main className="md:hidden flex flex-col gap-8">
             <BackButton href="/work" ariaLabel="Back to Work" />
             <RightContent />
           </main>
         ) : (
           <main className="md:hidden flex flex-col gap-8">{children}</main>
-        )}
+        ))}
 
         {/* Desktop flow — two columns, each scrolls independently.
             EXPLORATION: when a project is selected on home, render only
             the project content centered (no left column) so it gets the
             full viewport width. */}
-        {showMobileOverlay ? (
+        {!showHomeStack && (showMobileOverlay ? (
           <main
             aria-label={pathname}
             className="hidden md:flex md:flex-col md:items-center md:flex-1 md:min-h-0"
@@ -176,7 +191,7 @@ export function Shell({ children }: ShellProps) {
               <RightContent />
             </div>
           </main>
-        )}
+        ))}
       </div>
     </div>
   );

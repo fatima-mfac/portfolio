@@ -15,8 +15,10 @@ export function ProjectCard({ title, role, href, className }: ProjectCardProps) 
 
   const content = (
     <>
-      <span className="text-label-sm text-text-secondary">{title}</span>
-      <span className="text-body-lg text-text-secondary transition-colors duration-fast ease-out group-hover:text-text-primary line-clamp-2">
+      <span className="text-label-sm text-text-primary transition-colors duration-fast ease-out group-hover:text-text-secondary">
+        {title}
+      </span>
+      <span className="text-body-lg text-text-primary transition-colors duration-fast ease-out group-hover:text-text-secondary line-clamp-2">
         {role}
       </span>
     </>

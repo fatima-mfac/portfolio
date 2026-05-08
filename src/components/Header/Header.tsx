@@ -32,14 +32,12 @@ interface HeaderProps {
 const DEFAULT_NAV_DESKTOP: NavLink[] = [
   { label: 'Index', href: '/' },
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
 ];
 
 const DEFAULT_NAV_MOBILE: NavLink[] = [
   { label: 'Index', href: '/' },
   { label: 'Work', href: '/work' },
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
 ];
 
 const DEFAULT_PROJECTS: ProjectLink[] = [
@@ -91,10 +89,18 @@ export function Header({
           href={homeHref}
           aria-label="Home"
           scroll={false}
+          onClick={() => {
+            // Logo acts as "reset to default" — clear restore state
+            // and dispatch an event so an already-mounted HomeStack
+            // (when the user is already on `/`) can also reset.
+            if (typeof window !== 'undefined') {
+              sessionStorage.removeItem('homeStack:focusedIdx');
+              window.dispatchEvent(new Event('homeStack:reset'));
+            }
+          }}
           className="flex items-center no-underline"
         >
-          {/* TODO: replace with <Logo /> atom once synced from Figma. */}
-          <div className="w-6 h-6 bg-text-primary rounded-[2px]" />
+          <img src="/logo.svg" alt="" className="w-8 h-auto" />
         </Link>
         <nav aria-label="Primary navigation" className="flex flex-row items-center gap-6">
           {baseNavLinks.map((link) => {
