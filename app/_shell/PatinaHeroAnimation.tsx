@@ -61,7 +61,7 @@ export function PatinaHeroAnimation() {
   }, []);
 
   return (
-    <div className="@container w-full aspect-[1217/800] relative rounded-sm overflow-hidden">
+    <div className="@container w-full aspect-[1217/700] relative rounded-sm overflow-hidden">
       <Image
         src="/patina/landscape.jpg"
         alt=""
@@ -103,7 +103,7 @@ export function PatinaHeroAnimation() {
               fontSize: 'clamp(2.5rem, 7.5cqi, 6rem)',
               letterSpacing: '-0.01em',
               textShadow: '0 2px 14px rgba(0,0,0,.25)',
-              transform: `translate(-50%, -50%) rotate(${l.angle}deg) translateY(-28cqi)`,
+              transform: `translate(-50%, -50%) rotate(${l.angle}deg) translateY(-24cqi)`,
             }}
           >
             {l.char}

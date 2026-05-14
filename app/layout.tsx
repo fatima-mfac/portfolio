@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Bungee_Shade } from "next/font/google";
 import "./globals.css";
 
 const blMelody = localFont({
@@ -10,6 +11,13 @@ const blMelody = localFont({
     { path: "../public/fonts/BLMelody-SemiBold.otf", weight: "600", style: "normal" },
   ],
   variable: "--font-bl-melody",
+  display: "swap",
+});
+
+const bungeeShade = Bungee_Shade({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-bungee-shade",
   display: "swap",
 });
 
@@ -24,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={blMelody.variable}>
+    <html lang="en" className={`${blMelody.variable} ${bungeeShade.variable}`}>
       <body>{children}</body>
     </html>
   );

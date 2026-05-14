@@ -70,15 +70,29 @@ export function Header({
     navLinks ?? (breakpoint === 'mobile' ? DEFAULT_NAV_MOBILE : DEFAULT_NAV_DESKTOP);
 
   // Left nav: navigate to link.href, preserving current ?project= so the
-  // right column keeps its selected project.
-  const buildNavHref = (href: string) => (project ? `${href}?project=${project}` : href);
+  // right column keeps its selected project. EXCEPT Index — it acts as a
+  // "reset to homepage" affordance, mirroring the logo.
+  const buildNavHref = (href: string) =>
+    href === '/' ? '/' : project ? `${href}?project=${project}` : href;
 
   // Right project nav: stay on the current pathname, change ?project=.
-  const buildProjectHref = (slug: string) => `${pathname}?project=${slug}`;
+  // EXCEPT /about — projects live on the homepage, so clicking a project
+  // from About jumps back to `/?project=…` (About is its own standalone page).
+  const buildProjectHref = (slug: string) =>
+    pathname === '/about' ? `/?project=${slug}` : `${pathname}?project=${slug}`;
 
   // The logo always returns to the bare homepage — it's the "reset" affordance,
   // dropping any selected project so the right column goes back to the default.
   const homeHref = logoHref;
+
+  // Shared reset handler — used by both the logo and the Index nav item,
+  // since both return to the bare homepage and need to reset HomeStack state.
+  const handleHomeReset = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('homeStack:focusedIdx');
+      window.dispatchEvent(new Event('homeStack:reset'));
+    }
+  };
 
   return (
     <header
@@ -89,15 +103,7 @@ export function Header({
           href={homeHref}
           aria-label="Home"
           scroll={false}
-          onClick={() => {
-            // Logo acts as "reset to default" — clear restore state
-            // and dispatch an event so an already-mounted HomeStack
-            // (when the user is already on `/`) can also reset.
-            if (typeof window !== 'undefined') {
-              sessionStorage.removeItem('homeStack:focusedIdx');
-              window.dispatchEvent(new Event('homeStack:reset'));
-            }
-          }}
+          onClick={handleHomeReset}
           className="flex items-center no-underline"
         >
           <img src="/logo.svg" alt="" className="w-8 h-auto" />
@@ -111,6 +117,7 @@ export function Header({
                 label={link.label}
                 href={buildNavHref(link.href)}
                 state={isActive ? 'active' : 'default'}
+                onClick={link.href === '/' ? handleHomeReset : undefined}
               />
             );
           })}

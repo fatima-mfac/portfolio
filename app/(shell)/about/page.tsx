@@ -1,97 +1,62 @@
-import { QAItem } from '../../../src/components/QAItem/QAItem';
-
-const HEADING = 'Fellow humans and AI, this is who I am.';
+// About — full-bleed hero composition.
+// Figma source: node 241:10213.
+// The six letters of FÁTIMA sit on a perfect circle around the page
+// center. The section is pinned to the viewport (position: fixed) so
+// the circle can use the FULL viewport height — not just the area
+// below the header — which lets the radius grow significantly while
+// keeping every letter fully visible at any resolution.
+// The header (rendered by Shell, z-10) stays on top of this layer so
+// the logo and nav remain clickable.
 
 const DESCRIPTION =
-  "When things are complex or unclear, I help bring them into focus. I'm comfortable making decisions and living with the trade offs, not just designing and prototyping screens. I question assumptions, follow the logic behind choices, and push past the first obvious answer. I believe that often what makes the difference is a mix of taste, judgment, and instinct.";
+  'Senior product designer, 18 years, most of it through consultancy on B2B and B2C products like Vodafone, PizzaHut, NOS, Herc Rentals, Pizza Hut, and Sonae.';
 
-const QAS = [
-  {
-    question: 'Why are you a designer?',
-    answer:
-      "I liked two things growing up: sports and drawing. Studying sports meant dealing with maths. Design didn't. That's how I ended up here.",
-  },
-  {
-    question: 'Was it the right call?',
-    answer: 'Being a designer or a personal trainer? I mean...',
-  },
-  {
-    question: 'Why did you quit consultancy after 18 years?',
-    answer:
-      "Always felt I was not using the full spectrum of what I could offer and I wanted the intimacy with a product that consultancy can't give you. I quit to take a break, travel and loosen my creativity muscle by painting, writing and reading.",
-  },
-  {
-    question: 'What do you want to do next?',
-    answer:
-      "Work on a great product, with people who don't waste each other's time and are humble. I want to be around curious people, especially the ones who are also curious about themselves.",
-  },
-  {
-    question: "What won't you do?",
-    answer:
-      "Roles where design is a service department, where you're expected to be just a doer, not a thinker. Working with teams that confuse confidence with ego.",
-  },
-  {
-    question: "What's it like to work with you?",
-    answer:
-      "People say it's easy, that I light things up. That I have good spirit, that I care about people and that I always push for the best outcome possible.",
-  },
-  {
-    question: 'What do you do that annoys people?',
-    answer:
-      'Sometimes I get too excited about possibilities and I push until the last second. I just need to check if there is a better answer just around the corner. For people who stick with good enough, I can feel a bit persistent.',
-  },
-  {
-    question: 'Explain your portfolio design formula.',
-    answer:
-      "I was thinking in first principles. How do you make someone understand who you are and how you think in five seconds? Most portfolios don't solve that problem, they show work but not thinking. No one has time to learn about the time when you made a design system with 100 components. So I made a formula to try to solve that.",
-  },
-  {
-    question: 'Did the formula work on this portfolio?',
-    answer:
-      "The formula is simple. Applying it is where the skill is. It has nuance, it's not mathematical.\n\nI'm testing it with real users like you. If you are reading this and want to give feedback I appreciate it.",
-  },
-  {
-    question: 'What do you think about AI?',
-    answer:
-      'I think AI is the best thing that could have happened to someone who loves learning, debating ideas, and building things. The perfect tool for restless minds. Worth the risk of extintion.',
-  },
-  {
-    question: 'Do you look like a designer?',
-    answer: 'No one would guess it. I own an Android phone.',
-  },
-  {
-    question: 'Then what do people assume you are?',
-    answer: "Usually something with authority: a manager, a lawyer, a cop. I'll take the cop, it's cool.",
-  },
-  {
-    question: 'What do you think about most?',
-    answer: "Usually something with authority: a manager, a lawyer, a cop. I'll take the cop, it's cool.",
-  },
+// Each letter's position on the ring is given by `angle` (degrees,
+// measured clockwise from 12 o'clock, so -90° = top, 0° = right, 90° =
+// bottom). `rotate` is the per-letter rotation taken from the Figma —
+// preserved verbatim so the scattered/falling feel of the original
+// composition survives the responsive re-layout.
+const LETTERS: Array<{ ch: string; angle: number; rotate: number }> = [
+  { ch: 'F', angle: -90, rotate:    0    },
+  { ch: 'Á', angle: -30, rotate:  54.88  },
+  { ch: 'T', angle:  30, rotate: 125.89  },
+  { ch: 'I', angle:  90, rotate:    0    },
+  { ch: 'M', angle: 150, rotate: -117.86 },
+  { ch: 'A', angle: 210, rotate: -63.95  },
 ];
 
-function AboutContent() {
+export default function AboutPage() {
   return (
-    <section aria-label="About" className="flex flex-col gap-12">
-      <div className="flex flex-col gap-3">
-        <h1 className="text-heading-xl text-text-primary">{HEADING}</h1>
-        <p className="text-body-lg-book text-text-primary">{DESCRIPTION}</p>
-      </div>
+    <section
+      aria-label="About"
+      // `--ring-radius` is a single value (perfect circle). It maxes
+      // out at whichever viewport axis is smaller, less ~60px to leave
+      // room for the letter itself:
+      //   • `min(45vw, calc(50dvh - 60px))` — the tightest of the two
+      //     halves of the viewport, minus a buffer
+      //   • clamped to [140, 460] so it stays sensible on tiny + huge
+      //     screens
+      style={{ ['--ring-radius' as string]: 'clamp(140px, min(45vw, calc(50dvh - 60px)), 460px)' }}
+      className="fixed inset-0 overflow-hidden bg-background-primary"
+    >
+      {LETTERS.map(({ ch, angle, rotate }) => (
+        <span
+          key={`${ch}-${angle}`}
+          aria-hidden="true"
+          className="absolute left-1/2 top-1/2 text-display-2xl text-text-on-dark select-none pointer-events-none"
+          style={{
+            transform: `translate(-50%, -50%) translate(calc(cos(${angle}deg) * var(--ring-radius)), calc(sin(${angle}deg) * var(--ring-radius))) rotate(${rotate}deg)`,
+          }}
+        >
+          {ch}
+        </span>
+      ))}
 
-      <ul className="flex flex-col gap-5 list-none p-0 m-0">
-        {QAS.map((qa, i) => (
-          <li key={i}>
-            <QAItem question={qa.question} answer={qa.answer} size="sm" />
-          </li>
-        ))}
-      </ul>
+      <div className="absolute inset-0 flex items-center justify-center px-6">
+        <p className="max-w-[600px] text-center text-heading-lg text-text-primary">
+          {DESCRIPTION}
+        </p>
+      </div>
     </section>
   );
-}
-
-/**
- * About — left column content. The shared (shell) layout wraps this in
- * the two-column shell.
- */
-export default function AboutPage() {
-  return <AboutContent />;
 }

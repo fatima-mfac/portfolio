@@ -1,11 +1,13 @@
 import Image from 'next/image';
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { ExternalLink } from '../../src/components/ExternalLink/ExternalLink';
+import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
 import { PatinaHeroAnimation } from './PatinaHeroAnimation';
+import { WallpaperScene } from './WallpaperScene';
 
 // EXPLORATION — promote colors to tokens before merging.
 // Cream background used inside Q&A cards; matches the article-container fill in Figma.
-const QA_CARD_BG = '#FFFCF7';
+const QA_CARD_BG = '#FFF9EF';
 
 const METADATA_LINES = [
   'Role .......... Solo design and vibe coding, end to end',
@@ -65,7 +67,7 @@ const QA = {
 
 function HeroImage() {
   return (
-    <div className="shrink-0 w-full aspect-[1217/809] rounded-sm overflow-hidden bg-background-hero relative">
+    <div className="shrink-0 w-full h-[calc(100dvh-80px)] rounded-sm overflow-hidden bg-background-hero relative">
       <video
         src="/patina/patina-hero-video.mp4"
         autoPlay
@@ -86,10 +88,10 @@ function DescriptionMetadata() {
       className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
       style={{ backgroundColor: QA_CARD_BG }}
     >
-      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-14 text-heading-lg text-text-primary">
-        Patina, a screen time awareness app that tints your wallpaper as you use your phone. I designed, vibe coded and shipped it. Solo human + AI, zero to one.
+      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-secondary">
+        <span className="text-heading-lg">Patina,</span> a screen time awareness app that tints your wallpaper as you use your phone. I designed, vibe coded and shipped it. Solo human + AI, zero to one.
       </p>
-      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-14 flex flex-col text-metadata-md text-text-primary">
+      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col text-metadata-md text-text-secondary">
         {METADATA_LINES.map((line) => (
           <span
             key={line}
@@ -107,7 +109,7 @@ function DescriptionMetadata() {
 function QACard({ question, answer }: { question: string; answer: string }) {
   return (
     <div
-      className="rounded-sm p-8 @[1100px]:p-14 flex items-center"
+      className="rounded-sm p-8 @[1100px]:p-20 flex items-center"
       style={{ backgroundColor: QA_CARD_BG }}
     >
       <QAItem question={question} answer={answer} size="lg" />
@@ -142,26 +144,97 @@ function FlatImage({
 /** In-section image that stretches to fill its grid cell. The source image
  * is expected to include a safe-area margin around the focal point — that
  * margin gets cropped at any cell aspect ratio while the focal point stays
- * centered in view. */
+ * centered in view. `zoom` scales the image inside the container; the
+ * overflow stays cropped by the wrapper's `overflow-hidden`. */
 function FillImage({
   src,
   alt,
   aspect,
+  zoom = 1,
 }: {
   src: string;
   alt: string;
   /** Minimum aspect ratio so single-image rows still have a height. */
   aspect: string;
+  /** Visual zoom factor (1 = fit, 1.2 = 20% bigger, etc.). */
+  zoom?: number;
 }) {
+  // Instead of CSS-scaling the rasterized image (which blurs), we
+  // wrap it in an oversized div so Next/Image renders at that larger
+  // native size. The outer container crops via overflow-hidden; the
+  // source comes from Next at the right resolution. Quality 92 is a
+  // quiet upgrade from the default 75 for these focal-point shots.
+  const targetWidth = Math.ceil(605 * zoom);
+  const overflowPct = (zoom - 1) * 100;
   return (
     <div className={`w-full h-full ${aspect} relative rounded-sm overflow-hidden`}>
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes="(min-width: 768px) 605px, 100vw"
-        className="object-cover"
-      />
+      <div
+        className="absolute"
+        style={
+          zoom === 1
+            ? { inset: 0 }
+            : {
+                width: `${zoom * 100}%`,
+                height: `${zoom * 100}%`,
+                left: `${-overflowPct / 2}%`,
+                top: `${-overflowPct / 2}%`,
+              }
+        }
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={`(min-width: 768px) ${targetWidth}px, 100vw`}
+          quality={92}
+          className="object-cover"
+        />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Phone-card slot: the phone is centered with at least 300px of padding
+ * inside the cell so it floats in cream. The skin.png is the visible
+ * phone frame; the main-video plays inside that frame's screen area.
+ */
+function PhoneVideoCard() {
+  return (
+    <div
+      className="w-full h-full rounded-sm relative flex items-center justify-center"
+      style={{ backgroundColor: QA_CARD_BG, padding: '150px', minHeight: '900px' }}
+    >
+      <div className="relative h-full aspect-[640/1386]" style={{ transform: 'scale(1.15)' }}>
+        {/* Video sits inside the phone's screen area. The skin.png has
+            a transparent middle, so the video shows through. Inset
+            percentages are eyeballed to the skin's screen cut-out — tune
+            if the video pokes out of the bezel. */}
+        <video
+          src="/patina/main-video.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="absolute object-cover"
+          style={{
+            top: 'calc(3% - 20px)',
+            bottom: 'calc(3% + 20px)',
+            left: 'calc(5% - 13px)',
+            right: 'calc(5% + 13px)',
+            borderRadius: '8%',
+            transform: 'scale(0.95)',
+          }}
+        />
+        <Image
+          src="/patina/skin.png"
+          alt="Patina app frame"
+          fill
+          sizes="640px"
+          className="object-contain pointer-events-none"
+        />
+      </div>
     </div>
   );
 }
@@ -174,53 +247,69 @@ function FillImage({
 export function PatinaContent() {
   return (
     <div className="@container flex flex-col gap-2">
-      <HeroImage />
+      <RevealOnScroll offset={16} duration={900}>
+        <HeroImage />
+      </RevealOnScroll>
 
-      <DescriptionMetadata />
+      <RevealOnScroll>
+        <DescriptionMetadata />
+      </RevealOnScroll>
 
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <FillImage src="/patina/phone-card.png" alt="Patina app — wallpaper tints with screen time" aspect="aspect-[605/800]" />
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <QACard {...QA.whyBuild} />
-          <QACard {...QA.validate} />
-        </div>
-      </section>
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <PhoneVideoCard />
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <QACard {...QA.whyBuild} />
+            <QACard {...QA.validate} />
+          </div>
+        </section>
+      </RevealOnScroll>
 
-      <PatinaHeroAnimation />
+      <RevealOnScroll>
+        <PatinaHeroAnimation />
+      </RevealOnScroll>
 
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <FillImage src="/patina/patina-logo.jpg" alt="Patina brand mark over warm gradient" aspect="aspect-[605/800]" />
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <QACard {...QA.impulse} />
-          <QACard {...QA.colourBlind} />
-        </div>
-      </section>
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <QACard {...QA.impulse} />
+            <QACard {...QA.colourBlind} />
+          </div>
+          <FillImage src="/patina/patina-logo.jpg" alt="Patina brand mark over warm gradient" aspect="aspect-[605/750]" zoom={1.2} />
+        </section>
+      </RevealOnScroll>
 
-      <FlatImage src="/patina/three-phones.png" alt="Three Patina app screens" aspect="aspect-[1217/808]" />
+      <RevealOnScroll>
+        <WallpaperScene />
+      </RevealOnScroll>
 
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <FillImage src="/patina/patina-logo.jpg" alt="Patina brand mark over warm gradient" aspect="aspect-[605/800]" />
-        <div className="grid grid-rows-2 gap-2 h-full">
+      {/* Row 1 — two Q&As side by side */}
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
           <QACard {...QA.minimalist} />
           <QACard {...QA.name} />
-        </div>
-      </section>
+        </section>
+      </RevealOnScroll>
 
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <FillImage src="/patina/quote-card-2.png" alt="Been living in your phone? quote card" aspect="aspect-[605/440]" />
-          <FillImage src="/patina/quote-card-3.png" alt="Been living in your phone? quote card" aspect="aspect-[605/440]" />
-        </div>
-        <div className="grid grid-rows-2 gap-2 h-full">
+      {/* Row 2 — "Been living…" image on the left, websiteIntro Q&A on the right */}
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <FillImage src="/patina/quote-card-2.png" alt="Been living inside your phone? quote" aspect="aspect-[605/440]" />
           <QACard {...QA.websiteIntro} />
-          <FillImage src="/patina/quote-card-1.png" alt="Been living in your phone? quote card" aspect="aspect-[605/440]" />
-        </div>
-      </section>
+        </section>
+      </RevealOnScroll>
 
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <QACard {...QA.giveUp} />
-        <QACard {...QA.next} />
-      </section>
+      {/* Rows 3–4 — two Q&As stacked on the left, landing.png spans both
+          on the right */}
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <QACard {...QA.giveUp} />
+            <QACard {...QA.next} />
+          </div>
+          <FillImage src="/patina/landing.png" alt="Patina landing-page preview" aspect="aspect-[605/750]" />
+        </section>
+      </RevealOnScroll>
     </div>
   );
 }

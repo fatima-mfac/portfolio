@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { ExternalLink } from '../../src/components/ExternalLink/ExternalLink';
+import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
 
 // EXPLORATION — promote color to a token before merging.
 const QA_CARD_BG = '#FFFCF7';
@@ -47,7 +48,7 @@ const QA = {
 
 function HeroImage() {
   return (
-    <div className="shrink-0 w-full aspect-[1217/809] rounded-sm overflow-hidden bg-background-hero relative">
+    <div className="shrink-0 w-full h-[calc(100dvh-80px)] rounded-sm overflow-hidden bg-background-hero relative">
       {/* EXPLORATION — interactive geofence prototype as iframe so its
           GSAP/SVG/event handlers stay isolated from the React tree. */}
       <iframe
@@ -66,10 +67,10 @@ function DescriptionMetadata() {
       className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
       style={{ backgroundColor: QA_CARD_BG }}
     >
-      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-14 text-heading-lg text-text-primary">
-        Herc Rentals, a B2B platform for renting and managing heavy equipment across app and website. I was part of the product team as Senior Product Designer, owning key features including real time tracking and monitoring of heavy machinery in the field.
+      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-secondary">
+        <span className="text-heading-lg">Herc Rentals,</span> a B2B platform for renting and managing heavy equipment across app and website. I was part of the product team as Senior Product Designer, owning key features including real time tracking and monitoring of heavy machinery in the field.
       </p>
-      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-14 flex flex-col text-metadata-md text-text-primary">
+      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col text-metadata-md text-text-secondary">
         {METADATA_LINES.map((line) => (
           <span
             key={line}
@@ -87,7 +88,7 @@ function DescriptionMetadata() {
 function QACard({ question, answer }: { question: string; answer: string }) {
   return (
     <div
-      className="rounded-sm p-8 @[1100px]:p-14 flex items-center"
+      className="rounded-sm p-8 @[1100px]:p-20 flex items-center"
       style={{ backgroundColor: QA_CARD_BG }}
     >
       <QAItem question={question} answer={answer} size="lg" />
@@ -148,42 +149,54 @@ function FillImage({
 export function HercRentalsContent() {
   return (
     <div className="@container flex flex-col gap-2">
-      <HeroImage />
+      <RevealOnScroll offset={16} duration={900}>
+        <HeroImage />
+      </RevealOnScroll>
 
-      <DescriptionMetadata />
+      <RevealOnScroll>
+        <DescriptionMetadata />
+      </RevealOnScroll>
 
       {/* Section 1: phone card LEFT | two Q&As stacked RIGHT */}
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <FillImage src="/herc/phone-card.png" alt="Herc Rentals app — equipment list" aspect="aspect-[605/800]" />
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <QACard {...QA.whatItSolves} />
-          <QACard {...QA.role} />
-        </div>
-      </section>
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <FillImage src="/herc/phone-card.png" alt="Herc Rentals app — equipment list" aspect="aspect-[605/750]" />
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <QACard {...QA.whatItSolves} />
+            <QACard {...QA.role} />
+          </div>
+        </section>
+      </RevealOnScroll>
 
       {/* Full-width fleet utilization dashboard */}
-      <FlatImage src="/herc/fleet-dashboard.png" alt="Fleet utilization dashboard" aspect="aspect-[1217/800]" />
+      <RevealOnScroll>
+        <FlatImage src="/herc/fleet-dashboard.png" alt="Fleet utilization dashboard" aspect="aspect-[1217/800]" />
+      </RevealOnScroll>
 
       {/* Section 2: 2x2 — Q&A + map / equipment phone + Q&A */}
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <QACard {...QA.ui} />
-          <FillImage src="/herc/map-pins.png" alt="Map view with equipment pins" aspect="aspect-[605/440]" />
-        </div>
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <FillImage src="/herc/equipment-phone.png" alt="Herc Rentals app — equipment selected card" aspect="aspect-[605/440]" />
-          <QACard {...QA.hardest} />
-        </div>
-      </section>
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <QACard {...QA.ui} />
+            <FillImage src="/herc/map-pins.png" alt="Map view with equipment pins" aspect="aspect-[605/440]" />
+          </div>
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <FillImage src="/herc/equipment-phone.png" alt="Herc Rentals app — equipment selected card" aspect="aspect-[605/440]" />
+            <QACard {...QA.hardest} />
+          </div>
+        </section>
+      </RevealOnScroll>
 
       {/* Section 3: phone with gradient LEFT | two Q&As stacked RIGHT */}
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <FillImage src="/herc/phone-gradient.png" alt="Herc Rentals app — phone mockup with brand gradient" aspect="aspect-[605/800]" />
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <QACard {...QA.adoption} />
-          <QACard {...QA.differently} />
-        </div>
-      </section>
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <FillImage src="/herc/phone-gradient.png" alt="Herc Rentals app — phone mockup with brand gradient" aspect="aspect-[605/750]" />
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <QACard {...QA.adoption} />
+            <QACard {...QA.differently} />
+          </div>
+        </section>
+      </RevealOnScroll>
     </div>
   );
 }

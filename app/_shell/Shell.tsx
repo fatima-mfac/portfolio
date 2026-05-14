@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation';
 import { Header } from '../../src/components/Header/Header';
 import { BackButton } from '../../src/components/BackButton/BackButton';
+import { Screensaver } from '../../src/components/Screensaver/Screensaver';
 import { HomeHero } from './HomeHero';
 import { HomeStack } from './HomeStack';
 import { PatinaContent } from './PatinaContent';
@@ -49,6 +50,9 @@ export function Shell({ children }: ShellProps) {
   const showMobileOverlay = pathname === '/' && Boolean(project);
   // EXPLORATION (homepage v3) — scroll-locked card stack on `/` with no project.
   const showHomeStack = pathname === '/' && !project;
+  // About is a full-bleed single-page composition — the two-column shell
+  // doesn't apply. ?project= is ignored on this route.
+  const isAbout = pathname === '/about';
 
   // Each column scrolls to top only when its own content changes:
   //   left column  → on pathname change (section nav: Index/About/Contact)
@@ -69,6 +73,16 @@ export function Shell({ children }: ShellProps) {
   // Mobile uses window scroll; desktop tracks the right-column scroll
   // (the primary scroll source for use-case content).
   const [headerHidden, setHeaderHidden] = useState(false);
+
+  // First-paint entrance — header drops in from above + fades in,
+  // matching the card-slide easing. Held until the homepage headline
+  // motion finishes (~delay 0.35s + duration 0.5s + per-word stagger),
+  // so the sequence reads: headline reveals → header + cards arrive.
+  const [headerEntered, setHeaderEntered] = useState(false);
+  useEffect(() => {
+    const id = window.setTimeout(() => setHeaderEntered(true), 1100);
+    return () => window.clearTimeout(id);
+  }, []);
 
   useEffect(() => {
     let last = window.scrollY;
@@ -97,14 +111,23 @@ export function Shell({ children }: ShellProps) {
   }, []);
 
   return (
-    <div className={`min-h-screen md:h-screen md:overflow-hidden flex flex-col ${showHomeStack ? '' : 'bg-white'}`}>
+    <>
+    <Screensaver />
+    <div className={`min-h-screen md:h-screen md:overflow-hidden flex flex-col ${showHomeStack || isAbout ? '' : 'bg-white'}`}>
       <div className="mx-auto w-full px-4 md:px-0 flex flex-col md:flex-1 md:min-h-0 relative">
         {/* Header area — collapses to zero height on scroll-down so columns
             extend to the top of the browser; reveals on scroll-up. The
             grid-template-rows 1fr↔0fr trick gives a smooth height transition. */}
         <div
-          className="grid transition-[grid-template-rows] duration-200 ease-out"
-          style={{ gridTemplateRows: headerHidden ? 'minmax(0,0fr)' : 'minmax(0,1fr)' }}
+          className="grid relative z-10"
+          style={{
+            gridTemplateRows: headerHidden ? 'minmax(0,0fr)' : 'minmax(0,1fr)',
+            transform: headerEntered ? 'translateY(0)' : 'translateY(-16px)',
+            opacity: headerEntered ? 1 : 0,
+            transition:
+              'grid-template-rows 200ms ease-out, opacity 600ms ease-out, transform 600ms cubic-bezier(.2,.8,.2,1)',
+            willChange: 'opacity, transform',
+          }}
           aria-hidden={headerHidden ? true : undefined}
         >
           <div className="overflow-hidden pt-6 md:px-5">
@@ -134,8 +157,19 @@ export function Shell({ children }: ShellProps) {
           </main>
         ) : null}
 
-        {/* Mobile flow (non-home) */}
-        {!showHomeStack && (showMobileOverlay ? (
+        {/* About — full-bleed single-page composition. The page owns the
+            entire main area (no two-column shell, no right column). */}
+        {isAbout ? (
+          <main
+            aria-label={pathname}
+            className="flex-1 min-h-0 md:px-5"
+          >
+            {children}
+          </main>
+        ) : null}
+
+        {/* Mobile flow (non-home, non-about) */}
+        {!showHomeStack && !isAbout && (showMobileOverlay ? (
           <main className="md:hidden flex flex-col gap-8">
             <BackButton href="/work" ariaLabel="Back to Work" />
             <RightContent />
@@ -148,7 +182,7 @@ export function Shell({ children }: ShellProps) {
             EXPLORATION: when a project is selected on home, render only
             the project content centered (no left column) so it gets the
             full viewport width. */}
-        {!showHomeStack && (showMobileOverlay ? (
+        {!showHomeStack && !isAbout && (showMobileOverlay ? (
           <main
             aria-label={pathname}
             className="hidden md:flex md:flex-col md:items-center md:flex-1 md:min-h-0"
@@ -194,5 +228,6 @@ export function Shell({ children }: ShellProps) {
         ))}
       </div>
     </div>
+    </>
   );
 }

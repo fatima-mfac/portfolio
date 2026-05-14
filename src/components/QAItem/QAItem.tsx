@@ -22,7 +22,7 @@ export function QAItem({ question, answer, size = 'sm', className }: QAItemProps
     <div className={`flex flex-col w-full ${gapClass} ${className ?? ''}`}>
       <p className={`${questionClass} text-text-primary`}>{question}</p>
       {paragraphs.map((paragraph, i) => (
-        <p key={i} className={`${answerClass} text-text-primary`}>
+        <p key={i} className={`${answerClass} text-text-secondary`}>
           {paragraph}
         </p>
       ))}

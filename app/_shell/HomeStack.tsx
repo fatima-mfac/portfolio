@@ -43,106 +43,135 @@ type Card = {
   bg: string;
 };
 
-// EXPLORATION — copy/imagery placeholder; iterate with Fatima.
 const CARDS: Card[] = [
   {
     id: 'intro',
     project: 'patina',
     label: 'FATIMA CUNHA',
-    description: 'After 18 years in agency and consultancy, I quit to explore, build an app, and an agentic design system.',
-    image: '/patina/phone-card.png',
+    description: "I like to improve products. Lately I've been building my own app and an agentic design system.",
+    image: '/patina/home1.png',
     categories: ['Product Thinking', 'AI Native'],
-    bg: '#F0F0F5',
+    bg: '#F0F1FA',
   },
   {
-    id: 'patina-1',
-    project: 'patina',
-    label: 'APP PATINA',
-    description: 'I built an app to make us put our phone down. I had the idea, designed it, built it and shipped it.',
-    image: '/patina/phone-card.png',
-    categories: ['Product Thinking', 'AI Native'],
-    bg: '#F0F0F5',
-  },
-  {
-    id: 'patina-2',
-    project: 'patina',
-    label: 'APP PATINA',
-    description: 'Took on the challenge of changing two of the most persistent human behaviours. Still measuring if it works.',
-    image: '/patina/phone-card.png',
-    categories: ['Product Thinking'],
-    bg: '#F0F0F5',
-  },
-  {
-    id: 'herc-1',
-    project: 'herc-rentals',
-    label: 'APP HERC RENTALS',
-    description: 'Created a visual system to represent different equipment, with multiple states on a map.',
-    image: '/herc/phone-card.png',
-    categories: ['Visual Craft', 'Complex Systems'],
-    bg: '#F0F0F5',
-  },
-  {
-    id: 'vodafone-1',
-    project: 'vodafone',
-    label: 'VODAFONE',
-    description: 'Took on the challenge of changing two of the most persistent human behaviours. Still measuring if it works.',
-    image: '/vodafone/phone-networks.png',
-    categories: ['Complex Systems'],
-    bg: '#F0F0F5',
-  },
-  {
-    id: 'zebra-1',
+    id: 'zebra-future',
     project: 'zebra-finch',
     label: 'ZEBRA FINCH',
-    description: 'I built an app to make us put our phone down. I had the idea, designed it, built it and shipped it. Solo, end to end.',
-    image: '/patina/phone-card.png',
-    categories: ['Product Thinking', 'Visual Craft'],
-    bg: '#F0F0F5',
+    description:
+      "The future of design isn't designing interfaces. It's designing the conditions under which interfaces get built correctly. I built the proof of concept.",
+    image: '/zebra-finch/diagram.svg',
+    categories: ['Product Thinking'],
+    bg: '#F0F1FA',
   },
   {
-    id: 'patina-3',
+    id: 'patina-app',
     project: 'patina',
     label: 'APP PATINA',
-    description: 'Took on the challenge of changing two of the most persistent human behaviours. Still measuring if it works.',
-    image: '/patina/phone-card.png',
-    categories: ['Visual Craft'],
-    bg: '#F0F0F5',
+    description:
+      'I built an app to make you put your phone down. I had the idea, designed it, built it and shipped it. Solo.',
+    image: '/patina/home1.png',
+    categories: ['AI Native'],
+    bg: '#F0F1FA',
   },
   {
-    id: 'herc-2',
+    id: 'zebra-pipeline',
+    project: 'zebra-finch',
+    label: 'ZEBRA FINTCH',
+    description:
+      'Built a working agentic pipeline where the AI generates interfaces using only the design system. No hallucinations.',
+    image: '/zebra-finch/diagram.svg',
+    categories: ['AI Native'],
+    bg: '#F0F1FA',
+  },
+  {
+    id: 'herc-fleet',
+    project: 'herc-rentals',
+    label: 'HERC RENTALS',
+    description:
+      'Designed a B2B real time fleet management platform that led to 150% growth in 12 months.',
+    image: '/herc/home1.png',
+    categories: ['Complex Systems'],
+    bg: '#F0F1FA',
+  },
+  {
+    id: 'patina-behaviour',
+    project: 'patina',
+    label: 'APP PATINA',
+    description:
+      'Took on the challenge of interrupting one of the most automatic human behaviours.',
+    image: '/patina/home1.png',
+    categories: ['Product Thinking'],
+    bg: '#F0F1FA',
+  },
+  {
+    id: 'vodafone-technical',
+    project: 'vodafone',
+    label: 'APP VODAFONE',
+    description:
+      'Making a deeply technical concept feel clear to someone who just wants their Wi-Fi to work.',
+    image: '/vodafone/home1.png',
+    categories: ['Complex Systems'],
+    bg: '#F0F1FA',
+  },
+  {
+    id: 'herc-visual',
     project: 'herc-rentals',
     label: 'APP HERC RENTALS',
-    description: 'Created a visual system to represent different equipment, with multiple states on a map.',
-    image: '/herc/phone-gradient.png',
-    categories: ['Visual Craft', 'Complex Systems'],
-    bg: '#F0F0F5',
+    description:
+      'Created a visual system to represent different equipment, their location and states, in real time.',
+    image: '/herc/home1.png',
+    categories: ['Complex Systems'],
+    bg: '#F0F1FA',
   },
   {
-    id: 'vodafone-2',
+    id: 'zebra-guardrails',
+    project: 'zebra-finch',
+    label: 'ZEBRA FINCH',
+    description:
+      'Created procedures and approval gates to stop an AI agent from breaking the design system it was supposed to follow.',
+    image: '/zebra-finch/diagram.svg',
+    categories: ['Complex Systems'],
+    bg: '#F0F1FA',
+  },
+  {
+    id: 'patina-analytics',
+    project: 'patina',
+    label: 'APP PATINA',
+    description:
+      'Set up analytics to measure if a colour seen for two seconds changes what you do next.',
+    image: '/patina/home1.png',
+    categories: ['Product Thinking'],
+    bg: '#F0F1FA',
+  },
+  {
+    id: 'vodafone-research',
     project: 'vodafone',
     label: 'VODAFONE',
-    description: 'Making a deeply technical concept feel safe and obvious to someone who just wants their Wi-Fi to work.',
-    image: '/vodafone/phone-qr.png',
-    categories: ['Product Thinking', 'Complex Systems'],
-    bg: '#F0F0F5',
+    description:
+      'Partnered with research to define what to test and how. Was present in every user testing session to see how users reacted to what I designed.',
+    image: '/vodafone/home1.png',
+    categories: ['Product Thinking'],
+    bg: '#F0F1FA',
   },
   {
-    id: 'patina-4',
-    project: 'patina',
-    label: 'APP PATINA',
-    description: 'I built an app to make us put our phone down. I had the idea, designed it, built it and shipped it.',
-    image: '/patina/phone-card.png',
-    categories: ['Product Thinking', 'AI Native'],
-    bg: '#F0F0F5',
-  },
-  {
-    id: 'herc-3',
-    project: 'herc-rentals',
-    label: 'APP HERC RENTALS',
-    description: 'Created a visual system to represent different equipment, with multiple states on a map.',
-    image: '/herc/equipment-phone.png',
+    id: 'vodafone-locale',
+    project: 'vodafone',
+    label: 'APP VODAFONE',
+    description:
+      'Designed for a product that behaves differently depending on where you are in the world.',
+    image: '/vodafone/home1.png',
     categories: ['Complex Systems'],
-    bg: '#F0F0F5',
+    bg: '#F0F1FA',
+  },
+  {
+    id: 'portfolio',
+    project: 'zebra-finch',
+    label: 'THIS PORTFOLIO',
+    description:
+      'Vibe coded this portfolio using my agentic design system pipeline.',
+    image: '/zebra-finch/diagram.svg',
+    categories: ['AI Native'],
+    bg: '#F0F1FA',
   },
 ];
 
@@ -152,7 +181,7 @@ const BIG_H_FALLBACK = 240;
 const GAP = 8;
 // Larger gap between the focused hero and the adjacent small cards
 // (above and below) — so the big copy reads as a distinct moment.
-const FOCUS_GAP = 40;
+const FOCUS_GAP = 56;
 const SMALL_STEP = SMALL_H + GAP;
 const FOCUS_Y_RATIO = 0.32;
 const SLOTS_ABOVE = 3;
@@ -162,10 +191,46 @@ const SLOTS_BELOW = 4;
 // "APP PATINA" then sits above the filters.
 // Equals label line-height (22px) + mt-2 gap (8px).
 const FOCUS_LABEL_OFFSET = 30;
-const WHEEL_THROTTLE_MS = 380;
+const WHEEL_THROTTLE_MS = 140;
+// Wheel/trackpad accumulator — every WHEEL_DELTA_PER_CARD pixels of
+// scroll input maps to one card advance. Lets fast scrolls chain
+// multiple advances while slow scrolls still snap one at a time.
+const WHEEL_DELTA_PER_CARD = 70;
+// Touch-swipe pixel threshold per card advance (separate from wheel
+// because touch deltas are raw finger pixels — much smaller than the
+// amplified deltaY a trackpad/mousewheel reports).
+const TOUCH_DELTA_PER_CARD = 30;
+// Extra vertical drop applied to the cards-below stack on the very first
+// page visit (intro card, no user scroll yet). Pushes the deck near the
+// bottom of the viewport so the big headline gets a clean reveal moment.
+// First scroll consumes this offset (cards animate up) before any focus
+// change happens.
+const INTRO_LOWER_RATIO = 0.24;
 
 function clamp(v: number, min: number, max: number) {
   return Math.max(min, Math.min(max, v));
+}
+
+/** Inline version of the word-span structure — useful when you need to
+ *  drop word-by-word animatable text into the middle of a paragraph
+ *  (e.g. the intro card has highlighted phrases that wrap around
+ *  SplitWords-produced words). */
+function InlineWords({ text }: { text: string }) {
+  const words = text.split(/\s+/).filter(Boolean);
+  return (
+    <>
+      {words.map((word, i) => (
+        <Fragment key={i}>
+          <span className="word-wrap" style={{ display: 'inline-block' }}>
+            <span className="word" style={{ display: 'inline-block' }}>
+              {word}
+            </span>
+          </span>
+          {i < words.length - 1 ? ' ' : null}
+        </Fragment>
+      ))}
+    </>
+  );
 }
 
 /** Renders text as a sequence of word spans (`.word` inside `.word-wrap`)
@@ -179,22 +244,9 @@ function SplitWords({
   className?: string;
   style?: React.CSSProperties;
 }) {
-  const words = text.split(/\s+/).filter(Boolean);
   return (
     <div className={className} style={style}>
-      {words.map((word, i) => (
-        <Fragment key={i}>
-          <span
-            className="word-wrap"
-            style={{ display: 'inline-block' }}
-          >
-            <span className="word" style={{ display: 'inline-block' }}>
-              {word}
-            </span>
-          </span>
-          {i < words.length - 1 ? ' ' : null}
-        </Fragment>
-      ))}
+      <InlineWords text={text} />
     </div>
   );
 }
@@ -246,13 +298,39 @@ function FocusedContent({
   );
 
   if (isStatic) {
+    // The intro card has two highlighted phrases ("app", "agentic design
+    // system") that turn hero-coloured on hover. We render the heading
+    // manually here (instead of via SplitWords) so the highlight spans
+    // can wrap multiple words and react as a single group.
+    const highlightClass =
+      'transition-colors duration-fast ease-out hover:text-[var(--color-background-hero)] cursor-default';
     return (
       <div
         ref={refEl as React.RefObject<HTMLDivElement | null>}
         className="block max-w-[940px]"
       >
         {labelEl}
-        {headingEl}
+        <p
+          className="mt-2 font-medium text-text-primary"
+          style={{
+            fontSize: headingFont,
+            lineHeight: headingLine,
+            letterSpacing: '-2px',
+          }}
+        >
+          <InlineWords text="I like to improve products. Lately I've been building my own" />
+          {' '}
+          <span className={highlightClass}>
+            <InlineWords text="app" />
+          </span>
+          {' '}
+          <InlineWords text="and an" />
+          {' '}
+          <span className={highlightClass}>
+            <InlineWords text="agentic design system" />
+          </span>
+          .
+        </p>
       </div>
     );
   }
@@ -261,7 +339,7 @@ function FocusedContent({
     <Link
       ref={refEl as React.RefObject<HTMLAnchorElement | null>}
       href={`/?project=${card.project}`}
-      className="block max-w-[940px] group"
+      className="block max-w-[940px] group focus:outline-none focus-visible:outline-none"
     >
       {labelEl}
       {headingEl}
@@ -272,6 +350,30 @@ function FocusedContent({
 export function HomeStack() {
   const [filter, setFilter] = useState<Category | null>(null);
   const [focusedIdx, setFocusedIdx] = useState(0);
+  // Initial "cards parked low" state — true on first visit; consumed by
+  // the first scroll/touch/keydown gesture (cards animate up, no focus
+  // change). See INTRO_LOWER_RATIO.
+  const [cardsLowered, setCardsLowered] = useState(true);
+  // Mirror of cardsLowered for use inside the scroll effect's closure.
+  const cardsLoweredRef = useRef(true);
+  // Headline-block opacity for the mount intro. Holds at 0 (entire block
+  // hidden including underlines/period) for a beat, then fades to 1 in
+  // sync with the GSAP per-word slide-up. Driven by React state so it
+  // survives strict-mode effect reruns (unlike a chained GSAP tween).
+  const [headlineRevealed, setHeadlineRevealed] = useState(false);
+  useEffect(() => {
+    const id = window.setTimeout(() => setHeadlineRevealed(true), 350);
+    return () => window.clearTimeout(id);
+  }, []);
+  // Pre-mount state used for the entrance: each parked card starts shifted
+  // down + transparent, then fades into place with a small stagger. Held
+  // until the homepage headline motion finishes so the sequence reads:
+  // headline reveals → header + cards arrive.
+  const [cardsEntered, setCardsEntered] = useState(false);
+  useEffect(() => {
+    const id = window.setTimeout(() => setCardsEntered(true), 1100);
+    return () => window.clearTimeout(id);
+  }, []);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerH, setContainerH] = useState(800);
   // Measured height of the focused (entering) content — drives the position
@@ -281,7 +383,12 @@ export function HomeStack() {
   const lastInputRef = useRef(0);
 
   const filteredCards = useMemo(
-    () => (filter ? CARDS.filter((c) => c.categories.includes(filter)) : CARDS),
+    // When a filter is active, drop the intro card so the headline only
+    // appears in the default unfiltered view.
+    () =>
+      filter
+        ? CARDS.filter((c) => c.id !== 'intro' && c.categories.includes(filter))
+        : CARDS,
     [filter],
   );
 
@@ -329,6 +436,11 @@ export function HomeStack() {
       setFocusedIdx(idx);
       prevFocusedCardRef.current = CARDS[idx];
       prevFocusedIdxRef.current = idx;
+      // Returning user — skip the parked-low intro moment.
+      if (idx > 0) {
+        setCardsLowered(false);
+        cardsLoweredRef.current = false;
+      }
     }
   }, []);
 
@@ -339,6 +451,8 @@ export function HomeStack() {
     if (typeof window === 'undefined') return;
     const onReset = () => {
       setFocusedIdx(0);
+      setCardsLowered(true);
+      cardsLoweredRef.current = true;
       prevFocusedCardRef.current = null;
       prevFocusedIdxRef.current = 0;
       setLeavingCard(null);
@@ -355,6 +469,8 @@ export function HomeStack() {
   // overwriting any restored value back to zero.
   const setFocusedIdxAndPersist = (next: number) => {
     setFocusedIdx(next);
+    setCardsLowered(false);
+    cardsLoweredRef.current = false;
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('homeStack:focusedIdx', String(next));
     }
@@ -370,7 +486,11 @@ export function HomeStack() {
     return () => obs.disconnect();
   }, []);
 
-  const focused = filteredCards[focusedIdx];
+  // Clamp focusedIdx to filteredCards' range — if a filter change leaves
+  // the previously-focused index out of bounds (before the reset effect
+  // fires), fall back to the first card so downstream code never crashes
+  // on an undefined `focused`.
+  const focused = filteredCards[focusedIdx] ?? filteredCards[0];
 
   // Measure the entering focused content so cards below sit exactly
   // FOCUS_GAP below it.
@@ -395,25 +515,23 @@ export function HomeStack() {
     prevFocusedCardRef.current = focused;
     prevFocusedIdxRef.current = focusedIdx;
     if (!prev) {
-      // Mount — animate entering words with the forward direction
-      // (same motion as scrolling down would produce). Whisper-subtle.
-      const enteringEls = [enteringRef.current, enteringRefMobile.current].filter(Boolean) as HTMLAnchorElement[];
+      // Mount — per-word entering motion (same as inter-card switching).
+      // Wrapper opacity is controlled via headlineRevealed React state so
+      // the whole block (including underlines + trailing period) holds
+      // fully transparent during the pre-roll, even though GSAP only
+      // animates the words.
+      const enteringEls = [enteringRef.current, enteringRefMobile.current].filter(Boolean) as HTMLElement[];
       if (enteringEls.length === 0) return;
       const words = enteringEls.flatMap((el) => Array.from(el.querySelectorAll<HTMLElement>('.word')));
       gsap.fromTo(
         words,
+        { willChange: 'transform, opacity', yPercent: 16, opacity: 0 },
         {
-          willChange: 'transform, opacity',
-          transformOrigin: '0% 50%',
-          yPercent: 8,
-          opacity: 0,
-        },
-        {
-          duration: 0.35,
+          duration: 0.5,
           ease: 'power2.out',
           yPercent: 0,
           opacity: 1,
-          stagger: { each: 0.007, from: 'start' },
+          stagger: { each: 0.012, from: 'start' },
         },
       );
       return;
@@ -483,15 +601,32 @@ export function HomeStack() {
     };
   }, [leavingCard, focused, direction]);
 
-  // Scroll-jack with snap-to-card behaviour.
+  // Scroll-jack with accumulator-based snap. Wheel/touch deltas
+  // accumulate; every WHEEL_DELTA_PER_CARD / TOUCH_DELTA_PER_CARD pixels
+  // triggers one focus advance. A short throttle still gates how fast
+  // back-to-back advances can fire so the per-card transition stays
+  // readable. Net effect: slow scroll → one card at a time; fast scroll
+  // → multiple cards chain naturally without feeling stuck.
   useEffect(() => {
     const max = filteredCards.length - 1;
     let touchY = 0;
+    let wheelAccum = 0;
+    let touchAccum = 0;
 
-    const advance = (dir: 1 | -1) => {
+    /** Returns true if the advance fired (i.e. wasn't throttled). */
+    const advance = (dir: 1 | -1): boolean => {
       const now = performance.now();
-      if (now - lastInputRef.current < WHEEL_THROTTLE_MS) return;
+      if (now - lastInputRef.current < WHEEL_THROTTLE_MS) return false;
       lastInputRef.current = now;
+      // First downward gesture lifts the parked cards; only the next
+      // begins switching focus. Upward gestures while parked are no-ops.
+      if (cardsLoweredRef.current) {
+        if (dir === 1) {
+          setCardsLowered(false);
+          cardsLoweredRef.current = false;
+        }
+        return true;
+      }
       setFocusedIdx((i) => {
         const next = clamp(i + dir, 0, max);
         if (typeof window !== 'undefined') {
@@ -499,22 +634,62 @@ export function HomeStack() {
         }
         return next;
       });
+      return true;
     };
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      if (Math.abs(e.deltaY) < 5) return;
-      advance(e.deltaY > 0 ? 1 : -1);
+      wheelAccum += e.deltaY;
+      // Cards-parked-low → first downward gesture only LIFTS the cards.
+      // We consume one advance, reset the accumulator, and bail so the
+      // same gesture doesn't immediately roll into a card switch.
+      if (cardsLoweredRef.current) {
+        if (wheelAccum >= WHEEL_DELTA_PER_CARD) {
+          advance(1);
+          wheelAccum = 0;
+        } else if (wheelAccum < 0) {
+          // Don't accumulate upward delta while parked — we're at the top.
+          wheelAccum = 0;
+        }
+        return;
+      }
+      // Drain the accumulator one threshold at a time. Stop early if
+      // throttled — leftover delta carries into the next event so fast
+      // scrolls still feel responsive instead of dropping input.
+      while (Math.abs(wheelAccum) >= WHEEL_DELTA_PER_CARD) {
+        const dir = wheelAccum > 0 ? 1 : -1;
+        if (!advance(dir)) break;
+        wheelAccum -= dir * WHEEL_DELTA_PER_CARD;
+        // Clamp so a single huge delta can't queue dozens of advances.
+        if (Math.abs(wheelAccum) > WHEEL_DELTA_PER_CARD * 3) {
+          wheelAccum = dir * WHEEL_DELTA_PER_CARD * 3;
+        }
+      }
     };
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0].clientY;
+      touchAccum = 0;
     };
     const onTouchMove = (e: TouchEvent) => {
       e.preventDefault();
       const dy = touchY - e.touches[0].clientY;
-      if (Math.abs(dy) < 24) return;
-      advance(dy > 0 ? 1 : -1);
       touchY = e.touches[0].clientY;
+      touchAccum += dy;
+      // Same parked-low rule as wheel: first gesture only lifts.
+      if (cardsLoweredRef.current) {
+        if (touchAccum >= TOUCH_DELTA_PER_CARD) {
+          advance(1);
+          touchAccum = 0;
+        } else if (touchAccum < 0) {
+          touchAccum = 0;
+        }
+        return;
+      }
+      while (Math.abs(touchAccum) >= TOUCH_DELTA_PER_CARD) {
+        const dir = touchAccum > 0 ? 1 : -1;
+        if (!advance(dir)) break;
+        touchAccum -= dir * TOUCH_DELTA_PER_CARD;
+      }
     };
     const onKey = (e: KeyboardEvent) => {
       if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
@@ -539,6 +714,7 @@ export function HomeStack() {
   }, [filteredCards.length]);
 
   const focusY = containerH * FOCUS_Y_RATIO;
+  const introLower = cardsLowered ? containerH * INTRO_LOWER_RATIO : 0;
 
   const slotY = (offset: number): number => {
     // Focused content's box top is shifted up by FOCUS_LABEL_OFFSET so
@@ -552,7 +728,8 @@ export function HomeStack() {
       return focusedTop - k * SMALL_H - FOCUS_GAP - (k - 1) * GAP;
     }
     // Cards below: 1 sits FOCUS_GAP below the focused content's bottom.
-    return focusedTop + focusedH + FOCUS_GAP + (offset - 1) * SMALL_STEP;
+    // While in the parked-low intro state, push the whole below-stack down.
+    return focusedTop + focusedH + FOCUS_GAP + (offset - 1) * SMALL_STEP + introLower;
   };
 
   // Render a windowed slice of the deck (with one card of buffer at each
@@ -582,22 +759,42 @@ export function HomeStack() {
       <div className="lg:hidden flex flex-col px-4 pt-2 gap-4 h-full">
         {/* Filter chips — single horizontal line with horizontal scroll. */}
         <div className="flex flex-row flex-nowrap gap-3 overflow-x-auto -mx-4 px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {CATEGORIES.map((cat) => {
+          {CATEGORIES.map((cat, i) => {
             const active = filter === cat;
             return (
-              <FilterTag
+              <span
                 key={cat}
-                label={cat}
-                state={active ? 'active' : 'default'}
-                onClick={() => setFilter(active ? null : cat)}
-                className="shrink-0 whitespace-nowrap"
-              />
+                className="inline-block shrink-0"
+                style={{
+                  opacity: cardsLowered ? 0 : 1,
+                  transform: cardsLowered ? 'translateX(-8px)' : 'translateX(0)',
+                  transition: 'opacity 320ms ease-out, transform 320ms ease-out',
+                  transitionDelay: cardsLowered ? '0ms' : `${150 + i * 90}ms`,
+                  willChange: 'opacity, transform',
+                }}
+              >
+                <FilterTag
+                  label={cat}
+                  state={active ? 'active' : 'default'}
+                  onClick={() => setFilter(active ? null : cat)}
+                  className="shrink-0 whitespace-nowrap"
+                />
+              </span>
             );
           })}
         </div>
 
-        {/* Focused content (label + heading) — animated in via GSAP. */}
-        <div className="relative">
+        {/* Focused content (label + heading) — animated in via GSAP. The
+            outer wrapper opacity holds at 0 for the mount intro so the
+            entire block (including underlines/period) is invisible during
+            the pre-roll. */}
+        <div
+          className="relative"
+          style={{
+            opacity: headlineRevealed ? 1 : 0,
+            transition: 'opacity 500ms ease-out',
+          }}
+        >
           <FocusedContent
             key={`mobile-entering-${focused.id}`}
             card={focused}
@@ -642,10 +839,19 @@ export function HomeStack() {
                 key={`mobile-${card.id}`}
                 className="absolute left-0 right-0"
                 style={{
-                  top: (offset - 1) * (SMALL_H + GAP),
+                  top: (offset - 1) * (SMALL_H + GAP) + introLower,
                   height: SMALL_H,
-                  transition: 'top 360ms cubic-bezier(.2,.8,.2,1)',
-                  willChange: 'top',
+                  opacity: cardsEntered ? 1 : 0,
+                  transform: cardsEntered ? 'translateY(0)' : 'translateY(24px)',
+                  transition:
+                    'top 180ms linear, opacity 500ms ease-out, transform 500ms cubic-bezier(.2,.8,.2,1)',
+                  // Per-property delays: NO delay on `top` (so scroll
+                  // changes propagate instantly), staggered delay on
+                  // opacity + transform for the one-time entry fade-in.
+                  transitionDelay: cardsEntered
+                    ? `0ms, ${offset * 70}ms, ${offset * 70}ms`
+                    : '0ms',
+                  willChange: 'top, opacity, transform',
                 }}
               >
                 <button
@@ -668,15 +874,26 @@ export function HomeStack() {
         className="absolute left-0 flex flex-col gap-3 items-start"
         style={{ top: focusY + 36, width: 180 }}
       >
-        {CATEGORIES.map((cat) => {
+        {CATEGORIES.map((cat, i) => {
           const active = filter === cat;
           return (
-            <FilterTag
+            <span
               key={cat}
-              label={cat}
-              state={active ? 'active' : 'default'}
-              onClick={() => setFilter(active ? null : cat)}
-            />
+              className="inline-block"
+              style={{
+                opacity: cardsLowered ? 0 : 1,
+                transform: cardsLowered ? 'translateX(-8px)' : 'translateX(0)',
+                transition: 'opacity 320ms ease-out, transform 320ms ease-out',
+                transitionDelay: cardsLowered ? '0ms' : `${150 + i * 90}ms`,
+                willChange: 'opacity, transform',
+              }}
+            >
+              <FilterTag
+                label={cat}
+                state={active ? 'active' : 'default'}
+                onClick={() => setFilter(active ? null : cat)}
+              />
+            </span>
           );
         })}
       </aside>
@@ -690,6 +907,11 @@ export function HomeStack() {
             focus advances. */}
         {windowedCards.map(({ card, offset }) => {
           const isFocusSlot = offset === 0;
+          // Hide the card sitting exactly under the headline so the
+          // focused content reads cleanly. Cards transitioning through
+          // this slot get an instant opacity snap (no fade) so they
+          // don't appear to "pile up" as they cross.
+          const settledOpacity = isFocusSlot ? 0 : 0.9;
           return (
             <div
               key={card.id}
@@ -698,10 +920,18 @@ export function HomeStack() {
                 top: slotY(offset),
                 right: 0,
                 height: SMALL_H,
-                opacity: isFocusSlot ? 0 : 0.9,
+                opacity: cardsEntered ? settledOpacity : 0,
+                transform: cardsEntered ? 'translateY(0)' : 'translateY(24px)',
                 pointerEvents: isFocusSlot ? 'none' : 'auto',
-                transition: 'top 360ms cubic-bezier(.2,.8,.2,1)',
-                willChange: 'top',
+                transition:
+                  'top 180ms linear, opacity 500ms ease-out, transform 500ms cubic-bezier(.2,.8,.2,1)',
+                // Per-property delays: NO delay on `top` (so scroll
+                // changes propagate instantly), staggered delay on
+                // opacity + transform for the one-time entry fade-in.
+                transitionDelay: cardsEntered
+                  ? `0ms, ${Math.max(0, offset) * 70}ms, ${Math.max(0, offset) * 70}ms`
+                  : '0ms',
+                willChange: 'top, opacity, transform',
               }}
             >
               <button
@@ -715,10 +945,17 @@ export function HomeStack() {
           );
         })}
 
-        {/* Focused (entering) card — animated in via GSAP word stagger. */}
+        {/* Focused (entering) card — animated in via GSAP word stagger.
+            Wrapper opacity is React-driven so the full block (including
+            underlines/period) holds invisible during the mount pre-roll. */}
         <div
           className="absolute left-0"
-          style={{ top: slotY(0), right: 0 }}
+          style={{
+            top: slotY(0),
+            right: 0,
+            opacity: headlineRevealed ? 1 : 0,
+            transition: 'opacity 500ms ease-out',
+          }}
         >
           <FocusedContent
             key={`entering-${focused.id}`}
@@ -743,21 +980,38 @@ export function HomeStack() {
       </div>
 
       {/* Right phone image — shown from lg upward at responsive sizes.
-          Pulls left toward the text on wider viewports (smaller gap),
-          stays glued to the right margin when space is tight.
-          Hidden for the intro card (which has no project image). */}
+          Pulled inward off the right margin so it sits closer to the
+          big text, and vertically centered around focusY so it sits
+          higher. Hidden for the intro card.
+
+          Layered transition: when focus changes the *outgoing* image
+          stays in place (no exit animation) and the new image fades
+          in on top of it. Visually feels like a stack of cards being
+          dropped on top of each other rather than a swap. */}
       {focused && focused.id !== 'intro' && (
         <div
-          className="absolute right-0 xl:right-3 2xl:right-6 flex items-start justify-center w-[280px] h-[460px] xl:w-[320px] xl:h-[510px] 2xl:w-[360px] 2xl:h-[560px]"
-          style={{ top: focusY - 100 }}
+          className="absolute right-[60px] xl:right-[80px] 2xl:right-[100px] w-[280px] h-[460px] xl:w-[320px] xl:h-[510px] 2xl:w-[360px] 2xl:h-[560px]"
+          style={{ top: focusY - 200 }}
         >
-          <img
-            src={focused.image}
-            alt={focused.label}
-            className="max-h-full max-w-full object-contain rounded-[20px]"
-            key={focused.id}
-            style={{ animation: 'home-stack-in 320ms cubic-bezier(.2,.8,.2,1)' }}
-          />
+          {leavingCard && leavingCard.id !== 'intro' && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <img
+                src={leavingCard.image}
+                alt=""
+                className="max-h-full max-w-full object-contain"
+                key={`leaving-img-${leavingCard.id}`}
+              />
+            </div>
+          )}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <img
+              src={focused.image}
+              alt={focused.label}
+              className="max-h-full max-w-full object-contain"
+              key={focused.id}
+              style={{ animation: 'home-stack-in 320ms cubic-bezier(.2,.8,.2,1)' }}
+            />
+          </div>
         </div>
       )}
       </div>

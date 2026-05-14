@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { QAItem } from '../../src/components/QAItem/QAItem';
+import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
 
 // EXPLORATION — promote color to a token before merging.
 const QA_CARD_BG = '#F9F9F9';
@@ -61,7 +62,7 @@ const QA = {
 function HeroImage() {
   return (
     <div
-      className="shrink-0 w-full aspect-[1217/809] rounded-sm overflow-hidden relative"
+      className="shrink-0 w-full h-[calc(100dvh-80px)] rounded-sm overflow-hidden relative"
       style={{ backgroundColor: IMAGE_BLOCK_BG }}
     >
       <Image
@@ -82,10 +83,10 @@ function DescriptionMetadata() {
       className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
       style={{ backgroundColor: QA_CARD_BG }}
     >
-      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-14 text-heading-lg text-text-primary">
-        Vodafone Broadband, an award-winning app that lets millions of customers manage their home broadband. I joined their global in-house product team as Senior Product Designer, working on one of the most technically complex consumer apps I've worked on.
+      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-secondary">
+        <span className="text-heading-lg">Vodafone Broadband,</span> an award-winning app that lets millions of customers manage their home broadband. I joined their global in-house product team as Senior Product Designer, working on one of the most technically complex consumer apps I&apos;ve worked on.
       </p>
-      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-14 flex flex-col text-metadata-md text-text-primary">
+      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col text-metadata-md text-text-secondary">
         {METADATA_LINES.map((line) => (
           <span
             key={line}
@@ -102,7 +103,7 @@ function DescriptionMetadata() {
 function QACard({ question, answer }: { question: string; answer: string }) {
   return (
     <div
-      className="rounded-sm p-8 @[1100px]:p-14 flex items-center"
+      className="rounded-sm p-8 @[1100px]:p-20 flex items-center"
       style={{ backgroundColor: QA_CARD_BG }}
     >
       <QAItem question={question} answer={answer} size="lg" />
@@ -142,45 +143,57 @@ function FillImage({
 export function VodafoneContent() {
   return (
     <div className="@container flex flex-col gap-2">
-      <HeroImage />
+      <RevealOnScroll offset={16} duration={900}>
+        <HeroImage />
+      </RevealOnScroll>
 
-      <DescriptionMetadata />
+      <RevealOnScroll>
+        <DescriptionMetadata />
+      </RevealOnScroll>
 
       {/* Section 1: phone with networks LEFT | two Q&As stacked RIGHT */}
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <FillImage src="/vodafone/phone-networks.png" alt="Vodafone app — connected devices view" aspect="aspect-[605/800]" />
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <QACard {...QA.whatItDoes} />
-          <QACard {...QA.complex} />
-        </div>
-      </section>
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <FillImage src="/vodafone/phone-networks.png" alt="Vodafone app — connected devices view" aspect="aspect-[605/750]" />
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <QACard {...QA.whatItDoes} />
+            <QACard {...QA.complex} />
+          </div>
+        </section>
+      </RevealOnScroll>
 
       {/* Section 2: 2x2 — Q&A + network illustration / phone-QR + Q&A */}
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <QACard {...QA.hardest} />
-          <FillImage src="/vodafone/phone-qr.png" alt="Vodafone app — QR pairing screen" aspect="aspect-[605/440]" />
-        </div>
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <FillImage src="/vodafone/network-illustration.png" alt="Network status illustration" aspect="aspect-[605/440]" />
-          <QACard {...QA.dayToDay} />
-        </div>
-      </section>
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <QACard {...QA.hardest} />
+            <FillImage src="/vodafone/devices.png" alt="Vodafone app — connected devices view" aspect="aspect-[605/440]" />
+          </div>
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <FillImage src="/vodafone/network-illustration.png" alt="Network status illustration" aspect="aspect-[605/440]" />
+            <QACard {...QA.dayToDay} />
+          </div>
+        </section>
+      </RevealOnScroll>
 
       {/* Section 3: two Q&As stacked LEFT | phone with red gradient RIGHT */}
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <div className="grid grid-rows-2 gap-2 h-full">
-          <QACard {...QA.reliable} />
-          <QACard {...QA.complexity} />
-        </div>
-        <FillImage src="/vodafone/phone-welcome.png" alt="Vodafone app — Welcome to your App screen" aspect="aspect-[605/800]" />
-      </section>
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <div className="grid grid-rows-2 gap-2 h-full">
+            <QACard {...QA.reliable} />
+            <QACard {...QA.complexity} />
+          </div>
+          <FillImage src="/vodafone/phone-welcome.png" alt="Vodafone app — Welcome to your App screen" aspect="aspect-[605/750]" />
+        </section>
+      </RevealOnScroll>
 
       {/* Section 4: two Q&As side-by-side, full width */}
-      <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-        <QACard {...QA.technical} />
-        <QACard {...QA.inHouse} />
-      </section>
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
+          <QACard {...QA.technical} />
+          <QACard {...QA.inHouse} />
+        </section>
+      </RevealOnScroll>
     </div>
   );
 }
