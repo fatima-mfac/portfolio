@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
 import { Shell } from '../_shell/Shell';
 
 /**
@@ -12,7 +12,15 @@ import { Shell } from '../_shell/Shell';
  *
  * Routes outside this group (e.g. `/work`) render under the root layout
  * only and do not get the Shell.
+ *
+ * Shell reads `?project=` via useSearchParams(), so it must sit inside
+ * a Suspense boundary — the static-export build requires it to
+ * prerender these routes (Next bails the boundary to client render).
  */
 export default function ShellLayout({ children }: { children: ReactNode }) {
-  return <Shell>{children}</Shell>;
+  return (
+    <Suspense>
+      <Shell>{children}</Shell>
+    </Suspense>
+  );
 }

@@ -1,0 +1,9 @@
+# Cloudflare Pages redirects.
+# Legacy use-case URLs (/patina, /vodafone, …) used to be standalone
+# routes before the right column became query-param driven. These keep
+# old links and bookmarks working by sending them to the new form.
+# (Next's redirects() can't run in a static export — see next.config.ts.)
+/patina        /?project=patina        301
+/vodafone      /?project=vodafone      301
+/zebra-finch   /?project=zebra-finch   301
+/herc-rentals  /?project=herc-rentals  301

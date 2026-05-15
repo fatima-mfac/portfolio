@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { Header } from '../../src/components/Header/Header';
 
@@ -45,20 +46,24 @@ export default function WorkPage() {
           Header wrapper: pt-6 md:px-8 (24px top, 32px horizontal at
           desktop). Anything else here will produce a visible jump. */}
       <div className="mx-auto w-full px-4 md:px-0 flex flex-col">
-        <div className="pt-6 md:px-8">
-          {/* Desktop fallback header — /work isn't in the desktop nav, so
-              "Index" stays active as the closest section. */}
-          <div className="hidden md:block">
-            <Header breakpoint="desktop" />
+        {/* Headers read ?project= via useSearchParams() — Suspense is
+            required for the static-export build to prerender /work. */}
+        <Suspense>
+          <div className="pt-6 md:px-8">
+            {/* Desktop fallback header — /work isn't in the desktop nav,
+                so "Index" stays active as the closest section. */}
+            <div className="hidden md:block">
+              <Header breakpoint="desktop" />
+            </div>
+            {/* Mobile header — "Work" is active here. */}
+            <div className="md:hidden">
+              <Header breakpoint="mobile" />
+            </div>
+            {/* Spacer below header — matches Shell.tsx's <div className="h-6" />
+                so the content below sits the same distance from the header. */}
+            <div className="h-6" />
           </div>
-          {/* Mobile header — "Work" is active here. */}
-          <div className="md:hidden">
-            <Header breakpoint="mobile" />
-          </div>
-          {/* Spacer below header — matches Shell.tsx's <div className="h-6" />
-              so the content below sits the same distance from the header. */}
-          <div className="h-6" />
-        </div>
+        </Suspense>
 
         <main className="w-full max-w-[420px] mt-4 px-0 md:px-5 flex flex-col gap-6 pb-12">
           {PROJECTS.map((project) => (
