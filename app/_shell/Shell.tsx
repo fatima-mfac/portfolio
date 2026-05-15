@@ -60,6 +60,10 @@ export function Shell({ children }: ShellProps) {
   // Other column's scroll position is left alone.
   const leftColRef = useRef<HTMLDivElement>(null);
   const rightColRef = useRef<HTMLDivElement>(null);
+  // Desktop /about scroll container — used to compact the header when
+  // cards scroll into the header's vertical band.
+  const aboutMainRef = useRef<HTMLElement>(null);
+  const [aboutCompactHeader, setAboutCompactHeader] = useState(false);
 
   useEffect(() => {
     leftColRef.current?.scrollTo({ top: 0 });
@@ -110,6 +114,47 @@ export function Shell({ children }: ShellProps) {
     return () => el.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Compact-header trigger for /about on desktop. When cards have
+  // scrolled far enough that they start crossing into the header's
+  // vertical band, swap the desktop header for the mobile-breakpoint
+  // variant (drops the project nav on the right, keeps logo + primary
+  // nav on the left). Threshold is "scrolled more than ~half a
+  // viewport" so the swap fires right around when the first card hits
+  // the header.
+  useEffect(() => {
+    if (!isAbout) return;
+    const el = aboutMainRef.current;
+    if (!el) return;
+    const threshold = () => window.innerHeight * 0.45;
+    const onScroll = () => {
+      setAboutCompactHeader(el.scrollTop > threshold());
+    };
+    onScroll();
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [isAbout]);
+
+  // The header is its own (non-scrollable) element above the columns,
+  // so a wheel gesture over the header band has nothing to scroll.
+  // Forward it to the page's active scroll container: the /about main,
+  // or — for the two-column layouts — whichever column the cursor sits
+  // over horizontally (falling back to the right/content column).
+  const handleHeaderWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (isAbout) {
+      aboutMainRef.current?.scrollBy({ top: e.deltaY });
+      return;
+    }
+    for (const col of [rightColRef.current, leftColRef.current]) {
+      if (!col) continue;
+      const rect = col.getBoundingClientRect();
+      if (e.clientX >= rect.left && e.clientX <= rect.right) {
+        col.scrollBy({ top: e.deltaY });
+        return;
+      }
+    }
+    rightColRef.current?.scrollBy({ top: e.deltaY });
+  };
+
   return (
     <>
     <Screensaver />
@@ -120,6 +165,7 @@ export function Shell({ children }: ShellProps) {
             grid-template-rows 1fr↔0fr trick gives a smooth height transition. */}
         <div
           className="grid relative z-10"
+          onWheel={handleHeaderWheel}
           style={{
             gridTemplateRows: headerHidden ? 'minmax(0,0fr)' : 'minmax(0,1fr)',
             transform: headerEntered ? 'translateY(0)' : 'translateY(-16px)',
@@ -130,9 +176,11 @@ export function Shell({ children }: ShellProps) {
           }}
           aria-hidden={headerHidden ? true : undefined}
         >
-          <div className="overflow-hidden pt-6 md:px-5">
+          <div className="overflow-hidden pt-6 md:px-8">
             <div className="hidden md:block">
-              <Header breakpoint="desktop" />
+              {/* On /about, swap to the mobile-breakpoint header once
+                  cards have scrolled up into the header band. */}
+              <Header breakpoint={isAbout && aboutCompactHeader ? 'mobile' : 'desktop'} />
             </div>
             {!showMobileOverlay && (
               <div className="md:hidden">
@@ -158,11 +206,18 @@ export function Shell({ children }: ShellProps) {
         ) : null}
 
         {/* About — full-bleed single-page composition. The page owns the
-            entire main area (no two-column shell, no right column). */}
+            entire main area (no two-column shell, no right column). On
+            desktop the main absolute-fills the inner wrapper so its
+            scroll viewport extends all the way to the top edge of the
+            screen — cards then scroll up behind the transparent header
+            and disappear at the actual viewport edge (not at the
+            header's bottom). On mobile the document scrolls naturally
+            so the main is a plain block. */}
         {isAbout ? (
           <main
+            ref={aboutMainRef}
             aria-label={pathname}
-            className="flex-1 min-h-0 md:px-5"
+            className="flex-1 min-h-0 md:absolute md:inset-0 md:px-5 md:overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {children}
           </main>

@@ -58,8 +58,8 @@ const CARDS: Card[] = [
     project: 'zebra-finch',
     label: 'ZEBRA FINCH',
     description:
-      "The future of design isn't designing interfaces. It's designing the conditions under which interfaces get built correctly. I built the proof of concept.",
-    image: '/zebra-finch/diagram.svg',
+      "The future of design isn't building interfaces. It's designing the system. I'm building that.",
+    image: '/zebra-finch/zebra1.png',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -69,7 +69,7 @@ const CARDS: Card[] = [
     label: 'APP PATINA',
     description:
       'I built an app to make you put your phone down. I had the idea, designed it, built it and shipped it. Solo.',
-    image: '/patina/home1.png',
+    image: '/patina/patina3.png',
     categories: ['AI Native'],
     bg: '#F0F1FA',
   },
@@ -79,7 +79,7 @@ const CARDS: Card[] = [
     label: 'ZEBRA FINTCH',
     description:
       'Built a working agentic pipeline where the AI generates interfaces using only the design system. No hallucinations.',
-    image: '/zebra-finch/diagram.svg',
+    image: '/zebra-finch/zebra2.png',
     categories: ['AI Native'],
     bg: '#F0F1FA',
   },
@@ -119,17 +119,7 @@ const CARDS: Card[] = [
     label: 'APP HERC RENTALS',
     description:
       'Created a visual system to represent different equipment, their location and states, in real time.',
-    image: '/herc/home1.png',
-    categories: ['Complex Systems'],
-    bg: '#F0F1FA',
-  },
-  {
-    id: 'zebra-guardrails',
-    project: 'zebra-finch',
-    label: 'ZEBRA FINCH',
-    description:
-      'Created procedures and approval gates to stop an AI agent from breaking the design system it was supposed to follow.',
-    image: '/zebra-finch/diagram.svg',
+    image: '/herc/home2.png',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -139,7 +129,7 @@ const CARDS: Card[] = [
     label: 'APP PATINA',
     description:
       'Set up analytics to measure if a colour seen for two seconds changes what you do next.',
-    image: '/patina/home1.png',
+    image: '/patina/patina3.png',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -149,7 +139,7 @@ const CARDS: Card[] = [
     label: 'VODAFONE',
     description:
       'Partnered with research to define what to test and how. Was present in every user testing session to see how users reacted to what I designed.',
-    image: '/vodafone/home1.png',
+    image: '/vodafone/home2.png',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -169,19 +159,25 @@ const CARDS: Card[] = [
     label: 'THIS PORTFOLIO',
     description:
       'Vibe coded this portfolio using my agentic design system pipeline.',
-    image: '/zebra-finch/diagram.svg',
+    image: '/zebra-finch/zebra2.png',
     categories: ['AI Native'],
     bg: '#F0F1FA',
   },
 ];
 
+// Cards rendered without a thumbnail image — the intro card and the
+// portfolio card both stand on their copy alone.
+const NO_THUMBNAIL_IDS = new Set(['intro', 'portfolio']);
+
 const SMALL_H = 90;
 // Fallback height for the focused hero before its real height is measured.
 const BIG_H_FALLBACK = 240;
 const GAP = 8;
-// Larger gap between the focused hero and the adjacent small cards
-// (above and below) — so the big copy reads as a distinct moment.
-const FOCUS_GAP = 56;
+// Gap between the focused hero and the adjacent small cards — so the
+// big copy reads as a distinct moment. Split per side: the top gap (to
+// the cards above) is a touch tighter than the bottom.
+const FOCUS_GAP_TOP = 48;
+const FOCUS_GAP_BOTTOM = 56;
 const SMALL_STEP = SMALL_H + GAP;
 const FOCUS_Y_RATIO = 0.32;
 const SLOTS_ABOVE = 3;
@@ -377,8 +373,8 @@ export function HomeStack() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerH, setContainerH] = useState(800);
   // Measured height of the focused (entering) content — drives the position
-  // of the cards below so the visible gap is exactly FOCUS_GAP, regardless
-  // of how many lines the heading wraps to.
+  // of the cards below so the visible gap is exactly FOCUS_GAP_BOTTOM,
+  // regardless of how many lines the heading wraps to.
   const [focusedH, setFocusedH] = useState(BIG_H_FALLBACK);
   const lastInputRef = useRef(0);
 
@@ -493,7 +489,7 @@ export function HomeStack() {
   const focused = filteredCards[focusedIdx] ?? filteredCards[0];
 
   // Measure the entering focused content so cards below sit exactly
-  // FOCUS_GAP below it.
+  // FOCUS_GAP_BOTTOM below it.
   useLayoutEffect(() => {
     const el = enteringRef.current;
     if (!el) return;
@@ -723,13 +719,13 @@ export function HomeStack() {
     const focusedTop = focusY - FOCUS_LABEL_OFFSET;
     if (offset === 0) return focusedTop;
     if (offset < 0) {
-      // Cards above: -1 sits FOCUS_GAP above the focused content's top.
+      // Cards above: -1 sits FOCUS_GAP_TOP above the focused content's top.
       const k = Math.abs(offset);
-      return focusedTop - k * SMALL_H - FOCUS_GAP - (k - 1) * GAP;
+      return focusedTop - k * SMALL_H - FOCUS_GAP_TOP - (k - 1) * GAP;
     }
-    // Cards below: 1 sits FOCUS_GAP below the focused content's bottom.
+    // Cards below: 1 sits FOCUS_GAP_BOTTOM below the focused content's bottom.
     // While in the parked-low intro state, push the whole below-stack down.
-    return focusedTop + focusedH + FOCUS_GAP + (offset - 1) * SMALL_STEP + introLower;
+    return focusedTop + focusedH + FOCUS_GAP_BOTTOM + (offset - 1) * SMALL_STEP + introLower;
   };
 
   // Render a windowed slice of the deck (with one card of buffer at each
@@ -813,9 +809,9 @@ export function HomeStack() {
           )}
         </div>
 
-        {/* Hero image — square-ish below the heading. Hidden for the
-            intro card (which has no project image). */}
-        {focused && focused.id !== 'intro' && (
+        {/* Hero image — square-ish below the heading. Hidden for cards
+            in NO_THUMBNAIL_IDS (intro + portfolio). */}
+        {focused && !NO_THUMBNAIL_IDS.has(focused.id) && (
           <div
             className="relative w-full rounded-md overflow-hidden flex items-center justify-center"
             style={{ aspectRatio: '354/185', backgroundColor: '#FFFCF7' }}
@@ -982,18 +978,18 @@ export function HomeStack() {
       {/* Right phone image — shown from lg upward at responsive sizes.
           Pulled inward off the right margin so it sits closer to the
           big text, and vertically centered around focusY so it sits
-          higher. Hidden for the intro card.
+          higher. Hidden for cards in NO_THUMBNAIL_IDS (intro + portfolio).
 
           Layered transition: when focus changes the *outgoing* image
           stays in place (no exit animation) and the new image fades
           in on top of it. Visually feels like a stack of cards being
           dropped on top of each other rather than a swap. */}
-      {focused && focused.id !== 'intro' && (
+      {focused && !NO_THUMBNAIL_IDS.has(focused.id) && (
         <div
-          className="absolute right-[60px] xl:right-[80px] 2xl:right-[100px] w-[280px] h-[460px] xl:w-[320px] xl:h-[510px] 2xl:w-[360px] 2xl:h-[560px]"
+          className="absolute right-[40px] w-[280px] h-[460px] xl:w-[320px] xl:h-[510px] 2xl:w-[360px] 2xl:h-[560px]"
           style={{ top: focusY - 200 }}
         >
-          {leavingCard && leavingCard.id !== 'intro' && (
+          {leavingCard && !NO_THUMBNAIL_IDS.has(leavingCard.id) && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <img
                 src={leavingCard.image}

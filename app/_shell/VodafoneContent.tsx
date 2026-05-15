@@ -83,7 +83,7 @@ function DescriptionMetadata() {
       className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
       style={{ backgroundColor: QA_CARD_BG }}
     >
-      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-secondary">
+      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
         <span className="text-heading-lg">Vodafone Broadband,</span> an award-winning app that lets millions of customers manage their home broadband. I joined their global in-house product team as Senior Product Designer, working on one of the most technically complex consumer apps I&apos;ve worked on.
       </p>
       <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col text-metadata-md text-text-secondary">

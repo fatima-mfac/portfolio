@@ -33,12 +33,25 @@
     opacity: 0;
   }
   .logo {
+    /* Real Herc Rentals wordmark sits in a 256x47 viewBox (~5.45:1
+       aspect). We size at 360px wide → ~66px tall; margin centers it
+       on the stage. Black text from the source SVG is flipped to white
+       so the wordmark reads against the dark map background. */
     position: absolute;
     top: 50%; left: 50%;
-    margin: -45px 0 0 -160px;
-    width: 320px;
+    margin: -24px 0 0 -130px;
+    width: 260px;
     opacity: 0;
     z-index: 4;
+  }
+  /* The inlined SVG ships with width="256" height="47" attributes —
+     without this rule it'd render at intrinsic size in the top-left of
+     the .logo box. Forcing display:block + width:100% makes it fill
+     the parent and inherit the centered positioning. */
+  .logo svg {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .pin-group {
@@ -93,9 +106,13 @@
     width: 100%;
     height: 100%;
     z-index: 5;
-    cursor: crosshair;
+    /* Crosshair only kicks in once the map has fully faded in (the
+       intro timeline adds .ready to this element). Before that the
+       cursor stays as the default arrow so the intro feels passive. */
+    cursor: default;
     pointer-events: all;
   }
+  .draw-layer.ready { cursor: crosshair; }
   .draw-layer .freehand {
     fill: none;
     stroke: #1F4FD9;
@@ -137,13 +154,17 @@
     top: 16px; right: 16px;
     display: flex; gap: 8px;
     z-index: 10;
+    /* Starts hidden; the intro timeline fades it in (and enables
+       pointer events) once the map has fully appeared. */
+    opacity: 0;
+    pointer-events: none;
   }
   .btn {
     background: #ffffff;
     color: #111;
     border: none;
     padding: 8px 14px;
-    border-radius: 999px;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
     font-weight: 600;
@@ -156,11 +177,24 @@
 <body>
 <div class="stage">
   <div class="logo" id="logo">
-    <svg viewBox="0 0 320 90" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 22 32 Q 90 6, 175 24 Q 100 22, 22 36 Z" fill="#FFB81C"/>
-      <text x="22" y="68" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="44" fill="#ffffff">Herc</text>
-      <text x="128" y="68" font-family="Arial, sans-serif" font-weight="400" font-style="italic" font-size="44" fill="#ffffff">Rentals</text>
-      <text x="282" y="42" font-family="Arial, sans-serif" font-size="11" fill="#ffffff">&#174;</text>
+    <!-- Real Herc Rentals wordmark (source: public/herc/herc-logo.svg).
+         Inlined so we can flip the source's black fills to white for
+         visibility against the dark map. The yellow swoosh keeps its
+         original brand colour (#FFC20E). -->
+    <svg width="256" height="47" viewBox="0 0 256 47" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Herc Rentals">
+      <path d="M0.180571 9.34417C39.4205 -3.11472 71.4562 -3.11472 110.696 9.34417C91.5992 27.3189 58.8598 -8.21687 0 10.4749L0.180571 9.34417Z" fill="#FFC20E"/>
+      <path d="M121.144 30.4632C124.843 30.4632 127.595 29.3669 129.145 27.6156C130.241 26.3814 130.833 24.8991 130.833 23.0719C130.833 21.7344 130.428 20.5347 129.669 19.6866C128.585 18.4869 126.811 17.8181 124.158 17.8181H116.599L113.504 30.4632H121.144ZM114.183 14.5638H124.32C127.857 14.5638 130.534 15.5153 132.24 17.4113C133.467 18.7765 134.089 20.6588 134.089 22.7962C134.089 25.5127 133.174 27.7949 131.599 29.5668C129.843 31.5388 127.016 32.7729 123.797 33.2624L129.588 45.7282H125.926L120.378 33.6141H112.738L109.806 45.7282H106.63L114.183 14.5638Z" fill="#ffffff"/>
+      <path d="M152.091 32.7724C152.172 32.3243 152.253 31.7934 152.253 31.0349C152.253 27.8771 150.647 25.1123 147.067 25.1123C142.963 25.1123 139.869 28.539 138.704 32.7724H152.091ZM138.219 36.337C138.219 40.5222 140.628 43.2801 144.489 43.2801C147.185 43.2801 148.991 42.2528 150.883 40.5635L152.49 42.8319C150.441 44.7487 147.988 46.2586 144.327 46.2586C138.816 46.2586 135.118 42.2941 135.118 36.4611C135.118 29.4284 140.267 22.2165 147.222 22.2165C152.49 22.2165 155.267 26.2224 155.267 31.0349C155.267 32.5931 154.987 34.11 154.501 35.5303H138.256C138.219 35.8061 138.219 36.0681 138.219 36.337Z" fill="#ffffff"/>
+      <path d="M162.302 22.7127H165.397L164.512 26.4566C166.405 24.0985 168.572 22.2231 171.748 22.2231C175.77 22.2231 178.385 24.9811 178.385 29.3455C178.385 30.4142 178.142 31.7035 177.862 32.9101L174.805 45.7344H171.71L174.849 32.6895C175.048 31.931 175.172 30.8623 175.172 30.1039C175.172 27.0771 173.404 25.2982 170.509 25.2982C167.29 25.2982 164.077 28.3733 162.987 32.7308L159.849 45.7344H156.754L162.302 22.7127Z" fill="#ffffff"/>
+      <path d="M182.968 41.5906C182.968 40.7908 183.086 39.9014 183.248 39.1843L186.505 25.7395H183.647L184.369 22.7127H187.264L188.952 15.7696H192.009L190.322 22.7127H196.747L196.025 25.7395H189.599L186.386 39.0051C186.305 39.5429 186.225 40.2048 186.225 40.6943C186.225 42.3008 187.308 43.0523 189.083 43.0523C190.004 43.0523 190.975 42.8317 192.096 42.3422L191.33 45.4586C190.247 45.9481 189.238 46.1274 188.03 46.1274C185.06 46.1343 182.968 44.5761 182.968 41.5906Z" fill="#ffffff"/>
+      <path d="M211.548 36.6958L211.947 35.0894C210.135 34.5585 207.806 34.0689 205.235 34.0689C201.573 34.0689 199.046 36.2959 199.046 39.4538C199.046 41.9014 200.733 43.5079 203.429 43.5079C206.922 43.5079 210.546 40.7431 211.548 36.6958ZM195.864 39.8537C195.864 34.6895 199.768 31.5248 205.11 31.5248C207.887 31.5248 210.496 32.1453 212.47 32.7727L212.632 32.1522C212.794 31.5316 212.875 30.725 212.875 30.1044C212.875 27.1672 211.025 25.4711 207.283 25.4711C205.073 25.4711 203.261 25.9193 201.412 26.6708L200.851 23.775C202.943 22.8856 205.073 22.3478 207.769 22.3478C212.993 22.3478 215.932 25.0643 215.932 29.5184C215.932 30.4561 215.77 31.6075 215.527 32.6831L212.389 45.728H209.332L210.179 42.1221C208.286 44.5697 205.714 46.2176 202.42 46.2176C198.921 46.2245 195.864 43.9492 195.864 39.8537Z" fill="#ffffff"/>
+      <path d="M225.659 13.504H228.754L220.871 46.013H217.777L225.659 13.504Z" fill="#ffffff"/>
+      <path d="M227.027 42.2112L229.038 39.9842C231.292 42.3905 233.783 43.3695 236.274 43.3695C238.646 43.3695 240.856 41.8527 240.856 39.5429C240.856 38.0261 239.929 36.916 236.915 35.6267C233.179 34.0271 231.043 32.5102 231.043 29.3041C231.043 25.3879 234.101 22.2231 238.926 22.2231C241.983 22.2231 244.879 23.74 246.604 25.3879L244.792 27.7459C243.061 26.1877 240.894 25.0707 238.64 25.0707C235.701 25.0707 234.138 26.8082 234.138 28.725C234.138 30.2418 234.991 31.1864 238.279 32.6412C242.027 34.3029 243.951 35.9783 243.951 38.9637C243.951 43.2385 240.414 46.224 235.987 46.224C232.774 46.224 229.437 44.8864 227.027 42.2112Z" fill="#ffffff"/>
+      <path d="M20.5356 14.088H27.6588L24.6949 26.2711H35.4545L38.3934 14.088H45.5166L37.8455 45.7352H30.7223L33.7422 33.3728H22.9826L19.9814 45.7352H12.8582L20.5356 14.088Z" fill="#ffffff"/>
+      <path d="M83.959 35.4686C83.959 27.4017 89.8805 20.9137 97.041 20.9137C102.022 20.9137 104.88 23.6026 106.225 26.9259L100.814 30.5181C99.8928 28.6427 98.772 27.4017 96.5491 27.4017C93.4483 27.4017 90.7522 31.1524 90.7522 35.248C90.7522 38.0472 92.4271 39.833 94.5878 39.833C96.3623 39.833 97.6512 39.0194 99.1394 37.5026L103.099 42.0255C100.833 44.6042 98.2801 46.3003 94.2204 46.3003C88.2678 46.3003 83.959 42.0738 83.959 35.4686Z" fill="#ffffff"/>
+      <path d="M69.9418 28.9599C72.6379 18.0592 83.7462 21.286 84.9479 21.5273L83.5345 27.4913C81.3552 26.8914 77.5071 26.5812 76.735 29.3874L72.8372 45.728H65.8821L69.9418 28.9599Z" fill="#ffffff"/>
+      <path d="M59.6631 31.6079C59.7877 31.1804 59.8686 30.684 59.8686 30.16C59.8686 28.326 58.8475 26.816 56.5623 26.816C54.1153 26.816 51.9484 28.6018 50.9708 31.6079H59.6631ZM54.9932 40.3298C56.6059 40.3298 58.0318 39.7645 59.769 38.3855L62.9944 42.8602C60.8898 44.8459 58.0567 46.2938 54.2772 46.2938C47.87 46.2938 43.9473 42.1363 43.9473 35.4897C43.9473 28.3674 49.0717 20.8865 57.0729 20.8865C63.1749 20.8865 66.2384 25.3405 66.2384 30.6771C66.2384 31.8906 66.0516 33.1799 65.7216 34.4486C65.485 35.338 64.7316 35.9448 63.8972 35.9448H50.4167C50.6035 38.5924 52.0294 40.3298 54.9932 40.3298Z" fill="#ffffff"/>
+      <path d="M246.61 14.0876V14.06C246.61 11.2193 248.69 8.83374 251.305 8.83374C253.951 8.83374 256 11.1918 256 14.0324V14.06C256 16.9007 253.92 19.2932 251.305 19.2932C248.659 19.2863 246.61 16.9282 246.61 14.0876ZM255.458 14.06V14.0324C255.458 11.4951 253.677 9.39911 251.305 9.39911C248.958 9.39911 247.152 11.5227 247.152 14.06V14.0876C247.152 16.6249 248.933 18.7209 251.305 18.7209C253.653 18.7209 255.458 16.5973 255.458 14.06ZM249.549 11.3435H251.654C252.625 11.3435 253.41 11.9088 253.41 12.9568C253.41 13.8256 252.899 14.3289 252.252 14.5426L253.572 16.5766H252.625L251.436 14.6667H250.309V16.5766H249.555V11.3435H249.549ZM251.573 13.9704C252.245 13.9704 252.625 13.5843 252.625 13.012C252.625 12.3846 252.22 12.0881 251.573 12.0881H250.309V13.9704H251.573Z" fill="#ffffff"/>
     </svg>
   </div>
 
@@ -297,15 +331,19 @@
     gsap.set('.pin', { scale: 0 });
     gsap.set('.label', { scale: 0 });
     gsap.set('#map', { opacity: 0 });
+    gsap.set('.controls', { opacity: 0, pointerEvents: 'none' });
+    // Reset the draw-layer's cursor until the map fully fades in.
+    document.querySelector('.draw-layer')?.classList.remove('ready');
 
     masterTl = gsap.timeline();
     masterTl
       .to('#logo', { opacity: 1, duration: 0.5, ease: 'power2.out' })
-      .to('#logo', { opacity: 0, duration: 0.3, ease: 'power2.in' }, '+=0.6')
+      // Logo stays visible across the pin/label/vehicle sequence; it
+      // fades out below, in sync with the map fade-in (crossfade).
       .to('.pin', {
         scale: 1, duration: 0.45, ease: 'back.out(2.6)',
         stagger: { amount: 0.35, from: 'random' }
-      }, '-=0.05')
+      }, '+=0.85')
       .add(() => startVehicles(), '+=0.3')
       .to('#pin-vehicle-bottom .label', { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=3')
       .to('#pin-static-2 .label',       { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=0.06')
@@ -315,7 +353,25 @@
       .to('#pin-vehicle-bertha .label', { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=0.4')
       .to('#pin-vehicle-yeller .label', { scale: 1, duration: 0.25, ease: 'back.out(2.2)' }, '+=0.07')
       .to('#map', { opacity: 1, duration: 1.8, ease: 'power2.inOut' }, '+=0.6')
-      .add(() => { interactionReady = true; }, '<');
+      // Crossfade: logo fades out at the same moment the map starts to
+      // fade in, matching the map's duration and easing for a clean
+      // hand-off.
+      .to('#logo', { opacity: 0, duration: 1.8, ease: 'power2.inOut' }, '<')
+      // Wait until the crossfade has fully finished before enabling
+      // interaction. Adds .ready to the draw-layer so the cursor swaps
+      // to crosshair; geofence rectangles can only be drawn from now.
+      // The Clear-shapes button fades in at the same beat.
+      .add(() => {
+        interactionReady = true;
+        document.querySelector('.draw-layer')?.classList.add('ready');
+      }, '>')
+      .to('.controls', { opacity: 1, pointerEvents: 'auto', duration: 0.4, ease: 'power2.out' }, '<')
+      // Demo geofence — draws itself shortly after the map so the user
+      // sees, by example, what they can do. Fires through the existing
+      // drawCleanShape path so it gets the same stroke+fill animation
+      // and traps any vehicles passing through it (a complete demo of
+      // the feature).
+      .add(() => drawDemoGeofence(), '+=0.4');
 
     masterTl.timeScale(rate);
   }
@@ -467,6 +523,8 @@
       el = document.createElementNS(ns, 'rect');
       el.setAttribute('x', s.x); el.setAttribute('y', s.y);
       el.setAttribute('width', s.w); el.setAttribute('height', s.h);
+      // 4px corner radius on committed geofence rectangles.
+      el.setAttribute('rx', '4'); el.setAttribute('ry', '4');
       perimeter = 2 * (s.w + s.h);
     }
     el.setAttribute('class', 'committed-shape');
@@ -479,6 +537,26 @@
 
     committedShapes.push(s);
     setTimeout(() => checkAndTrapVehicles(s), 600);
+  }
+
+  /**
+   * Draws a demo geofence rectangle after the intro so the user sees,
+   * by example, what the interaction does. The rect sits in the
+   * mid-band where pin-vehicle-bottom's route clips it (so a vehicle
+   * gets visibly trapped — a complete demonstration of the feature).
+   * Coordinates are derived from the live frame size so it scales with
+   * any viewport. Re-runs cleanly on intro replay because build()
+   * clears committedShapes.
+   */
+  function drawDemoGeofence() {
+    const frame = document.getElementById('frame').getBoundingClientRect();
+    drawCleanShape({
+      kind: 'rect',
+      x: frame.width * 0.38,
+      y: frame.height * 0.50,
+      w: frame.width * 0.24,
+      h: frame.height * 0.18,
+    });
   }
 
   function getVehicleCenter(selector) {

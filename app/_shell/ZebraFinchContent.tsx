@@ -92,7 +92,7 @@ const PRINCIPLES = [
   },
   {
     bold: 'Skills are the design artifact.',
-    body: "The brief used to be a Figma frame with red lines. Now it's a markdown file an agent can execute.",
+    body: "Design specifications used to live in Figma. Now it's a markdown file an agent can execute.",
   },
 ];
 
@@ -112,8 +112,8 @@ function DescriptionMetadata() {
     <div
       className="bg-background-primary rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
     >
-      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-secondary">
-        The <span className="text-heading-lg">future of design</span>{' '}isn&apos;t designing interfaces. It&apos;s designing the conditions under which interfaces get built correctly. The systems, the guidelines, the constraints, the fallbacks. I wanted to start experimenting with that. So I built a pipeline where I set the visual direction, the soul, and the rules, and the AI generates what I ask using only the design system. No hallucinations. No components that don&apos;t belong.
+      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
+        The <span className="text-heading-lg">future of design</span>{' '}isn&apos;t designing interfaces. It&apos;s designing the systems, the guidelines, the constraints, and the fallbacks. I wanted to experiment with that, so I built a pipeline where I set the visual direction, the soul, and the rules, and the AI generates the output using only the design system. This is the foundation for future adaptive interfaces.
       </p>
       <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col text-metadata-md text-text-secondary">
         {METADATA_LINES.map((line) => (
@@ -132,9 +132,9 @@ function DescriptionMetadata() {
 function Hero() {
   return (
     <section className="bg-background-primary rounded-sm flex flex-col gap-10 items-center justify-center text-center min-h-[calc(100dvh-80px)] px-8 py-16 @[768px]:px-16 @[768px]:py-20">
-      <h1 className="text-display-xl text-text-primary">ZEBRA FINTCH</h1>
+      <h1 className="text-display-xl text-text-primary">ZEBRA FINCH</h1>
       <div className="flex flex-col gap-4 items-center w-full">
-        <p className="text-heading-xl text-text-primary whitespace-nowrap">
+        <p className="text-heading-xl text-text-primary md:whitespace-nowrap">
           I built a bidirectional Figma – Code AI agentic pipeline.
         </p>
         <p className="text-body-xl text-text-secondary max-w-[640px]">
@@ -167,8 +167,11 @@ function NumberBadge({ n }: { n: number }) {
 
 function ProgressTag({ label }: { label: string }) {
   return (
-    <div className="inline-flex items-center justify-center pt-[2px] pb-[3px] px-2 rounded-md bg-background-dark">
-      <span className="text-body-sm text-text-on-dark">{label}</span>
+    <div className="inline-flex items-center justify-center pt-[2px] pb-[3px] px-2 rounded-md bg-background-hero">
+      {/* text-body-sm bundles a book weight + a paragraph line-height
+          (2). font-medium! bumps the weight to 500; leading-none!
+          collapses the tall line box so the tag sits compact. */}
+      <span className="text-body-sm font-medium! leading-none! text-text-on-dark">{label}</span>
     </div>
   );
 }
@@ -186,16 +189,20 @@ function StepImage({ image }: { image: NonNullable<Step['image']> }) {
   );
 }
 
-/** Step text block — number/tag + title + body. Images now render
- *  separately above the step in the section's flow. */
+/** Step text block — number/tag + title on one row, body below.
+ *  Images now render separately above the step in the section's flow. */
 function ProcessStep({ step }: { step: Step }) {
   return (
     <div className="flex flex-col gap-2 items-start">
+      {/* Number badge, title, then the optional progress tag — all on
+          one row. */}
       <div className="flex gap-2 items-start">
         <NumberBadge n={step.n} />
+        {/* -top-[3px] optically aligns the title with the number badge —
+            the heading line-box leading otherwise sits it a touch low. */}
+        <p className="relative -top-[3px] text-heading-lg text-text-primary">{step.title}</p>
         {step.tag ? <ProgressTag label={step.tag} /> : null}
       </div>
-      <p className="text-heading-lg text-text-primary">{step.title}</p>
       <p className="text-body-xl text-text-secondary">{step.body}</p>
     </div>
   );
@@ -213,7 +220,10 @@ function ProcessSection() {
             Making sure the generated pages use ONLY the design system
           </p>
           <p className="text-body-xl text-text-secondary">
-            The biggest risk with AI building UI is that it stops using the design system. It hardcodes colors, reinvents components, ignores the library. Four pieces of architecture stop that from happening:
+            The biggest risk with AI building UI is that it stops using the design system. It hardcodes colors, reinvents components, and ignores the library.
+          </p>
+          <p className="text-body-xl text-text-secondary">
+            To prevent that, this is what I did:
           </p>
         </div>
       </RevealOnScroll>
@@ -235,7 +245,7 @@ function ProcessSection() {
 function PrinciplesSection() {
   return (
     <section className="bg-background-primary rounded-sm p-8 @[768px]:p-16 flex flex-col gap-12">
-      <p className="text-heading-xl-semibold text-text-primary">
+      <p className="text-heading-xl text-text-primary">
         The agentic design system principles
       </p>
       <div className="grid grid-cols-1 @[768px]:grid-cols-2 @[1100px]:grid-cols-4 gap-x-14 gap-y-10">

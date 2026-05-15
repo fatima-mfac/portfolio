@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { ExternalLink } from '../../src/components/ExternalLink/ExternalLink';
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
+import { FleetCrossfade } from './FleetCrossfade';
 
 // EXPLORATION — promote color to a token before merging.
 const QA_CARD_BG = '#FFFCF7';
@@ -67,7 +68,7 @@ function DescriptionMetadata() {
       className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
       style={{ backgroundColor: QA_CARD_BG }}
     >
-      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-secondary">
+      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
         <span className="text-heading-lg">Herc Rentals,</span> a B2B platform for renting and managing heavy equipment across app and website. I was part of the product team as Senior Product Designer, owning key features including real time tracking and monitoring of heavy machinery in the field.
       </p>
       <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col text-metadata-md text-text-secondary">
@@ -160,7 +161,7 @@ export function HercRentalsContent() {
       {/* Section 1: phone card LEFT | two Q&As stacked RIGHT */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <FillImage src="/herc/phone-card.png" alt="Herc Rentals app — equipment list" aspect="aspect-[605/750]" />
+          <FillImage src="/herc/phone-gradient.png" alt="Herc Rentals app — phone mockup with brand gradient" aspect="aspect-[605/750]" />
           <div className="grid grid-rows-2 gap-2 h-full">
             <QACard {...QA.whatItSolves} />
             <QACard {...QA.role} />
@@ -168,9 +169,10 @@ export function HercRentalsContent() {
         </section>
       </RevealOnScroll>
 
-      {/* Full-width fleet utilization dashboard */}
+      {/* Fleet utilization dashboard — cross-fades through three views
+          on an 800px-tall cream panel. */}
       <RevealOnScroll>
-        <FlatImage src="/herc/fleet-dashboard.png" alt="Fleet utilization dashboard" aspect="aspect-[1217/800]" />
+        <FleetCrossfade />
       </RevealOnScroll>
 
       {/* Section 2: 2x2 — Q&A + map / equipment phone + Q&A */}
@@ -187,10 +189,10 @@ export function HercRentalsContent() {
         </section>
       </RevealOnScroll>
 
-      {/* Section 3: phone with gradient LEFT | two Q&As stacked RIGHT */}
+      {/* Section 3: phone card LEFT | two Q&As stacked RIGHT */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <FillImage src="/herc/phone-gradient.png" alt="Herc Rentals app — phone mockup with brand gradient" aspect="aspect-[605/750]" />
+          <FillImage src="/herc/phone-card.png" alt="Herc Rentals app — equipment list" aspect="aspect-[605/750]" />
           <div className="grid grid-rows-2 gap-2 h-full">
             <QACard {...QA.adoption} />
             <QACard {...QA.differently} />

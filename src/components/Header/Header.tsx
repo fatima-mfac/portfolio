@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { NavItem } from '../NavItem/NavItem';
 
@@ -25,7 +24,6 @@ interface HeaderProps {
   breakpoint?: HeaderBreakpoint;
   navLinks?: NavLink[];
   projectLinks?: ProjectLink[];
-  logoHref?: string;
   className?: string;
 }
 
@@ -59,7 +57,6 @@ export function Header({
   breakpoint = 'desktop',
   navLinks,
   projectLinks = DEFAULT_PROJECTS,
-  logoHref = '/',
   className,
 }: HeaderProps) {
   const pathname = usePathname();
@@ -71,7 +68,7 @@ export function Header({
 
   // Left nav: navigate to link.href, preserving current ?project= so the
   // right column keeps its selected project. EXCEPT Index — it acts as a
-  // "reset to homepage" affordance, mirroring the logo.
+  // "reset to homepage" affordance.
   const buildNavHref = (href: string) =>
     href === '/' ? '/' : project ? `${href}?project=${project}` : href;
 
@@ -81,12 +78,8 @@ export function Header({
   const buildProjectHref = (slug: string) =>
     pathname === '/about' ? `/?project=${slug}` : `${pathname}?project=${slug}`;
 
-  // The logo always returns to the bare homepage — it's the "reset" affordance,
-  // dropping any selected project so the right column goes back to the default.
-  const homeHref = logoHref;
-
-  // Shared reset handler — used by both the logo and the Index nav item,
-  // since both return to the bare homepage and need to reset HomeStack state.
+  // Reset handler for the Index nav item — returns to the bare homepage
+  // and resets HomeStack state.
   const handleHomeReset = () => {
     if (typeof window !== 'undefined') {
       sessionStorage.removeItem('homeStack:focusedIdx');
@@ -99,18 +92,19 @@ export function Header({
       className={`flex flex-row items-center justify-between w-full bg-transparent ${className ?? ''}`}
     >
       <div className="flex flex-row items-center gap-6">
-        <Link
-          href={homeHref}
-          aria-label="Home"
-          scroll={false}
-          onClick={handleHomeReset}
-          className="flex items-center no-underline"
-        >
-          <img src="/logo.svg" alt="" className="w-8 h-auto" />
-        </Link>
+        {/* Brand mark — not a link; the Index nav item is the homepage
+            affordance. */}
+        <img src="/logo.svg" alt="Fátima Cunha" className="w-8 h-auto" />
         <nav aria-label="Primary navigation" className="flex flex-row items-center gap-6">
           {baseNavLinks.map((link) => {
-            const isActive = link.active ?? pathname === link.href;
+            // Index (href '/') is active only on the bare homepage. When
+            // a project is selected the page is a use case, so no
+            // left-nav item should read as active.
+            const isActive =
+              link.active ??
+              (link.href === '/'
+                ? pathname === '/' && !project
+                : pathname === link.href);
             return (
               <NavItem
                 key={link.href}

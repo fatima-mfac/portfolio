@@ -20,6 +20,20 @@ body {
   box-sizing: border-box;
 }
 
+/* Focus rings appear only for keyboard navigation. A mouse click no
+   longer leaves a lingering blue outline around links/buttons, while
+   Tab users still get a visible focus indicator — accessibility is
+   preserved, the stray ring after clicking is not. */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Remove the grey/blue flash overlay that mobile browsers paint on a
+   tapped link or button. */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* EXPLORATION — homepage v3 stack: subtle fade + zoom-in for slots whose
    content changes on focus advance. Avoids any sliding/dragging motion. */
 @keyframes home-stack-in {

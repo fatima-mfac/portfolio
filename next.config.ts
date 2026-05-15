@@ -1,8 +1,13 @@
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 import type { NextConfig } from 'next';
 
 const PROJECT_SLUGS = ['patina', 'vodafone', 'zebra-finch', 'herc-rentals'];
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: dirname(fileURLToPath(import.meta.url)),
+  },
   images: {
     // TEMPORARY — iterating on image assets. Skips Next's optimizer so
     // updated files in /public refresh instantly. Re-enable optimization

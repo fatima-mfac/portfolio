@@ -18,10 +18,16 @@ const IMAGES = [
   { src: '/screensaver/astronaut.png', alt: 'Astronaut floating', w: 663, h: 672, tight: 0.85, longEdge: 520, bounceModel: 'ellipse' },
 ] as const;
 
-const IDLE_MS = 20000; // 20s idle before the screensaver kicks in
+const IDLE_MS = 60000; // 60s idle before the screensaver kicks in
 const TARGET_LONG_EDGE = 360; // px — sizing the longer image side
 const SPEED = 140; // px / second
 const SPIN_DEG_PER_SEC = 18; // slow continuous rotation
+
+// Below this viewport width the image scales by MOBILE_SCALE so the
+// figure doesn't dominate small screens. Matches --breakpoint-md in
+// tokens.css; keep in sync if that token changes.
+const MOBILE_BREAKPOINT_PX = 828;
+const MOBILE_SCALE = 0.5;
 
 /**
  * Site-wide DVD-bouncer screensaver. After `IDLE_MS` of no user input,
@@ -100,8 +106,12 @@ function ScreensaverOverlay({ image }: OverlayProps) {
   const imgRef = useRef<HTMLImageElement>(null);
   // Scaled dimensions — keep the longer side at the image's longEdge
   // (or the default TARGET_LONG_EDGE) so the motion box math stays in
-  // viewport units regardless of the asset.
-  const longEdge = (image as { longEdge?: number }).longEdge ?? TARGET_LONG_EDGE;
+  // viewport units regardless of the asset. On mobile the long edge is
+  // halved (MOBILE_SCALE) so the figure doesn't dominate the screen.
+  const baseLongEdge = (image as { longEdge?: number }).longEdge ?? TARGET_LONG_EDGE;
+  const isMobile =
+    typeof window !== 'undefined' && window.innerWidth < MOBILE_BREAKPOINT_PX;
+  const longEdge = baseLongEdge * (isMobile ? MOBILE_SCALE : 1);
   const scale = longEdge / Math.max(image.w, image.h);
   const w = Math.round(image.w * scale);
   const h = Math.round(image.h * scale);

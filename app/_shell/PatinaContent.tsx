@@ -2,12 +2,12 @@ import Image from 'next/image';
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { ExternalLink } from '../../src/components/ExternalLink/ExternalLink';
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
-import { PatinaHeroAnimation } from './PatinaHeroAnimation';
-import { WallpaperScene } from './WallpaperScene';
+import { PatinaHeroVideo } from './PatinaHeroVideo';
+import { PhoneCrossfade } from './PhoneCrossfade';
 
 // EXPLORATION — promote colors to tokens before merging.
 // Cream background used inside Q&A cards; matches the article-container fill in Figma.
-const QA_CARD_BG = '#FFF9EF';
+const QA_CARD_BG = '#FFFCF7';
 
 const METADATA_LINES = [
   'Role .......... Solo design and vibe coding, end to end',
@@ -61,23 +61,14 @@ const QA = {
   next: {
     question: "What's the next version of Patina?",
     answer:
-      "After gathering more feedback and analysing analytics, the next version focuses on three things. A 14-day free trial followed by a paid tier for continued use. A colour vision accessibility solution for users the current version doesn't serve well enough. And better instrumentation to actually measure whether the signal is changing behaviour, not just whether it's being noticed.",
+      "After gathering more feedback and analysing analytics, the next version focuses on four things. A 14-day free trial followed by a paid tier for continued use. A colour vision accessibility solution for users the current version doesn't serve well enough. Better instrumentation to actually measure whether the signal is changing behaviour, not just whether it's being noticed. And improving UI, some gradients are off.",
   },
 };
 
 function HeroImage() {
   return (
     <div className="shrink-0 w-full h-[calc(100dvh-80px)] rounded-sm overflow-hidden bg-background-hero relative">
-      <video
-        src="/patina/patina-hero-video.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster="/patina/hero.png"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+      <PatinaHeroVideo />
     </div>
   );
 }
@@ -88,7 +79,7 @@ function DescriptionMetadata() {
       className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
       style={{ backgroundColor: QA_CARD_BG }}
     >
-      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-secondary">
+      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
         <span className="text-heading-lg">Patina,</span> a screen time awareness app that tints your wallpaper as you use your phone. I designed, vibe coded and shipped it. Solo human + AI, zero to one.
       </p>
       <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col text-metadata-md text-text-secondary">
@@ -266,7 +257,11 @@ export function PatinaContent() {
       </RevealOnScroll>
 
       <RevealOnScroll>
-        <PatinaHeroAnimation />
+        <FillImage
+          src="/patina/color-banner.png"
+          alt="Patina colour palette banner"
+          aspect="aspect-[2434/1406]"
+        />
       </RevealOnScroll>
 
       <RevealOnScroll>
@@ -275,12 +270,8 @@ export function PatinaContent() {
             <QACard {...QA.impulse} />
             <QACard {...QA.colourBlind} />
           </div>
-          <FillImage src="/patina/patina-logo.jpg" alt="Patina brand mark over warm gradient" aspect="aspect-[605/750]" zoom={1.2} />
+          <PhoneCrossfade />
         </section>
-      </RevealOnScroll>
-
-      <RevealOnScroll>
-        <WallpaperScene />
       </RevealOnScroll>
 
       {/* Row 1 — two Q&As side by side */}
@@ -299,6 +290,15 @@ export function PatinaContent() {
         </section>
       </RevealOnScroll>
 
+      {/* Full-width Patina website preview */}
+      <RevealOnScroll>
+        <FillImage
+          src="/patina/patina-site.png"
+          alt="Patina website preview"
+          aspect="aspect-[2434/1616]"
+        />
+      </RevealOnScroll>
+
       {/* Rows 3–4 — two Q&As stacked on the left, landing.png spans both
           on the right */}
       <RevealOnScroll>
@@ -307,7 +307,7 @@ export function PatinaContent() {
             <QACard {...QA.giveUp} />
             <QACard {...QA.next} />
           </div>
-          <FillImage src="/patina/landing.png" alt="Patina landing-page preview" aspect="aspect-[605/750]" />
+          <FillImage src="/patina/patina-logo.jpg" alt="Patina brand mark over warm gradient" aspect="aspect-[605/750]" zoom={1.2} />
         </section>
       </RevealOnScroll>
     </div>

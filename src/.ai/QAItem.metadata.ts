@@ -2,7 +2,7 @@ export const componentMetadata = {
   component: {
     name: 'QAItem',
     category: 'molecules',
-    description: 'Question and answer pair. Size=sm for the About page, Size=lg for use-case articles.',
+    description: 'Question and answer pair. Size=lg is responsive (sm typography on mobile, lg on desktop) and is the right default everywhere. Size=sm locks to compact typography on every viewport.',
     type: 'display',
   },
   usage: {
@@ -49,6 +49,6 @@ export const componentMetadata = {
   aiHints: {
     priority: 'high',
     keywords: ['qa', 'question', 'answer', 'faq', 'interview', 'article'],
-    context: "Use size='sm' on the About page and size='lg' inside use-case articles — not interchangeable",
+    context: "Use size='lg' as the default — it's responsive and degrades to compact typography on mobile automatically. Use size='sm' only when you want compact typography to stay even at desktop widths.",
   },
 } as const;
