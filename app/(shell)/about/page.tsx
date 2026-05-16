@@ -13,11 +13,18 @@
 //      as they cross into view. The cards are solid white and visually
 //      cover the ring backdrop where they sit.
 
+import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { QAItem } from '../../../src/components/QAItem/QAItem';
 import { RevealOnScroll } from '../../../src/components/RevealOnScroll/RevealOnScroll';
 import { AboutHeroDescription } from './AboutHeroDescription';
 import { AboutLetterRing, type AboutLetter } from './AboutLetterRing';
+
+export const metadata: Metadata = {
+  title: 'About',
+  description:
+    'About Fátima Cunha — senior product designer with 18 years across consumer and enterprise products.',
+};
 
 const DESCRIPTION =
   'Senior product designer with 18 years of experience across consumer and enterprise products. Vodafone, PizzaHut, NOS, Herc Rentals, Sonae.';

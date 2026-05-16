@@ -225,7 +225,10 @@ export function Shell({ children }: ShellProps) {
 
         {/* Mobile flow (non-home, non-about) */}
         {!showHomeStack && !isAbout && (showMobileOverlay ? (
-          <main className="md:hidden flex flex-col gap-8">
+          // -mt-4 pulls the back button up 16px into the empty header
+          // scaffolding above (pt-6 + h-6 ≈ 48px), landing it ~32px
+          // from the top of the screen.
+          <main className="md:hidden flex flex-col gap-8 -mt-4">
             <BackButton href="/work" ariaLabel="Back to Work" />
             <RightContent />
           </main>

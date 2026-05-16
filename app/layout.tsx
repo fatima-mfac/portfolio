@@ -22,8 +22,36 @@ const bungeeShade = Bungee_Shade({
 });
 
 export const metadata: Metadata = {
-  title: "Fátima Cunha",
+  // Absolute base for resolving og:image and other relative URLs —
+  // social scrapers require absolute URLs.
+  metadataBase: new URL("https://fatimacunha.com"),
+  title: {
+    default: "Fátima Cunha",
+    // Child pages set a bare title (e.g. "About") → "About — Fátima Cunha".
+    template: "%s — Fátima Cunha",
+  },
   description: "Portfolio of Fátima Cunha, senior product designer.",
+  openGraph: {
+    type: "website",
+    siteName: "Fátima Cunha",
+    title: "Fátima Cunha",
+    description: "Portfolio of Fátima Cunha, senior product designer.",
+    url: "https://fatimacunha.com",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Fátima Cunha — senior product designer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fátima Cunha",
+    description: "Portfolio of Fátima Cunha, senior product designer.",
+    images: ["/og.jpg"],
+  },
 };
 
 export default function RootLayout({

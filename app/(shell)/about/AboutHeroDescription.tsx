@@ -13,7 +13,9 @@ const FADE_DISTANCE_VH = 0.5;
 // while it fades so the motion has direction.
 const TRANSLATE_END_PX = 80;
 
-// Contact links shown below the description.
+// Contact links shown below the description. CV_URL points at a PDF in
+// public/ — opening it in a new tab renders the PDF inline.
+const CV_URL = '/cv.pdf';
 const LINKEDIN_URL = 'https://www.linkedin.com/in/fatimacunhadesigner/';
 const EMAIL = 'allears@fatimacunha.com';
 
@@ -126,6 +128,14 @@ export function AboutHeroDescription({ children }: { children: ReactNode }) {
             className="flex justify-center gap-8 text-metadata-md"
             style={{ pointerEvents: progress > 0.1 ? 'none' : 'auto' }}
           >
+            <a
+              href={CV_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-text-secondary hover:text-text-accent transition-colors duration-fast ease-out no-underline"
+            >
+              CV
+            </a>
             <a
               href={LINKEDIN_URL}
               target="_blank"
