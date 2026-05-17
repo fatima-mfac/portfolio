@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { QAItem } from '../../src/components/QAItem/QAItem';
-import { ExternalLink } from '../../src/components/ExternalLink/ExternalLink';
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
 import { FleetCrossfade } from './FleetCrossfade';
 
@@ -80,7 +79,6 @@ function DescriptionMetadata() {
             {line}
           </span>
         ))}
-        <ExternalLink url="hercrentals.com" className="mt-10 @[768px]:mt-4" />
       </div>
     </div>
   );
@@ -161,7 +159,7 @@ export function HercRentalsContent() {
       {/* Section 1: phone card LEFT | two Q&As stacked RIGHT */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <FillImage src="/herc/phone-gradient.png" alt="Herc Rentals app — phone mockup with brand gradient" aspect="aspect-[605/750]" />
+          <FillImage src="/herc/phone-gradient.webp" alt="Herc Rentals app — phone mockup with brand gradient" aspect="aspect-[605/750]" />
           <div className="grid grid-rows-2 gap-2 h-full">
             <QACard {...QA.whatItSolves} />
             <QACard {...QA.role} />
@@ -180,10 +178,10 @@ export function HercRentalsContent() {
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
           <div className="grid grid-rows-2 gap-2 h-full">
             <QACard {...QA.ui} />
-            <FillImage src="/herc/map-pins.png" alt="Map view with equipment pins" aspect="aspect-[605/440]" />
+            <FillImage src="/herc/map-pins.webp" alt="Map view with equipment pins" aspect="aspect-[605/440]" />
           </div>
           <div className="grid grid-rows-2 gap-2 h-full">
-            <FillImage src="/herc/equipment-phone.png" alt="Herc Rentals app — equipment selected card" aspect="aspect-[605/440]" />
+            <FillImage src="/herc/equipment-phone.webp" alt="Herc Rentals app — equipment selected card" aspect="aspect-[605/440]" />
             <QACard {...QA.hardest} />
           </div>
         </section>
@@ -192,7 +190,7 @@ export function HercRentalsContent() {
       {/* Section 3: phone card LEFT | two Q&As stacked RIGHT */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <FillImage src="/herc/phone-card.png" alt="Herc Rentals app — equipment list" aspect="aspect-[605/750]" />
+          <FillImage src="/herc/phone-card.webp" alt="Herc Rentals app — equipment list" aspect="aspect-[605/750]" />
           <div className="grid grid-rows-2 gap-2 h-full">
             <QACard {...QA.adoption} />
             <QACard {...QA.differently} />

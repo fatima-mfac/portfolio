@@ -40,8 +40,8 @@ const DEFAULT_NAV_MOBILE: NavLink[] = [
 
 const DEFAULT_PROJECTS: ProjectLink[] = [
   { label: 'Patina', slug: 'patina' },
-  { label: 'Vodafone', slug: 'vodafone' },
   { label: 'Zebra Finch', slug: 'zebra-finch' },
+  { label: 'Vodafone', slug: 'vodafone' },
   { label: 'Herc Rentals', slug: 'herc-rentals' },
 ];
 

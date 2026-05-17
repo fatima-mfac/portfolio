@@ -65,6 +65,11 @@ const QUESTIONS: Array<{
       "I wanted the intimacy with a product that consultancy couldn't give me. To stay long enough with a challenge and help shape not just the experience but also the vision.\n\nSo I took a break to travel, study and get more creative. I painted, wrote, built an app, an agentic design system, and learned how to work with AI as a creative partner. Now I'm ready to get back.",
   },
   {
+    question: 'What were you working on before you left?',
+    answer:
+      'When I left Deloitte, I was leading the redesign of the Pizza Hut Portugal app. I was also leading the AI adoption across the design team, including internal training.',
+  },
+  {
     question: 'What do you want to do next?',
     answer:
       "Work on a great product, with challenging ideas, with smart, humble people. I would love to find a great team where we push each other to be the best possible, to help teams embrace not being satisfied with the first answer. I'm good at that.\n\nIdeally a product company or early stage startup where design actually shapes what gets built. Remote or Porto based.",
@@ -164,15 +169,17 @@ export default function AboutPage() {
           backdrop below; the cards container re-enables them. */}
       <section aria-label="About" className="relative pointer-events-none">
         {/* First viewport — spacer above the cards. Shorter than a full
-            viewport so the first card peeks at the bottom with just its
-            question visible (~100px of peek).
+            viewport so the first card sits just below the contact links
+            and the second card peeks beneath it, both as a scroll
+            affordance (~265px of peek — kept small enough that card 1
+            never overlaps the links, even on a short ~812px phone).
             - Mobile: document scroll, main sits below the header → the
-              spacer subtracts header (~80px) + peek (~100px) = 180px.
+              spacer subtracts header (~80px) + peek (~265px) = 345px.
             - Desktop: main fills the viewport (Shell.tsx makes it
               md:absolute md:inset-0), so the header doesn't shift the
-              main down → only peek (~100px) is subtracted.
+              main down → only peek (~265px) is subtracted.
             Tune the peek by changing the px values. */}
-        <div className="h-[calc(100dvh-180px)] md:h-[calc(100dvh-100px)]" aria-hidden="true" />
+        <div className="h-[calc(100dvh-345px)] md:h-[calc(100dvh-265px)]" aria-hidden="true" />
 
         {/* Q&A cards. The first card peeks at the bottom on initial
             load as a scroll affordance — but the whole stack stays
@@ -190,7 +197,7 @@ export default function AboutPage() {
             to   { opacity: 1; transform: translateY(0); }
           }
           .about-cards-stage-in {
-            animation: about-cards-stage-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+            animation: about-cards-stage-in 1s cubic-bezier(0.16, 1, 0.3, 1) 1s both;
           }
           @media (prefers-reduced-motion: reduce) {
             .about-cards-stage-in { animation: none; }
@@ -210,14 +217,14 @@ export default function AboutPage() {
               </article>
             );
 
-            // The first card is staged in by the surrounding
-            // about-cards-stage-in wrapper (opacity 0 → 1, drift up).
-            // Wrapping it ALSO in RevealOnScroll breaks on desktop:
-            // the card peeks below the IntersectionObserver's -12%
-            // rootMargin threshold during the initial transform, so
-            // RevealOnScroll never reveals, and the wrapper's
-            // animation can't override the inline opacity:0.
-            if (i === 0) {
+            // The first two cards are staged in by the surrounding
+            // about-cards-stage-in wrapper (opacity 0 → 1, drift up) so
+            // both are visible in the initial peek. Wrapping them ALSO
+            // in RevealOnScroll breaks: a peeking card sits below the
+            // IntersectionObserver's -12% rootMargin threshold during
+            // the initial transform, so RevealOnScroll never reveals
+            // and the wrapper's animation can't override opacity:0.
+            if (i <= 1) {
               return (
                 <div key={i} className="w-full max-w-[605px]">
                   {article}
