@@ -26,8 +26,10 @@ interface Step {
   tag?: string;
   /** Optional supporting image rendered to the right of the step on desktop.
    *  width/height in pixels — matches the natural size from Figma so we
-   *  don't upscale or distort the source image. */
-  image?: { src: string; alt: string; width: number; height: number };
+   *  don't upscale or distort the source image.
+   *  fullWidth makes the image span the whole text column instead of the
+   *  default fixed 300px. */
+  image?: { src: string; alt: string; width: number; height: number; fullWidth?: boolean };
 }
 
 const STEPS: Step[] = [
@@ -56,6 +58,7 @@ const STEPS: Step[] = [
       alt: 'Component metadata file showing antiPatterns, composition, and behavior',
       width: 555,
       height: 314,
+      fullWidth: true,
     },
   },
   {
@@ -167,7 +170,7 @@ function NumberBadge({ n }: { n: number }) {
 
 function ProgressTag({ label }: { label: string }) {
   return (
-    <div className="inline-flex items-center justify-center pt-[2px] pb-[3px] px-2 rounded-md bg-background-hero">
+    <div className="self-center inline-flex items-center justify-center pt-[2px] pb-[3px] px-2 rounded-md bg-background-hero">
       {/* text-body-sm bundles a book weight + a paragraph line-height
           (2). font-medium! bumps the weight to 500; leading-none!
           collapses the tall line box so the tag sits compact. */}
@@ -177,14 +180,15 @@ function ProgressTag({ label }: { label: string }) {
 }
 
 function StepImage({ image }: { image: NonNullable<Step['image']> }) {
-  // Fixed 300px wide; height auto-scales to the source aspect.
+  // Default 300px wide; fullWidth images span the whole text column.
+  // Height auto-scales to the source aspect either way.
   return (
     <img
       src={image.src}
       alt={image.alt}
       width={image.width}
       height={image.height}
-      className="block w-[300px] h-auto rounded-sm"
+      className={`block h-auto rounded-sm ${image.fullWidth ? 'w-full' : 'w-[300px]'}`}
     />
   );
 }
@@ -261,8 +265,8 @@ function PrinciplesSection() {
 
 function StackSection() {
   return (
-    <section className="flex flex-col gap-6 max-w-[700px]">
-      <p className="text-heading-xl-semibold text-text-primary">My stack</p>
+    <section className="flex flex-col gap-6 mx-auto max-w-[700px] w-full">
+      <p className="text-heading-xl text-text-primary">My stack</p>
       <ul className="flex flex-nowrap gap-x-8 items-center">
         {STACK.map((tool) => (
           <li key={tool.name} className="flex items-center gap-2 whitespace-nowrap">
@@ -279,7 +283,7 @@ function StackSection() {
 
 export function ZebraFinchContent() {
   return (
-    <div className="@container flex flex-col gap-16">
+    <div className="@container flex flex-col gap-16 pb-28">
       {/* Hero + description sit together with a tight 8px gap; the wider
           gap-16 above applies between this pair and the next section. */}
       <div className="flex flex-col gap-2">
