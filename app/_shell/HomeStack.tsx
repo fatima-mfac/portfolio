@@ -48,7 +48,7 @@ const CARDS: Card[] = [
     id: 'intro',
     project: 'patina',
     label: 'FATIMA CUNHA',
-    description: "I like to improve products. Lately I've been building my own app and an agentic design system.",
+    description: "I build and improve products. Lately I shipped my own app and created an agentic design system.",
     image: '/patina/home1.webp',
     categories: ['Product Thinking', 'AI Native'],
     bg: '#F0F1FA',
@@ -76,7 +76,7 @@ const CARDS: Card[] = [
   {
     id: 'zebra-pipeline',
     project: 'zebra-finch',
-    label: 'ZEBRA FINTCH',
+    label: 'ZEBRA FINCH',
     description:
       'Built a working agentic pipeline where the AI generates interfaces using only the design system. No hallucinations.',
     image: '/zebra-finch/zebra2.webp',
@@ -94,11 +94,11 @@ const CARDS: Card[] = [
     bg: '#F0F1FA',
   },
   {
-    id: 'patina-behaviour',
+    id: 'patina-behavior',
     project: 'patina',
     label: 'APP PATINA',
     description:
-      'Took on the challenge of interrupting one of the most automatic human behaviours.',
+      'Took on the challenge of interrupting one of the most automatic human behaviors.',
     image: '/patina/home1.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
@@ -128,7 +128,7 @@ const CARDS: Card[] = [
     project: 'patina',
     label: 'APP PATINA',
     description:
-      'Set up analytics to measure if a colour seen for two seconds changes what you do next.',
+      'Set up analytics to measure if a color seen for two seconds changes what you do next.',
     image: '/patina/patina3.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
@@ -138,7 +138,7 @@ const CARDS: Card[] = [
     project: 'vodafone',
     label: 'VODAFONE',
     description:
-      'Partnered with research to define what to test and how. Was present in every user testing session to see how users reacted to what I designed.',
+      'Joined every user testing session. Watched users react to my work as it happened.',
     image: '/vodafone/home2.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
@@ -259,7 +259,7 @@ function FocusedContent({
   const headingFont = mobile ? 32 : 56;
   const headingLine = mobile ? '36px' : '60px';
   // Cards without a project link (e.g. the homepage intro) render as
-  // a static block — no hover colour change, no navigation.
+  // a static block — no hover color change, no navigation.
   const isStatic = card.id === 'intro';
 
   const labelEl = (
@@ -294,12 +294,9 @@ function FocusedContent({
   );
 
   if (isStatic) {
-    // The intro card has two highlighted phrases ("app", "agentic design
-    // system") that turn hero-coloured on hover. We render the heading
-    // manually here (instead of via SplitWords) so the highlight spans
-    // can wrap multiple words and react as a single group.
-    const highlightClass =
-      'transition-colors duration-fast ease-out hover:text-[var(--color-background-hero)] cursor-default';
+    // The intro card heading has a manual line break after "products.",
+    // so we render it here with InlineWords + <br /> instead of via
+    // SplitWords (which only accepts a flat string).
     return (
       <div
         ref={refEl as React.RefObject<HTMLDivElement | null>}
@@ -314,18 +311,9 @@ function FocusedContent({
             letterSpacing: '-2px',
           }}
         >
-          <InlineWords text="I like to improve products. Lately I've been building my own" />
-          {' '}
-          <span className={highlightClass}>
-            <InlineWords text="app" />
-          </span>
-          {' '}
-          <InlineWords text="and an" />
-          {' '}
-          <span className={highlightClass}>
-            <InlineWords text="agentic design system" />
-          </span>
-          .
+          <InlineWords text="I build and improve products." />
+          <br />
+          <InlineWords text="Lately I shipped my own app and created an agentic design system." />
         </p>
       </div>
     );
@@ -369,6 +357,19 @@ export function HomeStack() {
   useEffect(() => {
     const id = window.setTimeout(() => setCardsEntered(true), 1100);
     return () => window.clearTimeout(id);
+  }, []);
+  // On mobile, skip the homepage intro motion entirely: present the
+  // headline, filters, and cards in their settled state from the first
+  // paint. Desktop keeps the parked-cards intro that the first scroll
+  // consumes. Runs in a layout effect so the correction lands before
+  // the browser paints — no flash, no animation.
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(min-width: 768px)').matches) return;
+    cardsLoweredRef.current = false;
+    setCardsLowered(false);
+    setHeadlineRevealed(true);
+    setCardsEntered(true);
   }, []);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerH, setContainerH] = useState(800);

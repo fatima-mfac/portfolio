@@ -7,7 +7,7 @@ import type { PointerEvent, TransitionEvent } from 'react';
 // it auto-advances on a slow timer, a hovering mouse pauses it, and a
 // horizontal drag (or a dot click) steps between screens.
 //
-// EXPLORATION — #FFF9EF cream is a hardcoded hex (matches the colour
+// EXPLORATION — #FFF9EF cream is a hardcoded hex (matches the color
 // used in WallpaperScene); promote to a token before merging.
 const IMAGES = [
   { src: '/herc/fleet1.webp', alt: 'Fleet utilization dashboard' },

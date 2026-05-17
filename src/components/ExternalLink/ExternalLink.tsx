@@ -23,7 +23,7 @@ export function ExternalLink({ url, href, state = 'default', className }: Extern
       {url}
       {/* Arrow-up-right glyph — signals the link opens in a new tab.
           Sized in `em` so it tracks the link's font-size; stroke uses
-          currentColor so it inherits the default/hover colour. */}
+          currentColor so it inherits the default/hover color. */}
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"

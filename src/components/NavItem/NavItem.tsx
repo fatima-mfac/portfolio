@@ -14,7 +14,7 @@ interface NavItemProps {
 }
 
 export function NavItem({ label, href = '#', state = 'default', className, onClick }: NavItemProps) {
-  // Active and hover share one emphasised look: accent-secondary (the
+  // Active and hover share one emphasized look: accent-secondary (the
   // hero orange — accent-secondary === background-hero, orange-600)
   // plus a heavier weight. `text-body-lg` bundles a book weight, so
   // `font-medium!` (important) overrides only the weight — size and

@@ -20,27 +20,27 @@ const QA = {
   whyBuild: {
     question: 'Why did you build Patina?',
     answer:
-      "I wanted to use my phone less, and I was tired of seeing other people get lost into a device. Other apps solve this through notifications or restrictions, but notifications are easy to ignore, we get too many to notice one more, and restrictions feel like punishment. So I thought about colour, something that changes gradually through the day so you notice it before you even unlock. Simple, quiet, no judgment. For people who want awareness, not discipline tools.",
+      "I wanted to use my phone less, and I was tired of seeing people get lost in their devices. Other apps solve this through notifications or restrictions, but notifications are easy to ignore, we get too many to notice one more, and restrictions feel like punishment. So I thought about color, something that changes gradually through the day so you notice it before you even unlock. Simple, quiet, no judgment. For people who want awareness, not discipline tools.",
   },
   validate: {
     question: 'How did you validate the concept before starting?',
     answer:
-      "Before designing anything I spent one hour manually creating tinted versions of the same wallpaper and set up Android's automation tool to swap them at different times of day. Then I tried it for two days. The colour shifts were noticeable and not annoying, so I decided it was worth building it, at least for myself, and it was a chance to experiment with vibe coding and ship a real product solo.",
+      "Before designing anything I spent one hour manually creating tinted versions of the same wallpaper and set up Android's automation tool to swap them at different times of day. Then I tried it for two days. The color shifts were noticeable and not annoying, so I decided it was worth building it, at least for myself, and it was a chance to experiment with vibe coding and ship a real product solo.",
   },
   impulse: {
-    question: 'Can colour actually change an automatic impulse?',
+    question: 'Can color actually change an automatic impulse?',
     answer:
-      "Reaching for the phone is a deep habit that's difficult to break, which is why I chose colour, it carries meaning we don't have to learn. Yellow and red signal warning across cultures, so my bet was that something this embedded could hold meaning even after repeated exposure, when most signals lose their impact.\n\nFirst users said the colour made them pause before unlocking. Some put the phone down, so the results are promising but I'm still measuring whether it holds up over time, and what could make the signal stronger.",
+      "Reaching for the phone is a deep habit that's difficult to break, which is why I chose color, it carries meaning we don't have to learn. Yellow and red signal warning across cultures, so my bet was that something this embedded could hold meaning even after repeated exposure, when most signals lose their impact.\n\nFirst users said the color made them pause before unlocking. Some put the phone down, so the results are promising but I'm still measuring whether it holds up over time, and what could make the signal stronger.",
   },
-  colourBlind: {
-    question: 'What if you are colour blind?',
+  colorBlind: {
+    question: 'What if you are color blind?',
     answer:
-      "I thought about that limitation from the beginning and I tested the colours for colour blindness. They read differently but not differently enough to make the signal clear. I made the decision to design for most users first and ship. I'm working now on a solution for people with colour vision differences.",
+      "I thought about that limitation from the beginning and I tested the colors for color blindness. They read differently but not differently enough to make the signal clear. I made the decision to design for most users first and ship. I'm working now on a solution for people with color vision differences.",
   },
   minimalist: {
     question: 'The app experience is very minimalist. Why?',
     answer:
-      "Every decision followed three rules: quiet, simple, no friction. Anything that didn't meet them was removed. Visually, the app had to feel warm, calm, and easy to use. The homepage reflects that: your daily screen time limit and active wallpaper are visible upfront, with no need to open a settings page.\n\nAt the same time, there's a subtle living element that shifts colour over time, mirroring the wallpaper. It's just colour and shape moving slowly, intended to create a calming effect and gently slow you down.",
+      "Every decision followed three rules: quiet, simple, no friction. Anything that didn't meet them was removed. Visually, the app had to feel warm, calm, and easy to use. The homepage reflects that: your daily screen time limit and active wallpaper are visible upfront, with no need to open a settings page.\n\nAt the same time, there's a subtle living element that shifts color over time, mirroring the wallpaper. It's just color and shape moving slowly, intended to create a calming effect and gently slow you down.",
   },
   name: {
     question: 'Why the name Patina?',
@@ -49,19 +49,19 @@ const QA = {
   },
   websiteIntro: {
     question:
-      "The website intro has a completely different visual style from Patina's colour palette and vibe. Why?",
+      "The website intro has a completely different visual style from Patina's color palette and vibe. Why?",
     answer:
-      'I wanted to tell a story of a problem that meets a solution. So I thought about what visual environment could express the feeling of being trapped, of repetition with no control. Black and white felt right for that, it reinforces the heaviness of it. Then colour arrives as the solution. You snap out of the repetition and back into the real colourful world. That contrast is intentional.',
+      'I wanted to tell a story of a problem that meets a solution. So I thought about what visual environment could express the feeling of being trapped, of repetition with no control. Black and white felt right for that, it reinforces the heaviness of it. Then color arrives as the solution. You snap out of the repetition and back into the real colorful world. That contrast is intentional.',
   },
   giveUp: {
     question: 'What almost made you give up?',
     answer:
-      "The tint wasn't resetting overnight automatically. You had to open the app, which destroyed the core concept. The whole point was that it works silently in the background without you doing anything.\n\nI kept pushing with AI until we found the answer together. But that solution added some friction. So I had to make a decision: accept some friction at onboarding so the core concept could live.\n\nWhile testing with users I realised that tradeoff might cost me more than I thought. I iterated and I'm still measuring the results.",
+      "The tint wasn't resetting overnight automatically. You had to open the app, which destroyed the core concept. The whole point was that it works silently in the background without you doing anything.\n\nI kept pushing with AI until we found the answer together. But that solution added some friction. So I had to make a decision: accept some friction at onboarding so the core concept could live.\n\nWhile testing with users I realized that tradeoff might cost me more than I thought. I iterated and I'm still measuring the results.",
   },
   next: {
     question: "What's the next version of Patina?",
     answer:
-      "After gathering more feedback and analysing analytics, the next version focuses on four things. A 14-day free trial followed by a paid tier for continued use. A colour vision accessibility solution for users the current version doesn't serve well enough. Better instrumentation to actually measure whether the signal is changing behaviour, not just whether it's being noticed. And improving UI, some gradients are off.",
+      "After gathering more feedback and analyzing analytics, the next version focuses on four things. A 14-day free trial followed by a paid tier for continued use. A color vision accessibility solution for users the current version doesn't serve well enough. Better instrumentation to actually measure whether the signal is changing behavior, not just whether it's being noticed. And fixing visual polish, particularly adjusting some gradients that feel slightly off.",
   },
 };
 
@@ -259,7 +259,7 @@ export function PatinaContent() {
       <RevealOnScroll>
         <FillImage
           src="/patina/color-banner.webp"
-          alt="Patina colour palette banner"
+          alt="Patina color palette banner"
           aspect="aspect-[2434/1406]"
         />
       </RevealOnScroll>
@@ -268,7 +268,7 @@ export function PatinaContent() {
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
           <div className="grid grid-rows-2 gap-2 h-full">
             <QACard {...QA.impulse} />
-            <QACard {...QA.colourBlind} />
+            <QACard {...QA.colorBlind} />
           </div>
           <PhoneCrossfade />
         </section>
