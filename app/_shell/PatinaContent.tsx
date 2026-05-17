@@ -187,17 +187,17 @@ function FillImage({
 
 /**
  * Phone-card slot: the phone is centered with at least 300px of padding
- * inside the cell so it floats in cream. The skin.png is the visible
+ * inside the cell so it floats in cream. The skin.webp is the visible
  * phone frame; the main-video plays inside that frame's screen area.
  */
 function PhoneVideoCard() {
   return (
     <div
       className="w-full h-full rounded-sm relative flex items-center justify-center"
-      style={{ backgroundColor: QA_CARD_BG, padding: '150px', minHeight: '900px' }}
+      style={{ backgroundColor: '#FFF9EF', padding: '150px', minHeight: '900px' }}
     >
       <div className="relative h-full aspect-[640/1386]" style={{ transform: 'scale(1.15)' }}>
-        {/* Video sits inside the phone's screen area. The skin.png has
+        {/* Video sits inside the phone's screen area. The skin.webp has
             a transparent middle, so the video shows through. Inset
             percentages are eyeballed to the skin's screen cut-out — tune
             if the video pokes out of the bezel. */}
@@ -219,7 +219,7 @@ function PhoneVideoCard() {
           }}
         />
         <Image
-          src="/patina/skin.png"
+          src="/patina/skin.webp"
           alt="Patina app frame"
           fill
           sizes="640px"
@@ -258,7 +258,7 @@ export function PatinaContent() {
 
       <RevealOnScroll>
         <FillImage
-          src="/patina/color-banner.png"
+          src="/patina/color-banner.webp"
           alt="Patina colour palette banner"
           aspect="aspect-[2434/1406]"
         />
@@ -285,7 +285,7 @@ export function PatinaContent() {
       {/* Row 2 — "Been living…" image on the left, websiteIntro Q&A on the right */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <FillImage src="/patina/quote-card-2.png" alt="Been living inside your phone? quote" aspect="aspect-[605/440]" />
+          <FillImage src="/patina/quote-card-2.webp" alt="Been living inside your phone? quote" aspect="aspect-[605/440]" />
           <QACard {...QA.websiteIntro} />
         </section>
       </RevealOnScroll>
@@ -293,13 +293,13 @@ export function PatinaContent() {
       {/* Full-width Patina website preview */}
       <RevealOnScroll>
         <FillImage
-          src="/patina/patina-site.png"
+          src="/patina/patina-site.webp"
           alt="Patina website preview"
           aspect="aspect-[2434/1616]"
         />
       </RevealOnScroll>
 
-      {/* Rows 3–4 — two Q&As stacked on the left, landing.png spans both
+      {/* Rows 3–4 — two Q&As stacked on the left, landing.webp spans both
           on the right */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
@@ -307,7 +307,7 @@ export function PatinaContent() {
             <QACard {...QA.giveUp} />
             <QACard {...QA.next} />
           </div>
-          <FillImage src="/patina/patina-logo.jpg" alt="Patina brand mark over warm gradient" aspect="aspect-[605/750]" zoom={1.2} />
+          <FillImage src="/patina/patina-logo.webp" alt="Patina brand mark over warm gradient" aspect="aspect-[605/750]" zoom={1.2} />
         </section>
       </RevealOnScroll>
     </div>

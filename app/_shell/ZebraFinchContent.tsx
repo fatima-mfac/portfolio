@@ -38,10 +38,10 @@ const STEPS: Step[] = [
     title: 'Created six custom skills.',
     body: "Each step in the pipeline is a documented procedure the agent follows, not an improvised prompt. The first versions didn't work. I refined each one by running it, watching what failed, and editing.",
     image: {
-      src: '/zebra-finch/skills.png',
+      src: '/zebra-finch/skills.webp',
       alt: 'Claude Code skills panel listing custom skills',
-      width: 314,
-      height: 280,
+      width: 600,
+      height: 644,
     },
   },
   {
@@ -54,10 +54,10 @@ const STEPS: Step[] = [
     title: 'Metadata file per component',
     body: 'Every component has a metadata file beside it that acts as a complete spec for the agent. Beyond name and category, it holds use cases, anti-patterns with alternatives, accessibility specs, and AI-specific hints (keywords, priority, context). The anti-patterns matter most: they tell the agent "don\'t use this in context X, use Y instead." Without this layer, the agent reinvents what already exists or misuses what does.',
     image: {
-      src: '/zebra-finch/metadata-code.png',
+      src: '/zebra-finch/metadata-code.webp',
       alt: 'Component metadata file showing antiPatterns, composition, and behavior',
-      width: 555,
-      height: 314,
+      width: 600,
+      height: 339,
       fullWidth: true,
     },
   },
@@ -214,8 +214,8 @@ function ProcessStep({ step }: { step: Step }) {
 
 function ProcessSection() {
   // Steps with a supporting image render it ABOVE the step text in the
-  // flow (instead of beside the step). Currently step 1 has skills.png
-  // and step 3 has metadata-code.png.
+  // flow (instead of beside the step). Currently step 1 has skills.webp
+  // and step 3 has metadata-code.webp.
   return (
     <section className="flex flex-col gap-10 pt-8 mx-auto max-w-[700px] w-full">
       <RevealOnScroll>

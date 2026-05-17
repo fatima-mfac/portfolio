@@ -14,8 +14,8 @@ import { useEffect, useRef, useState } from 'react';
 //     is more rectangular than oval; the rotated AABB grows on the
 //     diagonal so the visible body bounces at the edge accurately.
 const IMAGES = [
-  { src: '/screensaver/astronaut-dog.png', alt: 'Astronaut with dog', w: 292, h: 372, tight: 1, longEdge: 324, bounceModel: 'rect' },
-  { src: '/screensaver/astronaut.png', alt: 'Astronaut floating', w: 663, h: 672, tight: 0.85, longEdge: 520, bounceModel: 'ellipse' },
+  { src: '/screensaver/astronaut-dog.webp', alt: 'Astronaut with dog', w: 292, h: 372, tight: 1, longEdge: 324, bounceModel: 'rect' },
+  { src: '/screensaver/astronaut.webp', alt: 'Astronaut floating', w: 663, h: 672, tight: 0.85, longEdge: 520, bounceModel: 'ellipse' },
 ] as const;
 
 const IDLE_MS = 60000; // 60s idle before the screensaver kicks in
@@ -28,6 +28,110 @@ const SPIN_DEG_PER_SEC = 18; // slow continuous rotation
 // tokens.css; keep in sync if that token changes.
 const MOBILE_BREAKPOINT_PX = 828;
 const MOBILE_SCALE = 0.5;
+
+// User-activity events that reset the idle timer and dismiss the
+// screensaver. Shared by the idle and dismiss effects.
+const ACTIVITY_EVENTS: Array<keyof WindowEventMap> = [
+  'mousemove',
+  'mousedown',
+  'keydown',
+  'wheel',
+  'touchstart',
+  'touchmove',
+  'scroll',
+];
+
+/**
+ * Every window to watch for activity: the top window plus any
+ * same-origin iframes. Events inside an iframe (e.g. the Herc geofence
+ * prototype) don't bubble to the parent, so the parent window alone
+ * never sees interaction that happens over an embedded frame.
+ */
+function getActivityWindows(): Window[] {
+  const wins: Window[] = [window];
+  document.querySelectorAll('iframe').forEach((frame) => {
+    try {
+      // Reading contentDocument throws for cross-origin frames.
+      if (frame.contentWindow && frame.contentDocument) {
+        wins.push(frame.contentWindow);
+      }
+    } catch {
+      /* cross-origin frame — not observable, skip */
+    }
+  });
+  return wins;
+}
+
+/**
+ * Binds `handler` to every activity event on the top window and all
+ * same-origin iframes, keeping the binding correct as iframes load or
+ * are added/removed by client-side navigation. Returns a cleanup fn.
+ */
+function watchActivity(handler: () => void): () => void {
+  let bound: Window[] = [];
+
+  const unbind = () => {
+    bound.forEach((w) => {
+      try {
+        ACTIVITY_EVENTS.forEach((e) => w.removeEventListener(e, handler));
+      } catch {
+        /* frame window already torn down */
+      }
+    });
+    bound = [];
+  };
+
+  const bind = () => {
+    unbind();
+    bound = getActivityWindows();
+    bound.forEach((w) => {
+      try {
+        ACTIVITY_EVENTS.forEach((e) =>
+          w.addEventListener(e, handler, { passive: true }),
+        );
+      } catch {
+        /* cross-origin — skip */
+      }
+    });
+  };
+
+  // An iframe swaps its contentWindow when it loads, so re-bind on load.
+  const onFrameLoad = () => bind();
+  const attachFrameLoadListeners = () => {
+    document.querySelectorAll('iframe').forEach((f) => {
+      f.removeEventListener('load', onFrameLoad);
+      f.addEventListener('load', onFrameLoad);
+    });
+  };
+
+  bind();
+  attachFrameLoadListeners();
+
+  // Re-bind when an iframe is added or removed — project navigation
+  // mounts and unmounts the Herc prototype iframe.
+  const observer = new MutationObserver((records) => {
+    const iframeChanged = records.some((record) =>
+      [...record.addedNodes, ...record.removedNodes].some(
+        (node) =>
+          node.nodeName === 'IFRAME' ||
+          (node instanceof Element && node.querySelector('iframe') !== null),
+      ),
+    );
+    if (iframeChanged) {
+      attachFrameLoadListeners();
+      bind();
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  return () => {
+    observer.disconnect();
+    document.querySelectorAll('iframe').forEach((f) =>
+      f.removeEventListener('load', onFrameLoad),
+    );
+    unbind();
+  };
+}
 
 /**
  * Site-wide DVD-bouncer screensaver. After `IDLE_MS` of no user input,
@@ -45,52 +149,32 @@ export function Screensaver() {
   const [imageIdx, setImageIdx] = useState(0);
 
   // Idle detection — any input resets the timer; reaching IDLE_MS opens
-  // the screensaver. We listen on window so this catches activity even
-  // when the user is inside scroll-locked or stop-propagation regions.
+  // the screensaver. watchActivity covers the top window and same-origin
+  // iframes, so interaction over an embedded prototype counts too.
   useEffect(() => {
     let timer: number | undefined;
-    const events: Array<keyof WindowEventMap> = [
-      'mousemove',
-      'mousedown',
-      'keydown',
-      'wheel',
-      'touchstart',
-      'touchmove',
-      'scroll',
-    ];
-
     const reset = () => {
       if (timer !== undefined) window.clearTimeout(timer);
       timer = window.setTimeout(() => setActive(true), IDLE_MS);
     };
-
-    events.forEach((e) => window.addEventListener(e, reset, { passive: true }));
+    const stop = watchActivity(reset);
     reset();
-
     return () => {
-      events.forEach((e) => window.removeEventListener(e, reset));
+      stop();
       if (timer !== undefined) window.clearTimeout(timer);
     };
   }, []);
 
   // When active, ANY input dismisses immediately and bumps the image
-  // index so the next activation shows the other image.
+  // index so the next activation shows the other image. watchActivity
+  // also catches input over iframes (e.g. the Herc geofence map).
   useEffect(() => {
     if (!active) return;
     const dismiss = () => {
       setActive(false);
       setImageIdx((i) => (i + 1) % IMAGES.length);
     };
-    const events: Array<keyof WindowEventMap> = [
-      'mousemove',
-      'mousedown',
-      'keydown',
-      'wheel',
-      'touchstart',
-      'scroll',
-    ];
-    events.forEach((e) => window.addEventListener(e, dismiss, { passive: true }));
-    return () => events.forEach((e) => window.removeEventListener(e, dismiss));
+    return watchActivity(dismiss);
   }, [active]);
 
   if (!active) return null;

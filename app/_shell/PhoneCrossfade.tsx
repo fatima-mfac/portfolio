@@ -1,12 +1,12 @@
 import Image from 'next/image';
 
 // Phone screens to cross-fade through, in order. All four share the
-// same 2190x2720 source dimensions.
+// same 1210x1503 source dimensions.
 const IMAGES = [
-  { src: '/patina/phone.png', alt: 'Patina phone — state 1' },
-  { src: '/patina/phone2.png', alt: 'Patina phone — state 2' },
-  { src: '/patina/phone3.png', alt: 'Patina phone — state 3' },
-  { src: '/patina/phone4.png', alt: 'Patina phone — state 4' },
+  { src: '/patina/phone.webp', alt: 'Patina phone — state 1' },
+  { src: '/patina/phone2.webp', alt: 'Patina phone — state 2' },
+  { src: '/patina/phone3.webp', alt: 'Patina phone — state 3' },
+  { src: '/patina/phone4.webp', alt: 'Patina phone — state 4' },
 ] as const;
 
 // Each image holds for HOLD_SECONDS, so the full loop is
