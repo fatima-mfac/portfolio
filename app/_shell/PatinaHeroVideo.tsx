@@ -64,7 +64,7 @@ export function PatinaHeroVideo() {
         muted
         playsInline
         preload="metadata"
-        poster="/patina/hero.png"
+        poster="/patina/hero.webp"
         onEnded={handleEnded}
         className="patina-hero-video"
       >

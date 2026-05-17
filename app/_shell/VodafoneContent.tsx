@@ -66,7 +66,7 @@ function HeroImage() {
       style={{ backgroundColor: IMAGE_BLOCK_BG }}
     >
       <Image
-        src="/vodafone/hero.png"
+        src="/vodafone/hero.webp"
         alt="Vodafone Broadband — 3D house illustration"
         fill
         sizes="(min-width: 768px) 1217px, 100vw"
@@ -154,7 +154,7 @@ export function VodafoneContent() {
       {/* Section 1: phone with networks LEFT | two Q&As stacked RIGHT */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <FillImage src="/vodafone/phone-networks.png" alt="Vodafone app — connected devices view" aspect="aspect-[605/750]" />
+          <FillImage src="/vodafone/phone-networks.webp" alt="Vodafone app — connected devices view" aspect="aspect-[605/750]" />
           <div className="grid grid-rows-2 gap-2 h-full">
             <QACard {...QA.whatItDoes} />
             <QACard {...QA.complex} />
@@ -167,10 +167,10 @@ export function VodafoneContent() {
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
           <div className="grid grid-rows-2 gap-2 h-full">
             <QACard {...QA.hardest} />
-            <FillImage src="/vodafone/devices.png" alt="Vodafone app — connected devices view" aspect="aspect-[605/440]" />
+            <FillImage src="/vodafone/devices.webp" alt="Vodafone app — connected devices view" aspect="aspect-[605/440]" />
           </div>
           <div className="grid grid-rows-2 gap-2 h-full">
-            <FillImage src="/vodafone/network-illustration.png" alt="Network status illustration" aspect="aspect-[605/440]" />
+            <FillImage src="/vodafone/network-illustration.webp" alt="Network status illustration" aspect="aspect-[605/440]" />
             <QACard {...QA.dayToDay} />
           </div>
         </section>
@@ -183,7 +183,7 @@ export function VodafoneContent() {
             <QACard {...QA.reliable} />
             <QACard {...QA.complexity} />
           </div>
-          <FillImage src="/vodafone/phone-welcome.png" alt="Vodafone app — Welcome to your App screen" aspect="aspect-[605/750]" />
+          <FillImage src="/vodafone/phone-welcome.webp" alt="Vodafone app — Welcome to your App screen" aspect="aspect-[605/750]" />
         </section>
       </RevealOnScroll>
 

@@ -10,7 +10,7 @@ interface FilterTagProps {
 }
 
 /** Specs per Figma component "FilterTag" (28:184):
- *  – padding: 12px L/R, 2px top, 4px bottom (asymmetric for optical centre)
+ *  – padding: 12px L/R, 3px top + bottom (text vertically centred in the pill)
  *  – border-radius: 8px (rounded-lg)
  *  – text: body-lg (BL Melody Regular 14/20, letter-spacing -0.02em)
  *  – default: primary text + primary border, transparent fill
@@ -36,7 +36,7 @@ export function FilterTag({ label, state = 'default', onClick, className }: Filt
             }
           : undefined
       }
-      className={`inline-flex items-center pt-[2px] pb-[4px] px-3 border rounded-lg cursor-pointer transition-[color,border-color,background-color] duration-fast ease-out text-body-lg ${stateClasses} ${className ?? ''}`}
+      className={`inline-flex items-center py-[3px] px-3 border rounded-lg cursor-pointer transition-[color,border-color,background-color] duration-fast ease-out text-body-lg ${stateClasses} ${className ?? ''}`}
     >
       {label}
     </button>

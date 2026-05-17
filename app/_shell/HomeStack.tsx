@@ -49,7 +49,7 @@ const CARDS: Card[] = [
     project: 'patina',
     label: 'FATIMA CUNHA',
     description: "I like to improve products. Lately I've been building my own app and an agentic design system.",
-    image: '/patina/home1.png',
+    image: '/patina/home1.webp',
     categories: ['Product Thinking', 'AI Native'],
     bg: '#F0F1FA',
   },
@@ -59,7 +59,7 @@ const CARDS: Card[] = [
     label: 'ZEBRA FINCH',
     description:
       "The future of design isn't building interfaces. It's designing the system. I'm building that.",
-    image: '/zebra-finch/zebra1.png',
+    image: '/zebra-finch/zebra1.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -69,7 +69,7 @@ const CARDS: Card[] = [
     label: 'APP PATINA',
     description:
       'I built an app to make you put your phone down. I had the idea, designed it, built it and shipped it. Solo.',
-    image: '/patina/patina3.png',
+    image: '/patina/patina3.webp',
     categories: ['AI Native'],
     bg: '#F0F1FA',
   },
@@ -79,7 +79,7 @@ const CARDS: Card[] = [
     label: 'ZEBRA FINTCH',
     description:
       'Built a working agentic pipeline where the AI generates interfaces using only the design system. No hallucinations.',
-    image: '/zebra-finch/zebra2.png',
+    image: '/zebra-finch/zebra2.webp',
     categories: ['AI Native'],
     bg: '#F0F1FA',
   },
@@ -89,7 +89,7 @@ const CARDS: Card[] = [
     label: 'HERC RENTALS',
     description:
       'Designed a B2B real time fleet management platform that led to 150% growth in 12 months.',
-    image: '/herc/home1.png',
+    image: '/herc/home1.webp',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -99,7 +99,7 @@ const CARDS: Card[] = [
     label: 'APP PATINA',
     description:
       'Took on the challenge of interrupting one of the most automatic human behaviours.',
-    image: '/patina/home1.png',
+    image: '/patina/home1.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -109,7 +109,7 @@ const CARDS: Card[] = [
     label: 'APP VODAFONE',
     description:
       'Making a deeply technical concept feel clear to someone who just wants their Wi-Fi to work.',
-    image: '/vodafone/home1.png',
+    image: '/vodafone/home1.webp',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -119,7 +119,7 @@ const CARDS: Card[] = [
     label: 'APP HERC RENTALS',
     description:
       'Created a visual system to represent different equipment, their location and states, in real time.',
-    image: '/herc/home2.png',
+    image: '/herc/home2.webp',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -129,7 +129,7 @@ const CARDS: Card[] = [
     label: 'APP PATINA',
     description:
       'Set up analytics to measure if a colour seen for two seconds changes what you do next.',
-    image: '/patina/patina3.png',
+    image: '/patina/patina3.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -139,7 +139,7 @@ const CARDS: Card[] = [
     label: 'VODAFONE',
     description:
       'Partnered with research to define what to test and how. Was present in every user testing session to see how users reacted to what I designed.',
-    image: '/vodafone/home2.png',
+    image: '/vodafone/home2.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -149,7 +149,7 @@ const CARDS: Card[] = [
     label: 'APP VODAFONE',
     description:
       'Designed for a product that behaves differently depending on where you are in the world.',
-    image: '/vodafone/home1.png',
+    image: '/vodafone/home1.webp',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -159,7 +159,7 @@ const CARDS: Card[] = [
     label: 'THIS PORTFOLIO',
     description:
       'Vibe coded this portfolio using my agentic design system pipeline.',
-    image: '/zebra-finch/zebra2.png',
+    image: '/zebra-finch/zebra2.webp',
     categories: ['AI Native'],
     bg: '#F0F1FA',
   },

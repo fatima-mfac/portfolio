@@ -15,8 +15,8 @@ interface WorkEntryProps {
 // sync if a tagline changes.
 const PROJECTS: WorkEntryProps[] = [
   { label: 'Patina',       subtitle: 'Mobile. Solo',                    href: '/?project=patina'        },
-  { label: 'Vodafone',     subtitle: 'Mobile. In-house',                href: '/?project=vodafone'      },
   { label: 'Zebra Finch',  subtitle: 'Agentic Design System Pipeline',  href: '/?project=zebra-finch'   },
+  { label: 'Vodafone',     subtitle: 'Mobile. In-house',                href: '/?project=vodafone'      },
   { label: 'Herc Rentals', subtitle: 'B2B Fleet Management Platform',   href: '/?project=herc-rentals'  },
 ];
 
@@ -32,7 +32,7 @@ function WorkEntry({ label, subtitle, href }: WorkEntryProps) {
       aria-label={`Open ${label} use case`}
       className="flex flex-col gap-1 no-underline w-full"
     >
-      <span className="text-heading-sm text-text-primary">{label}</span>
+      <span className="text-heading-xl-semibold text-text-primary">{label}</span>
       <span className="text-body-lg text-text-secondary">{subtitle}</span>
     </Link>
   );
