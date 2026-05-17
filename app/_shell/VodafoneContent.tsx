@@ -20,9 +20,9 @@ const QA = {
       "It lets you manage your home Wi-Fi, set up your router, check who's connected, pause internet access, troubleshoot your connection, set up guest networks, and a growing list of features we were actively developing. A highly complex and technical app.",
   },
   complex: {
-    question: "So it's was a very complex product to work on",
+    question: 'So it was a very complex product to work on?',
     answer:
-      "Very. The app runs across multiple markets, with different router models, different legal content, and sometimes completely different flows. I needed to think that one design decision ripple across all of those variations. It required a level of attention to detail that most app projects don't demand.",
+      "Very. The app runs across multiple markets, with different router models, different legal content, and sometimes completely different flows. I needed to think about how one design decision would ripple across all of those variations. It required a level of attention to detail that most app projects don't demand.",
   },
   hardest: {
     question: 'What was the hardest part of the work itself?',
@@ -49,13 +49,13 @@ const QA = {
     question:
       'Some features involved communicating very technical concepts. How did you handle that?',
     answer:
-      "First you need to understand them yourself, and sometimes that was truly a challenge. Being close to the dev team on a daily basis was crucial for that. And then comes the harder part: taking something complex and making it feel safe and obvious to someone who just wants their Wi-Fi to work. Concepts like MAC address randomisation, for example, require the user to go into their phone settings and turn off a security feature. Explaining what that is and why it's safe to do on a home network in a usable and beautiful way was genuinely hard. You need a very balanced and simple communication between text and visuals and then test with users.",
+      "First you need to understand them yourself, and sometimes that was truly a challenge. Being close to the dev team on a daily basis was crucial for that. And then comes the harder part: taking something complex and making it feel safe and obvious to someone who just wants their Wi-Fi to work. Concepts like MAC address randomization, for example, require the user to go into their phone settings and turn off a security feature. Explaining what that is and why it's safe to do on a home network in a usable and beautiful way was genuinely hard. You need a very balanced and simple communication between text and visuals and then test with users.",
   },
   inHouse: {
     question:
       'What was it like being part of an in-house product team after years of consultancy?',
     answer:
-      'Different in the best way. The product environment changes how you design. You optimise less for the handoff and more for the product. Everyone is on the same page, working toward the same goals, making informed decisions based on real data. You grow the product, not just launch it. That felt like my natural environment. A lot of people over the years told me I was built for product.',
+      'Different in the best way. The product environment changes how you design. You optimize less for the handoff and more for the product. Everyone is on the same page, working toward the same goals, making informed decisions based on real data. You grow the product, not just launch it. That felt like my natural environment. A lot of people over the years told me I was built for product.',
   },
 };
 

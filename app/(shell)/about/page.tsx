@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 const DESCRIPTION =
-  'Senior product designer with 18 years of experience across consumer and enterprise products. Vodafone, PizzaHut, NOS, Herc Rentals, Sonae.';
+  'Senior product designer with 18 years of experience across consumer and enterprise products. Vodafone, Pizza Hut, NOS, Herc Rentals, Sonae.';
 
 // Each letter's position on the ring is given by `angle` (degrees,
 // measured clockwise from 12 o'clock, so -90° = top, 0° = right, 90° =
@@ -67,7 +67,7 @@ const QUESTIONS: Array<{
   {
     question: 'What were you working on before you left?',
     answer:
-      'When I left Deloitte, I was leading the redesign of the Pizza Hut Portugal app. I was also leading the AI adoption across the design team, including internal training.',
+      'When I left Deloitte, I had just finished leading the redesign of the Pizza Hut Portugal app. I was also leading the AI adoption across the design team, including internal training.',
   },
   {
     question: 'What do you want to do next?',
@@ -203,7 +203,7 @@ export default function AboutPage() {
             .about-cards-stage-in { animation: none; }
           }
         `}</style>
-        <div className="relative pb-32 flex flex-col items-center gap-4 px-4 pointer-events-auto about-cards-stage-in">
+        <div className="relative pb-32 mt-10 md:mt-0 flex flex-col items-center gap-4 px-4 pointer-events-auto about-cards-stage-in">
           {QUESTIONS.map((q, i) => {
             // `w-full max-w-[605px]` sits on the wrapper (not the
             // article) so every card is the same width regardless of
@@ -212,7 +212,7 @@ export default function AboutPage() {
             // and the short card 1 ("Curious. Curious. Curious.") ends
             // up visibly narrower than the others.
             const article = (
-              <article className="bg-background-card rounded-sm p-14 w-full">
+              <article className="bg-background-card rounded-sm p-7 md:p-14 w-full">
                 <QAItem question={q.question} answer={q.answer} size="sm" />
               </article>
             );

@@ -17,7 +17,7 @@ const QA = {
   whatItSolves: {
     question: 'Beyond just browsing for construction gear, what does this platform actually solve for the user?',
     answer:
-      " It acts as a command center for managing every piece of equipment and job sites, giving you total control from anywhere. You have real-time analytics, equipment utilization data, diagnostics, alerts.\n\nIt’s a predictive management platform. It takes the chaos of a billion-dollar construction site and shrinks it down into an intuitive interface where you can rent, track, secure, and pay for everything easily.",
+      "It acts as a command center for managing every piece of equipment and job sites, giving you total control from anywhere. You have real-time analytics, equipment utilization data, diagnostics, alerts.\n\nIt’s a predictive management platform. It takes the chaos of a billion-dollar construction site and shrinks it down into an intuitive interface where you can rent, track, secure, and pay for everything easily.",
   },
   role: {
     question: 'What was your role in the team?',
@@ -37,7 +37,7 @@ const QA = {
   adoption: {
     question: '150% adoption growth in 12 months. Do you take credit for that?',
     answer:
-      "I believe our design played a fundamental part. When clients saw the demos, they could instantly see that the platform was easy to use and extremely useful. We didn't just build an platform, we built a tool that sales teams were proud to demo and customers actually wanted to use every day.",
+      "I believe our design played a fundamental part. When clients saw the demos, they could instantly see that the platform was easy to use and extremely useful. We didn't just build a platform, we built a tool that sales teams were proud to demo and customers actually wanted to use every day.",
   },
   differently: {
     question: 'Looking back, what would you do differently?',
@@ -118,15 +118,19 @@ function FlatImage({
   );
 }
 
-/** In-section image that stretches to fill its grid cell. */
+/** In-section image that stretches to fill its grid cell.
+ *  `zoomOutMobile` scales the image down to 85% on mobile only, so it
+ *  reads smaller inside the frame (desktop stays full-bleed). */
 function FillImage({
   src,
   alt,
   aspect,
+  zoomOutMobile = false,
 }: {
   src: string;
   alt: string;
   aspect: string;
+  zoomOutMobile?: boolean;
 }) {
   return (
     <div className={`w-full h-full ${aspect} relative rounded-sm overflow-hidden`}>
@@ -135,7 +139,7 @@ function FillImage({
         alt={alt}
         fill
         sizes="(min-width: 768px) 605px, 100vw"
-        className="object-cover"
+        className={`object-cover${zoomOutMobile ? ' scale-[0.85] md:scale-100' : ''}`}
       />
     </div>
   );
@@ -178,10 +182,10 @@ export function HercRentalsContent() {
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
           <div className="grid grid-rows-2 gap-2 h-full">
             <QACard {...QA.ui} />
-            <FillImage src="/herc/map-pins.webp" alt="Map view with equipment pins" aspect="aspect-[605/440]" />
+            <FillImage src="/herc/map-pins.webp" alt="Map view with equipment pins" aspect="aspect-[605/440]" zoomOutMobile />
           </div>
           <div className="grid grid-rows-2 gap-2 h-full">
-            <FillImage src="/herc/equipment-phone.webp" alt="Herc Rentals app — equipment selected card" aspect="aspect-[605/440]" />
+            <FillImage src="/herc/equipment-phone.webp" alt="Herc Rentals app — equipment selected card" aspect="aspect-[605/440]" zoomOutMobile />
             <QACard {...QA.hardest} />
           </div>
         </section>

@@ -5,7 +5,7 @@ import { useState } from 'react';
 // How long the checkmark confirmation stays after a successful copy.
 const COPIED_RESET_MS = 1600;
 
-/** Two-overlapping-rectangles copy glyph. Inherits colour via currentColor. */
+/** Two-overlapping-rectangles copy glyph. Inherits color via currentColor. */
 function CopyIcon() {
   return (
     <svg

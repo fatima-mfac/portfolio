@@ -76,7 +76,7 @@ const STEPS: Step[] = [
     n: 6,
     tag: 'IN PROGRESS',
     title: 'Building the token police',
-    body: "Checks whether tokens referenced in code actually exist and if exists checks whether they're used semantically. For example: is --color-text-primary being used for body copy, or did someone reach for --color-purple-500 directly because they liked the shade? Both tokens exist; only the first is correct. Together with the drift checker, the police closes the loop on system integrity.",
+    body: "Checks whether tokens referenced in code actually exist, and if they do, whether they're used semantically. For example: is --color-text-primary being used for body copy, or did someone reach for --color-purple-500 directly because they liked the shade? Both tokens exist; only the first is correct. Together with the drift checker, the police closes the loop on system integrity.",
   },
 ];
 
