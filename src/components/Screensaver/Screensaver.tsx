@@ -148,6 +148,18 @@ export function Screensaver() {
   const [active, setActive] = useState(false);
   const [imageIdx, setImageIdx] = useState(0);
 
+  // Warm the browser cache with the screensaver images on mount. The
+  // overlay's <img> is created only when the screensaver activates (60s
+  // idle); without this it fetches lazily at that moment, and on a flaky
+  // mobile connection that fetch can fail — leaving a broken-image
+  // placeholder bouncing around. Preloading makes activation a cache hit.
+  useEffect(() => {
+    IMAGES.forEach(({ src }) => {
+      const pre = new Image();
+      pre.src = src;
+    });
+  }, []);
+
   // Idle detection — any input resets the timer; reaching IDLE_MS opens
   // the screensaver. watchActivity covers the top window and same-origin
   // iframes, so interaction over an embedded prototype counts too.

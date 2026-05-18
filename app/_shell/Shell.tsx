@@ -73,9 +73,9 @@ export function Shell({ children }: ShellProps) {
     rightColRef.current?.scrollTo({ top: 0 });
   }, [project]);
 
-  // Auto-hide header on scroll-down, reveal on scroll-up.
-  // Mobile uses window scroll; desktop tracks the right-column scroll
-  // (the primary scroll source for use-case content).
+  // Auto-hide header on scroll-down, reveal on scroll-up — desktop only,
+  // tracking the right-column scroll. On mobile the header stays put: a
+  // collapsing in-flow header shifts everything below it jarringly.
   const [headerHidden, setHeaderHidden] = useState(false);
 
   // First-paint entrance — header drops in from above + fades in,
@@ -86,18 +86,6 @@ export function Shell({ children }: ShellProps) {
   useEffect(() => {
     const id = window.setTimeout(() => setHeaderEntered(true), 1100);
     return () => window.clearTimeout(id);
-  }, []);
-
-  useEffect(() => {
-    let last = window.scrollY;
-    const onScroll = () => {
-      const current = window.scrollY;
-      if (Math.abs(current - last) < 5) return;
-      setHeaderHidden(current > last && current > 50);
-      last = current;
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
