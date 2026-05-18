@@ -39,6 +39,10 @@ type Card = {
   label: string;
   description: string;
   image: string;
+  /** Optional mobile-specific thumbnail — the mobile layout crops the
+   *  card image to a wider box than desktop, so some images need a
+   *  variant framed for it. Falls back to `image` when absent. */
+  imageMobile?: string;
   categories: Category[];
   bg: string;
 };
@@ -60,6 +64,7 @@ const CARDS: Card[] = [
     description:
       "The future of design isn't building interfaces. It's designing the system. I'm building that.",
     image: '/zebra-finch/zebra1.webp',
+    imageMobile: '/zebra-finch/zebra1-M.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -70,6 +75,7 @@ const CARDS: Card[] = [
     description:
       'I built an app to make you put your phone down. I had the idea, designed it, built it and shipped it. Solo.',
     image: '/patina/patina3.webp',
+    imageMobile: '/patina/patina3-M.webp',
     categories: ['AI Native'],
     bg: '#F0F1FA',
   },
@@ -80,6 +86,7 @@ const CARDS: Card[] = [
     description:
       'Designed a B2B real time fleet management platform that led to 150% growth in 12 months.',
     image: '/herc/home1.webp',
+    imageMobile: '/herc/home1-M.webp',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -90,6 +97,7 @@ const CARDS: Card[] = [
     description:
       'Built a working agentic pipeline where the AI generates interfaces using only the design system. No hallucinations.',
     image: '/zebra-finch/zebra2.webp',
+    imageMobile: '/zebra-finch/zebra2-M.webp',
     categories: ['AI Native'],
     bg: '#F0F1FA',
   },
@@ -100,6 +108,7 @@ const CARDS: Card[] = [
     description:
       'Took on the challenge of interrupting one of the most automatic human behaviors.',
     image: '/patina/home1.webp',
+    imageMobile: '/patina/home1-M.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -110,6 +119,7 @@ const CARDS: Card[] = [
     description:
       'Making a deeply technical concept feel clear to someone who just wants their Wi-Fi to work.',
     image: '/vodafone/home1.webp',
+    imageMobile: '/vodafone/home1-M.webp',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -120,6 +130,7 @@ const CARDS: Card[] = [
     description:
       'Created a visual system to represent different equipment, their location and states, in real time.',
     image: '/herc/home2.webp',
+    imageMobile: '/herc/home2-M.webp',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -130,6 +141,7 @@ const CARDS: Card[] = [
     description:
       'Set up analytics to measure if a color seen for two seconds changes what you do next.',
     image: '/patina/patina-home2.webp',
+    imageMobile: '/patina/patina-home2-M.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -140,6 +152,7 @@ const CARDS: Card[] = [
     description:
       'Joined every user testing session. Watched users react to my work as it happened.',
     image: '/vodafone/vodafone3.webp',
+    imageMobile: '/vodafone/vodafone3-M.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -150,6 +163,7 @@ const CARDS: Card[] = [
     description:
       'Designed for a product that behaves differently depending on where you are in the world.',
     image: '/vodafone/home2.webp',
+    imageMobile: '/vodafone/home2-M.webp',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -843,21 +857,17 @@ export function HomeStack() {
           )}
         </div>
 
-        {/* Hero image — square-ish below the heading. Hidden for cards
-            in NO_THUMBNAIL_IDS (intro + portfolio). */}
+        {/* Hero image — full-width thumbnail below the heading; its own
+            aspect drives the height (no fixed box, no background).
+            Hidden for cards in NO_THUMBNAIL_IDS (intro + portfolio). */}
         {focused && !NO_THUMBNAIL_IDS.has(focused.id) && (
-          <div
-            className="relative w-full rounded-md overflow-hidden flex items-center justify-center"
-            style={{ aspectRatio: '354/185', backgroundColor: '#FFFCF7' }}
-          >
-            <img
-              src={focused.image}
-              alt={focused.label}
-              className="max-h-full max-w-[60%] object-contain"
-              key={`mobile-img-${focused.id}`}
-              style={{ animation: 'home-stack-in 320ms cubic-bezier(.2,.8,.2,1)' }}
-            />
-          </div>
+          <img
+            src={focused.imageMobile ?? focused.image}
+            alt={focused.label}
+            className="w-full rounded-md"
+            key={`mobile-img-${focused.id}`}
+            style={{ animation: 'home-stack-in 320ms cubic-bezier(.2,.8,.2,1)' }}
+          />
         )}
 
         {/* Cards stack — only positive offsets (cards below focus). */}

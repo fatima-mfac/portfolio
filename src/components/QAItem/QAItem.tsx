@@ -22,12 +22,14 @@ export function QAItem({ question, answer, size = 'sm', className }: QAItemProps
   // node 37:393). The answer is the same body-xl tier in both variants;
   // only the question size differs (and `lg` upgrades the question
   // from text-heading-sm to text-heading-lg above --breakpoint-md).
-  //   sm question: text-heading-sm  (20px Medium, lh 24)
+  //   sm question: text-body-xl + medium  (17px Medium)
   //   sm answer:   text-body-xl     (17px Book,   lh ~28)
   //   lg question: text-heading-lg  (24px Regular, lh 32)
   //   lg answer:   text-body-xl     (17px Book,   lh ~28)
   const questionClass =
-    size === 'lg' ? 'text-heading-sm md:text-heading-lg' : 'text-heading-sm';
+    size === 'lg'
+      ? 'text-heading-sm md:text-heading-lg'
+      : 'text-body-xl font-medium!';
   const answerClass = 'text-body-xl';
   const gapClass = size === 'lg' ? 'gap-2 md:gap-4' : 'gap-2';
 
