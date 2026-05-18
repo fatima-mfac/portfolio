@@ -152,8 +152,14 @@ export function Shell({ children }: ShellProps) {
   return (
     <>
     <Screensaver />
-    <div className={`min-h-screen md:h-screen md:overflow-hidden flex flex-col ${showHomeStack || isAbout ? '' : 'bg-white'}`}>
-      <div className="mx-auto w-full px-4 md:px-0 flex flex-col md:flex-1 md:min-h-0 relative">
+    <div className={`flex flex-col ${
+      showHomeStack
+        ? 'h-screen overflow-hidden'
+        : 'min-h-screen md:h-screen md:overflow-hidden'
+    } ${showHomeStack || isAbout ? '' : 'bg-white'}`}>
+      <div className={`mx-auto w-full px-4 md:px-0 flex flex-col relative ${
+        showHomeStack ? 'flex-1 min-h-0' : 'md:flex-1 md:min-h-0'
+      }`}>
         {/* Header area — position:sticky so it pins to the top while the
             page scrolls. On use-case/About it slides out of view on
             scroll-down (translateY) and back on scroll-up; an opaque bg

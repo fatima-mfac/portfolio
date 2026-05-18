@@ -871,7 +871,7 @@ export function HomeStack() {
         )}
 
         {/* Cards stack — only positive offsets (cards below focus). */}
-        <div className="relative flex-1 min-h-[400px]">
+        <div className="relative flex-1 min-h-0">
           {windowedCards
             .filter(({ offset }) => offset > 0)
             .map(({ card, offset }) => (
