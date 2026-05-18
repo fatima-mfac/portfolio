@@ -786,7 +786,7 @@ export function HomeStack() {
       />
 
       {/* ──────────────── MOBILE LAYOUT ──────────────── */}
-      <div className="lg:hidden flex flex-col pt-6 gap-4 h-full">
+      <div className="lg:hidden flex flex-col pt-2 gap-4 h-full">
         {/* Filter chips — single horizontal line with horizontal scroll. */}
         <div className="flex flex-row flex-nowrap gap-1 overflow-x-auto -mx-4 px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {CATEGORIES.map((cat, i) => {
