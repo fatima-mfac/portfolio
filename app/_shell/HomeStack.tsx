@@ -265,25 +265,35 @@ function FocusedContent({
   card,
   refEl,
   mobile = false,
+  thumbHovered = false,
 }: {
   card: Card;
   refEl: React.RefObject<HTMLElement | null>;
   mobile?: boolean;
+  /** True while this card's linked thumbnail is hovered — mirrors the
+   *  text's own group-hover highlight onto the label + heading so the
+   *  text and image read as one link. */
+  thumbHovered?: boolean;
 }) {
   const headingFont = mobile ? 32 : 56;
   const headingLine = mobile ? '36px' : '60px';
   // Cards without a project link (e.g. the homepage intro) render as
   // a static block — no hover color change, no navigation.
   const isStatic = card.id === 'intro';
+  // Text color: hero tint while the heading itself (group-hover) OR its
+  // thumbnail (thumbHovered) is hovered; primary otherwise.
+  const colorClass =
+    !isStatic && thumbHovered
+      ? 'text-[var(--color-background-hero)]'
+      : 'text-text-primary';
+  const hoverClass = isStatic
+    ? ''
+    : 'transition-colors duration-fast ease-out group-hover:text-[var(--color-background-hero)]';
 
   const labelEl = (
     <SplitWords
       text={card.label}
-      className={`text-text-primary uppercase tracking-[0.12em] font-medium ${
-        isStatic
-          ? ''
-          : 'transition-colors duration-fast ease-out group-hover:text-[var(--color-background-hero)]'
-      }`}
+      className={`${colorClass} uppercase tracking-[0.12em] font-medium ${hoverClass}`}
       style={{
         fontSize: mobile ? 11 : 13,
         lineHeight: '22px',
@@ -294,11 +304,7 @@ function FocusedContent({
   const headingEl = (
     <SplitWords
       text={card.description}
-      className={`mt-2 font-medium text-text-primary ${
-        isStatic
-          ? ''
-          : 'transition-colors duration-fast ease-out group-hover:text-[var(--color-background-hero)]'
-      }`}
+      className={`mt-2 font-medium ${colorClass} ${hoverClass}`}
       style={{
         fontSize: headingFont,
         lineHeight: headingLine,
@@ -348,6 +354,9 @@ function FocusedContent({
 export function HomeStack() {
   const [filter, setFilter] = useState<Category | null>(null);
   const [focusedIdx, setFocusedIdx] = useState(0);
+  // True while the focused card's thumbnail image is hovered — lifts the
+  // heading's hover highlight so hovering the image tints the text too.
+  const [thumbHovered, setThumbHovered] = useState(false);
   // Initial "cards parked low" state — true until the intro scroll seats
   // the cards. The first scroll drags them up continuously; once seated,
   // this flips false and the card-wheel behavior takes over.
@@ -844,6 +853,7 @@ export function HomeStack() {
             card={focused}
             refEl={enteringRefMobile}
             mobile
+            thumbHovered={thumbHovered}
           />
           {leavingCard && (
             <div className="absolute inset-0 pointer-events-none">
@@ -858,22 +868,30 @@ export function HomeStack() {
         </div>
 
         {/* Hero image — full-width thumbnail below the heading; its own
-            aspect drives the height (no fixed box, no background).
-            Hidden for cards in NO_THUMBNAIL_IDS (intro + portfolio). */}
+            aspect drives the height (no fixed box, no background). Links
+            to the focused card's use case. Hidden for cards in
+            NO_THUMBNAIL_IDS (intro + portfolio). */}
         {focused && !NO_THUMBNAIL_IDS.has(focused.id) && (
-          <img
-            src={focused.imageMobile ?? focused.image}
-            alt={focused.label}
-            className="w-full rounded-md"
-            key={`mobile-img-${focused.id}`}
-            // 400ms delay (with `both` fill) holds the thumbnail hidden
-            // until the card transition settles, so it doesn't fade in
-            // over the still-animating outgoing headline.
-            style={{
-              animation:
-                'home-stack-in 320ms cubic-bezier(.2,.8,.2,1) 400ms both',
-            }}
-          />
+          <Link
+            href={`/?project=${focused.project}`}
+            className="block w-full"
+            onMouseEnter={() => setThumbHovered(true)}
+            onMouseLeave={() => setThumbHovered(false)}
+          >
+            <img
+              src={focused.imageMobile ?? focused.image}
+              alt={focused.label}
+              className="w-full rounded-md"
+              key={`mobile-img-${focused.id}`}
+              // 400ms delay (with `both` fill) holds the thumbnail hidden
+              // until the card transition settles, so it doesn't fade in
+              // over the still-animating outgoing headline.
+              style={{
+                animation:
+                  'home-stack-in 320ms cubic-bezier(.2,.8,.2,1) 400ms both',
+              }}
+            />
+          </Link>
         )}
 
         {/* Cards stack — only positive offsets (cards below focus). */}
@@ -1009,6 +1027,7 @@ export function HomeStack() {
             key={`entering-${focused.id}`}
             card={focused}
             refEl={enteringRef}
+            thumbHovered={thumbHovered}
           />
         </div>
 
@@ -1051,7 +1070,12 @@ export function HomeStack() {
               />
             </div>
           )}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <Link
+            href={`/?project=${focused.project}`}
+            className="absolute inset-0 flex items-center justify-center"
+            onMouseEnter={() => setThumbHovered(true)}
+            onMouseLeave={() => setThumbHovered(false)}
+          >
             <img
               src={focused.image}
               alt={focused.label}
@@ -1059,7 +1083,7 @@ export function HomeStack() {
               key={focused.id}
               style={{ animation: 'home-stack-in 320ms cubic-bezier(.2,.8,.2,1)' }}
             />
-          </div>
+          </Link>
         </div>
       )}
       </div>
