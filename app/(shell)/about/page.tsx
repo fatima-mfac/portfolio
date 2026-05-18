@@ -203,7 +203,7 @@ export default function AboutPage() {
             .about-cards-stage-in { animation: none; }
           }
         `}</style>
-        <div className="relative pb-32 mt-10 md:mt-0 flex flex-col items-center gap-4 px-4 pointer-events-auto about-cards-stage-in">
+        <div className="relative pb-32 mt-10 md:mt-0 flex flex-col items-center gap-4 md:px-4 pointer-events-auto about-cards-stage-in">
           {QUESTIONS.map((q, i) => {
             // `w-full max-w-[605px]` sits on the wrapper (not the
             // article) so every card is the same width regardless of

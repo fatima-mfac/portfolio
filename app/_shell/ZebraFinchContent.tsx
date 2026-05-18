@@ -141,7 +141,7 @@ function Hero() {
           I built a bidirectional Figma – Code AI agentic pipeline.
         </p>
         <p className="text-body-xl text-text-secondary max-w-[640px]">
-          Starting from scratch or from an existing design system, the AI agent extracts or builds the tokens and components, then generates new pages using only the design system. Figma and code stay in sync.
+          Starting from scratch or from an existing design system, the AI agent extracts or builds the tokens and components, then generates new pages or iterates on existing ones using only the design system. Figma and code stay in sync.
         </p>
       </div>
 

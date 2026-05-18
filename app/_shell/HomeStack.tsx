@@ -48,7 +48,7 @@ const CARDS: Card[] = [
     id: 'intro',
     project: 'patina',
     label: 'FATIMA CUNHA',
-    description: "I build and improve products. Lately I shipped my own app and created an agentic design system.",
+    description: "I design and improve products. Lately I shipped my own app and created an agentic design system.",
     image: '/patina/home1.webp',
     categories: ['Product Thinking', 'AI Native'],
     bg: '#F0F1FA',
@@ -74,16 +74,6 @@ const CARDS: Card[] = [
     bg: '#F0F1FA',
   },
   {
-    id: 'zebra-pipeline',
-    project: 'zebra-finch',
-    label: 'ZEBRA FINCH',
-    description:
-      'Built a working agentic pipeline where the AI generates interfaces using only the design system. No hallucinations.',
-    image: '/zebra-finch/zebra2.webp',
-    categories: ['AI Native'],
-    bg: '#F0F1FA',
-  },
-  {
     id: 'herc-fleet',
     project: 'herc-rentals',
     label: 'HERC RENTALS',
@@ -91,6 +81,16 @@ const CARDS: Card[] = [
       'Designed a B2B real time fleet management platform that led to 150% growth in 12 months.',
     image: '/herc/home1.webp',
     categories: ['Complex Systems'],
+    bg: '#F0F1FA',
+  },
+  {
+    id: 'zebra-pipeline',
+    project: 'zebra-finch',
+    label: 'ZEBRA FINCH',
+    description:
+      'Built a working agentic pipeline where the AI generates interfaces using only the design system. No hallucinations.',
+    image: '/zebra-finch/zebra2.webp',
+    categories: ['AI Native'],
     bg: '#F0F1FA',
   },
   {
@@ -129,7 +129,7 @@ const CARDS: Card[] = [
     label: 'APP PATINA',
     description:
       'Set up analytics to measure if a color seen for two seconds changes what you do next.',
-    image: '/patina/patina3.webp',
+    image: '/patina/patina-home2.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -139,7 +139,7 @@ const CARDS: Card[] = [
     label: 'VODAFONE',
     description:
       'Joined every user testing session. Watched users react to my work as it happened.',
-    image: '/vodafone/home2.webp',
+    image: '/vodafone/vodafone3.webp',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -149,7 +149,7 @@ const CARDS: Card[] = [
     label: 'APP VODAFONE',
     description:
       'Designed for a product that behaves differently depending on where you are in the world.',
-    image: '/vodafone/home1.webp',
+    image: '/vodafone/home2.webp',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -199,8 +199,8 @@ const TOUCH_DELTA_PER_CARD = 30;
 // Extra vertical drop applied to the cards-below stack on the very first
 // page visit (intro card, no user scroll yet). Pushes the deck near the
 // bottom of the viewport so the big headline gets a clean reveal moment.
-// First scroll consumes this offset (cards animate up) before any focus
-// change happens.
+// The first scroll drags this offset back to zero continuously (see
+// introProgress) before any focus change happens.
 const INTRO_LOWER_RATIO = 0.24;
 
 function clamp(v: number, min: number, max: number) {
@@ -265,13 +265,13 @@ function FocusedContent({
   const labelEl = (
     <SplitWords
       text={card.label}
-      className={`text-text-primary uppercase tracking-[0.16em] font-medium ${
+      className={`text-text-primary uppercase tracking-[0.12em] font-medium ${
         isStatic
           ? ''
           : 'transition-colors duration-fast ease-out group-hover:text-[var(--color-background-hero)]'
       }`}
       style={{
-        fontSize: 11,
+        fontSize: mobile ? 11 : 13,
         lineHeight: '22px',
         fontFamily: 'var(--font-family-mono)',
       }}
@@ -311,7 +311,7 @@ function FocusedContent({
             letterSpacing: '-2px',
           }}
         >
-          <InlineWords text="I build and improve products." />
+          <InlineWords text="I design and improve products." />
           <br />
           <InlineWords text="Lately I shipped my own app and created an agentic design system." />
         </p>
@@ -334,12 +334,19 @@ function FocusedContent({
 export function HomeStack() {
   const [filter, setFilter] = useState<Category | null>(null);
   const [focusedIdx, setFocusedIdx] = useState(0);
-  // Initial "cards parked low" state — true on first visit; consumed by
-  // the first scroll/touch/keydown gesture (cards animate up, no focus
-  // change). See INTRO_LOWER_RATIO.
+  // Initial "cards parked low" state — true until the intro scroll seats
+  // the cards. The first scroll drags them up continuously; once seated,
+  // this flips false and the card-wheel behavior takes over.
   const [cardsLowered, setCardsLowered] = useState(true);
   // Mirror of cardsLowered for use inside the scroll effect's closure.
   const cardsLoweredRef = useRef(true);
+  // Intro scroll progress 0→1. While cardsLowered is true, downward scroll
+  // input drives this 0→1 (1:1 with scroll distance), lifting the parked
+  // cards proportionally; at 1 the intro completes. The ref is the source
+  // of truth read inside the scroll handler; the state mirrors it for
+  // rendering, batched to one update per frame via rAF.
+  const [introProgress, setIntroProgress] = useState(0);
+  const introProgressRef = useRef(0);
   // Headline-block opacity for the mount intro. Holds at 0 (entire block
   // hidden including underlines/period) for a beat, then fades to 1 in
   // sync with the GSAP per-word slide-up. Driven by React state so it
@@ -450,6 +457,8 @@ export function HomeStack() {
       setFocusedIdx(0);
       setCardsLowered(true);
       cardsLoweredRef.current = true;
+      setIntroProgress(0);
+      introProgressRef.current = 0;
       prevFocusedCardRef.current = null;
       prevFocusedIdxRef.current = 0;
       setLeavingCard(null);
@@ -615,15 +624,8 @@ export function HomeStack() {
       const now = performance.now();
       if (now - lastInputRef.current < WHEEL_THROTTLE_MS) return false;
       lastInputRef.current = now;
-      // First downward gesture lifts the parked cards; only the next
-      // begins switching focus. Upward gestures while parked are no-ops.
-      if (cardsLoweredRef.current) {
-        if (dir === 1) {
-          setCardsLowered(false);
-          cardsLoweredRef.current = false;
-        }
-        return true;
-      }
+      // No focus changes until the intro scroll has seated the cards.
+      if (cardsLoweredRef.current) return false;
       setFocusedIdx((i) => {
         const next = clamp(i + dir, 0, max);
         if (typeof window !== 'undefined') {
@@ -634,22 +636,50 @@ export function HomeStack() {
       return true;
     };
 
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      wheelAccum += e.deltaY;
-      // Cards-parked-low → first downward gesture only LIFTS the cards.
-      // We consume one advance, reset the accumulator, and bail so the
-      // same gesture doesn't immediately roll into a card switch.
-      if (cardsLoweredRef.current) {
-        if (wheelAccum >= WHEEL_DELTA_PER_CARD) {
-          advance(1);
-          wheelAccum = 0;
-        } else if (wheelAccum < 0) {
-          // Don't accumulate upward delta while parked — we're at the top.
-          wheelAccum = 0;
-        }
+    // Completes the intro: seats the cards and reveals the filters.
+    const finishIntro = () => {
+      cardsLoweredRef.current = false;
+      introProgressRef.current = 1;
+      setCardsLowered(false);
+      setIntroProgress(1);
+    };
+
+    // Intro scroll driver. Positive (downward) delta lifts the parked
+    // cards 1:1 with scroll distance; the intro is one-way, so upward
+    // delta is ignored. Render sync is batched to one rAF per frame.
+    let introRaf = 0;
+    const applyIntroScroll = (delta: number) => {
+      if (delta <= 0) return;
+      const dist =
+        (containerRef.current?.clientHeight ?? 800) * INTRO_LOWER_RATIO;
+      introProgressRef.current = Math.min(
+        1,
+        introProgressRef.current + delta / dist,
+      );
+      if (introProgressRef.current >= 1) {
+        if (introRaf) cancelAnimationFrame(introRaf);
+        introRaf = 0;
+        finishIntro();
         return;
       }
+      if (!introRaf) {
+        introRaf = requestAnimationFrame(() => {
+          introRaf = 0;
+          setIntroProgress(introProgressRef.current);
+        });
+      }
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      // Intro not yet seated → downward scroll drags the cards up
+      // continuously. Leftover delta past the seat point is discarded
+      // so the gesture stops at the final position.
+      if (cardsLoweredRef.current) {
+        applyIntroScroll(e.deltaY);
+        return;
+      }
+      wheelAccum += e.deltaY;
       // Drain the accumulator one threshold at a time. Stop early if
       // throttled — leftover delta carries into the next event so fast
       // scrolls still feel responsive instead of dropping input.
@@ -671,17 +701,12 @@ export function HomeStack() {
       e.preventDefault();
       const dy = touchY - e.touches[0].clientY;
       touchY = e.touches[0].clientY;
-      touchAccum += dy;
-      // Same parked-low rule as wheel: first gesture only lifts.
+      // Intro not yet seated → drag the cards up continuously.
       if (cardsLoweredRef.current) {
-        if (touchAccum >= TOUCH_DELTA_PER_CARD) {
-          advance(1);
-          touchAccum = 0;
-        } else if (touchAccum < 0) {
-          touchAccum = 0;
-        }
+        applyIntroScroll(dy);
         return;
       }
+      touchAccum += dy;
       while (Math.abs(touchAccum) >= TOUCH_DELTA_PER_CARD) {
         const dir = touchAccum > 0 ? 1 : -1;
         if (!advance(dir)) break;
@@ -691,6 +716,11 @@ export function HomeStack() {
     const onKey = (e: KeyboardEvent) => {
       if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
         e.preventDefault();
+        // A down-key during the intro seats the cards in one press.
+        if (cardsLoweredRef.current) {
+          finishIntro();
+          return;
+        }
         advance(1);
       } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
         e.preventDefault();
@@ -703,6 +733,7 @@ export function HomeStack() {
     window.addEventListener('touchmove', onTouchMove, { passive: false });
     window.addEventListener('keydown', onKey);
     return () => {
+      if (introRaf) cancelAnimationFrame(introRaf);
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchmove', onTouchMove);
@@ -711,7 +742,9 @@ export function HomeStack() {
   }, [filteredCards.length]);
 
   const focusY = containerH * FOCUS_Y_RATIO;
-  const introLower = cardsLowered ? containerH * INTRO_LOWER_RATIO : 0;
+  const introLower = cardsLowered
+    ? containerH * INTRO_LOWER_RATIO * (1 - introProgress)
+    : 0;
 
   const slotY = (offset: number): number => {
     // Focused content's box top is shifted up by FOCUS_LABEL_OFFSET so
@@ -753,9 +786,9 @@ export function HomeStack() {
       />
 
       {/* ──────────────── MOBILE LAYOUT ──────────────── */}
-      <div className="lg:hidden flex flex-col px-4 pt-2 gap-4 h-full">
+      <div className="lg:hidden flex flex-col pt-6 gap-4 h-full">
         {/* Filter chips — single horizontal line with horizontal scroll. */}
-        <div className="flex flex-row flex-nowrap gap-3 overflow-x-auto -mx-4 px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex flex-row flex-nowrap gap-1 overflow-x-auto -mx-4 px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {CATEGORIES.map((cat, i) => {
             const active = filter === cat;
             return (
@@ -786,7 +819,7 @@ export function HomeStack() {
             entire block (including underlines/period) is invisible during
             the pre-roll. */}
         <div
-          className="relative"
+          className="relative mt-2"
           style={{
             opacity: headlineRevealed ? 1 : 0,
             transition: 'opacity 500ms ease-out',
@@ -920,8 +953,10 @@ export function HomeStack() {
                 opacity: cardsEntered ? settledOpacity : 0,
                 transform: cardsEntered ? 'translateY(0)' : 'translateY(24px)',
                 pointerEvents: isFocusSlot ? 'none' : 'auto',
-                transition:
-                  'top 180ms linear, opacity 500ms ease-out, transform 500ms cubic-bezier(.2,.8,.2,1)',
+                transitionProperty: 'top, opacity, transform',
+                transitionDuration: `${cardsLowered ? '0ms' : '180ms'}, 500ms, 500ms`,
+                transitionTimingFunction:
+                  'linear, ease-out, cubic-bezier(.2,.8,.2,1)',
                 // Per-property delays: NO delay on `top` (so scroll
                 // changes propagate instantly), staggered delay on
                 // opacity + transform for the one-time entry fade-in.

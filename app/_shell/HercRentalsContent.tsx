@@ -22,7 +22,7 @@ const QA = {
   role: {
     question: 'What was your role in the team?',
     answer:
-      'I was responsible for co-creating the visual direction, building the design system from scratch, designing and prototyping entire flows for complex features. I also handled presentations to very demanding stakeholders. My main focus was the fleet management and tracking side of the platform, which was the most technically demanding and complex part of the product to design for.',
+      'I was responsible for co-creating the visual direction, building the design system from scratch, designing and prototyping entire flows for complex features. I also handled presentations to very demanding stakeholders.\n\nMy main focus was the fleet management and tracking side of the platform (telematics), which was the most technically demanding and complex part of the product to design for.',
   },
   ui: {
     question: 'Construction is not a beautiful world. How did you approach the UI?',
@@ -32,7 +32,7 @@ const QA = {
   hardest: {
     question: 'What was the hardest design challenge?',
     answer:
-      "It was the fleet management system, a live map where users track dozens of pieces of equipment on one screen. You’ve got trucks, lifts, and excavators, some moving, some idling, and some broken. On top of that we had geofences and job sites. It was a visual mess.\n\nI was responsible for building that visual language from scratch. I started with shapes for categories and specific colors for equipment status. I also built the clustering logic so the screen didn’t explode when you zoomed out, creating all the rules and logic so the devs could build something that actually worked. It took a lot of testing, but we turned a chaotic map into a precision tool.",
+      "It was the fleet management system, a live map where users track dozens of pieces of equipment on one screen. You’ve got trucks, lifts, and excavators, some moving, some idling, and some broken. On top of that we had geofences and job sites. It was a visual mess.\n\nI was responsible for building that visual language from scratch. I started with shapes for categories and specific colors for equipment status. I also built the clustering logic to handle the cognitive load of multiple elements in the map, creating all the rules and logic so the devs could build something that actually worked. It took a lot of testing, but we turned a chaotic map into a precision tool.",
   },
   adoption: {
     question: '150% adoption growth in 12 months. Do you take credit for that?',
@@ -118,28 +118,27 @@ function FlatImage({
   );
 }
 
-/** In-section image that stretches to fill its grid cell.
- *  `zoomOutMobile` scales the image down to 85% on mobile only, so it
- *  reads smaller inside the frame (desktop stays full-bleed). */
+/** In-section image. On mobile it sizes to its aspect ratio; at the
+ *  two-column breakpoint it also fills its grid cell height (h-full) so
+ *  paired image/Q&A rows stay aligned. Without the @[768px] gate, h-full
+ *  would stretch the image tall on mobile and override the aspect. */
 function FillImage({
   src,
   alt,
   aspect,
-  zoomOutMobile = false,
 }: {
   src: string;
   alt: string;
   aspect: string;
-  zoomOutMobile?: boolean;
 }) {
   return (
-    <div className={`w-full h-full ${aspect} relative rounded-sm overflow-hidden`}>
+    <div className={`w-full @[768px]:h-full ${aspect} relative rounded-sm overflow-hidden`}>
       <Image
         src={src}
         alt={alt}
         fill
         sizes="(min-width: 768px) 605px, 100vw"
-        className={`object-cover${zoomOutMobile ? ' scale-[0.85] md:scale-100' : ''}`}
+        className="object-cover"
       />
     </div>
   );
@@ -164,7 +163,7 @@ export function HercRentalsContent() {
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
           <FillImage src="/herc/phone-gradient.webp" alt="Herc Rentals app — phone mockup with brand gradient" aspect="aspect-[605/750]" />
-          <div className="grid grid-rows-2 gap-2 h-full">
+          <div className="flex flex-col @[768px]:grid @[768px]:grid-rows-2 gap-2 @[768px]:h-full">
             <QACard {...QA.whatItSolves} />
             <QACard {...QA.role} />
           </div>
@@ -180,12 +179,12 @@ export function HercRentalsContent() {
       {/* Section 2: 2x2 — Q&A + map / equipment phone + Q&A */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <div className="grid grid-rows-2 gap-2 h-full">
+          <div className="flex flex-col @[768px]:grid @[768px]:grid-rows-2 gap-2 @[768px]:h-full">
             <QACard {...QA.ui} />
-            <FillImage src="/herc/map-pins.webp" alt="Map view with equipment pins" aspect="aspect-[605/440]" zoomOutMobile />
+            <FillImage src="/herc/map-pins.webp" alt="Map view with equipment pins" aspect="aspect-[605/440]" />
           </div>
-          <div className="grid grid-rows-2 gap-2 h-full">
-            <FillImage src="/herc/equipment-phone.webp" alt="Herc Rentals app — equipment selected card" aspect="aspect-[605/440]" zoomOutMobile />
+          <div className="flex flex-col @[768px]:grid @[768px]:grid-rows-2 gap-2 @[768px]:h-full">
+            <FillImage src="/herc/equipment-phone.webp" alt="Herc Rentals app — equipment selected card" aspect="aspect-[605/440]" />
             <QACard {...QA.hardest} />
           </div>
         </section>
@@ -195,7 +194,7 @@ export function HercRentalsContent() {
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
           <FillImage src="/herc/phone-card.webp" alt="Herc Rentals app — equipment list" aspect="aspect-[605/750]" />
-          <div className="grid grid-rows-2 gap-2 h-full">
+          <div className="flex flex-col @[768px]:grid @[768px]:grid-rows-2 gap-2 @[768px]:h-full">
             <QACard {...QA.adoption} />
             <QACard {...QA.differently} />
           </div>
