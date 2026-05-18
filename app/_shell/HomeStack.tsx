@@ -866,7 +866,13 @@ export function HomeStack() {
             alt={focused.label}
             className="w-full rounded-md"
             key={`mobile-img-${focused.id}`}
-            style={{ animation: 'home-stack-in 320ms cubic-bezier(.2,.8,.2,1)' }}
+            // 400ms delay (with `both` fill) holds the thumbnail hidden
+            // until the card transition settles, so it doesn't fade in
+            // over the still-animating outgoing headline.
+            style={{
+              animation:
+                'home-stack-in 320ms cubic-bezier(.2,.8,.2,1) 400ms both',
+            }}
           />
         )}
 
