@@ -180,20 +180,27 @@ export function Shell({ children }: ShellProps) {
           }}
           aria-hidden={headerHidden ? true : undefined}
         >
-          <div className="overflow-hidden pt-6 md:px-8">
+          <div className={`overflow-hidden md:px-8 ${showMobileOverlay ? 'pt-8 md:pt-6' : 'pt-6'}`}>
             <div className="hidden md:block">
               {/* On /about, swap to the mobile-breakpoint header once
                   cards have scrolled up into the header band. */}
               <Header breakpoint={isAbout && aboutCompactHeader ? 'mobile' : 'desktop'} />
             </div>
-            {!showMobileOverlay && (
-              <div className="md:hidden">
+            {/* On a mobile project overlay the back button takes the
+                place of the mobile header, so it inherits the band's
+                sticky pin and hide-on-scroll-down / reveal-on-scroll-up. */}
+            <div className={`md:hidden ${showMobileOverlay ? 'flex flex-col' : ''}`}>
+              {showMobileOverlay ? (
+                <BackButton href="/work" ariaLabel="Back to Work" />
+              ) : (
                 <Header breakpoint="mobile" />
-              </div>
-            )}
+              )}
+            </div>
             {/* Spacer below header — collapses with the header on scroll
-                so columns reach the top edge. */}
-            <div className="h-6" />
+                so columns reach the top edge. On a mobile overlay it's
+                bumped to h-8 so the gap below the back icon matches the
+                gap above it. */}
+            <div className={showMobileOverlay ? 'h-8 md:h-6' : 'h-6'} />
           </div>
         </div>
 
@@ -227,13 +234,10 @@ export function Shell({ children }: ShellProps) {
           </main>
         ) : null}
 
-        {/* Mobile flow (non-home, non-about) */}
+        {/* Mobile flow (non-home, non-about) — on a project overlay the
+            back button lives in the sticky header band above. */}
         {!showHomeStack && !isAbout && (showMobileOverlay ? (
-          // pt-3 seats the back button just below the sticky header —
-          // it cancels the BackButton's -m-3 so the hit area starts
-          // flush with the header and the icon clears it by 12px.
-          <main className="md:hidden flex flex-col gap-8 pt-3">
-            <BackButton href="/work" ariaLabel="Back to Work" />
+          <main className="md:hidden flex flex-col gap-8">
             <RightContent />
           </main>
         ) : (

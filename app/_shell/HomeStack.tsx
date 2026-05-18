@@ -71,7 +71,7 @@ const CARDS: Card[] = [
   {
     id: 'patina-app',
     project: 'patina',
-    label: 'APP PATINA',
+    label: 'PATINA',
     description:
       'I built an app to make you put your phone down. I had the idea, designed it, built it and shipped it. Solo.',
     image: '/patina/patina3.webp',
@@ -104,7 +104,7 @@ const CARDS: Card[] = [
   {
     id: 'patina-behavior',
     project: 'patina',
-    label: 'APP PATINA',
+    label: 'PATINA',
     description:
       'Took on the challenge of interrupting one of the most automatic human behaviors.',
     image: '/patina/home1.webp',
@@ -137,7 +137,7 @@ const CARDS: Card[] = [
   {
     id: 'patina-analytics',
     project: 'patina',
-    label: 'APP PATINA',
+    label: 'PATINA',
     description:
       'Set up analytics to measure if a color seen for two seconds changes what you do next.',
     image: '/patina/patina-home2.webp',
@@ -198,7 +198,7 @@ const SLOTS_ABOVE = 3;
 const SLOTS_BELOW = 4;
 // Vertical offset of the focused content above focusY so the heading
 // (not the label) lines up with the top filter chip; the small label
-// "APP PATINA" then sits above the filters.
+// "PATINA" then sits above the filters.
 // Equals label line-height (22px) + mt-2 gap (8px).
 const FOCUS_LABEL_OFFSET = 30;
 const WHEEL_THROTTLE_MS = 140;
