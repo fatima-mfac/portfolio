@@ -73,9 +73,10 @@ export function Shell({ children }: ShellProps) {
     rightColRef.current?.scrollTo({ top: 0 });
   }, [project]);
 
-  // Auto-hide header on scroll-down, reveal on scroll-up — desktop only,
-  // tracking the right-column scroll. On mobile the header stays put: a
-  // collapsing in-flow header shifts everything below it jarringly.
+  // Header hide state. On use-case and About pages the header slides out
+  // of view on scroll-down and back on scroll-up; the homepage header is
+  // always shown. The header is position:sticky, so hiding it (a
+  // translate) never shifts the content below.
   const [headerHidden, setHeaderHidden] = useState(false);
 
   // First-paint entrance — header drops in from above + fades in,
@@ -88,19 +89,24 @@ export function Shell({ children }: ShellProps) {
     return () => window.clearTimeout(id);
   }, []);
 
+  // Hide the header on scroll-down, reveal on scroll-up — use-case and
+  // About pages only; the homepage header is always shown. Window scroll
+  // is the mobile scroll source; on desktop the shell doesn't scroll the
+  // window, so the header simply stays put there. headerHidden resets on
+  // every navigation so a fresh page always opens with the header shown.
   useEffect(() => {
-    const el = rightColRef.current;
-    if (!el) return;
-    let last = el.scrollTop;
+    setHeaderHidden(false);
+    if (showHomeStack) return;
+    let last = window.scrollY;
     const onScroll = () => {
-      const current = el.scrollTop;
+      const current = window.scrollY;
       if (Math.abs(current - last) < 5) return;
-      setHeaderHidden(current > last && current > 50);
+      setHeaderHidden(current > last && current > 60);
       last = current;
     };
-    el.addEventListener('scroll', onScroll, { passive: true });
-    return () => el.removeEventListener('scroll', onScroll);
-  }, []);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [showHomeStack, pathname, project]);
 
   // Compact-header trigger for /about on desktop. When cards have
   // scrolled far enough that they start crossing into the header's
@@ -148,18 +154,22 @@ export function Shell({ children }: ShellProps) {
     <Screensaver />
     <div className={`min-h-screen md:h-screen md:overflow-hidden flex flex-col ${showHomeStack || isAbout ? '' : 'bg-white'}`}>
       <div className="mx-auto w-full px-4 md:px-0 flex flex-col md:flex-1 md:min-h-0 relative">
-        {/* Header area — collapses to zero height on scroll-down so columns
-            extend to the top of the browser; reveals on scroll-up. The
-            grid-template-rows 1fr↔0fr trick gives a smooth height transition. */}
+        {/* Header area — position:sticky so it pins to the top while the
+            page scrolls. On use-case/About it slides out of view on
+            scroll-down (translateY) and back on scroll-up; an opaque bg
+            keeps content from showing through where it pins. */}
         <div
-          className="grid relative z-10"
+          className={`sticky top-0 z-10 ${
+            isAbout ? 'bg-background-primary' : showHomeStack ? '' : 'bg-white'
+          }`}
           onWheel={handleHeaderWheel}
           style={{
-            gridTemplateRows: headerHidden ? 'minmax(0,0fr)' : 'minmax(0,1fr)',
-            transform: headerEntered ? 'translateY(0)' : 'translateY(-16px)',
+            transform: `translateY(${
+              !headerEntered ? '-16px' : headerHidden ? '-100%' : '0'
+            })`,
             opacity: headerEntered ? 1 : 0,
             transition:
-              'grid-template-rows 200ms ease-out, opacity 600ms ease-out, transform 600ms cubic-bezier(.2,.8,.2,1)',
+              'opacity 600ms ease-out, transform 300ms cubic-bezier(.2,.8,.2,1)',
             willChange: 'opacity, transform',
           }}
           aria-hidden={headerHidden ? true : undefined}
