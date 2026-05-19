@@ -111,6 +111,10 @@ function QACard({ question, answer }: { question: string; answer: string }) {
   );
 }
 
+/** In-section image. On mobile it sizes to its aspect ratio; at the
+ *  two-column breakpoint it also fills its grid cell height (h-full) so
+ *  paired image/Q&A rows stay aligned. Without the @[768px] gate, h-full
+ *  would stretch a horizontal image tall on mobile and override aspect. */
 function FillImage({
   src,
   alt,
@@ -122,7 +126,7 @@ function FillImage({
 }) {
   return (
     <div
-      className={`w-full h-full ${aspect} relative rounded-sm overflow-hidden`}
+      className={`w-full @[768px]:h-full ${aspect} relative rounded-sm overflow-hidden`}
       style={{ backgroundColor: IMAGE_BLOCK_BG }}
     >
       <Image
@@ -155,7 +159,7 @@ export function VodafoneContent() {
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
           <FillImage src="/vodafone/phone-networks.webp" alt="Vodafone app — connected devices view" aspect="aspect-[605/750]" />
-          <div className="grid grid-rows-2 gap-2 h-full">
+          <div className="flex flex-col @[768px]:grid @[768px]:grid-rows-2 gap-2 @[768px]:h-full">
             <QACard {...QA.whatItDoes} />
             <QACard {...QA.complex} />
           </div>
@@ -165,11 +169,11 @@ export function VodafoneContent() {
       {/* Section 2: 2x2 — Q&A + network illustration / phone-QR + Q&A */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <div className="grid grid-rows-2 gap-2 h-full">
+          <div className="flex flex-col @[768px]:grid @[768px]:grid-rows-2 gap-2 @[768px]:h-full">
             <QACard {...QA.hardest} />
             <FillImage src="/vodafone/devices.webp" alt="Vodafone app — connected devices view" aspect="aspect-[605/440]" />
           </div>
-          <div className="grid grid-rows-2 gap-2 h-full">
+          <div className="flex flex-col @[768px]:grid @[768px]:grid-rows-2 gap-2 @[768px]:h-full">
             <FillImage src="/vodafone/network-illustration.webp" alt="Network status illustration" aspect="aspect-[605/440]" />
             <QACard {...QA.dayToDay} />
           </div>
@@ -179,7 +183,7 @@ export function VodafoneContent() {
       {/* Section 3: two Q&As stacked LEFT | phone with red gradient RIGHT */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <div className="grid grid-rows-2 gap-2 h-full">
+          <div className="flex flex-col @[768px]:grid @[768px]:grid-rows-2 gap-2 @[768px]:h-full">
             <QACard {...QA.reliable} />
             <QACard {...QA.complexity} />
           </div>
