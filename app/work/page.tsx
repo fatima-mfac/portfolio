@@ -32,7 +32,14 @@ function WorkEntry({ label, subtitle, href }: WorkEntryProps) {
       aria-label={`Open ${label} use case`}
       className="flex flex-col gap-1 no-underline w-full"
     >
-      <span className="text-heading-xl-semibold text-text-primary">{label}</span>
+      {/* Title styled to match the homepage headline (HomeStack
+          FocusedContent, mobile): 32px / medium / -2px tracking. */}
+      <span
+        className="font-medium text-text-primary"
+        style={{ fontSize: 32, lineHeight: '36px', letterSpacing: '-2px' }}
+      >
+        {label}
+      </span>
       <span className="text-body-lg text-text-secondary">{subtitle}</span>
     </Link>
   );
