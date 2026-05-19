@@ -115,7 +115,7 @@ const CARDS: Card[] = [
   {
     id: 'vodafone-technical',
     project: 'vodafone',
-    label: 'APP VODAFONE',
+    label: 'VODAFONE',
     description:
       'Making a deeply technical concept feel clear to someone who just wants their Wi-Fi to work.',
     image: '/vodafone/home1.webp',
@@ -159,7 +159,7 @@ const CARDS: Card[] = [
   {
     id: 'vodafone-locale',
     project: 'vodafone',
-    label: 'APP VODAFONE',
+    label: 'VODAFONE',
     description:
       'Designed for a product that behaves differently depending on where you are in the world.',
     image: '/vodafone/home2.webp',
