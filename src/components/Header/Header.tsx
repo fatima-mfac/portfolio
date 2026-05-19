@@ -79,12 +79,24 @@ export function Header({
     pathname === '/about' ? `/?project=${slug}` : `${pathname}?project=${slug}`;
 
   // Reset handler for the Index nav item — returns to the bare homepage
-  // and resets HomeStack state.
+  // and resets HomeStack state. The <Link> itself does the soft (client)
+  // navigation; this also guards against the App Router occasionally
+  // wedging on a query-only change (`/?project=…` → `/`), which leaves
+  // Index dead and stuck on the use-case URL. If a beat after the click
+  // the URL hasn't moved at all, force a hard navigation home.
   const handleHomeReset = () => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('homeStack:focusedIdx');
-      window.dispatchEvent(new Event('homeStack:reset'));
-    }
+    if (typeof window === 'undefined') return;
+    sessionStorage.removeItem('homeStack:focusedIdx');
+    window.dispatchEvent(new Event('homeStack:reset'));
+    const urlAtClick = window.location.pathname + window.location.search;
+    window.setTimeout(() => {
+      const url = window.location.pathname + window.location.search;
+      // URL unchanged and still not the bare homepage → the soft nav
+      // wedged (it isn't the user navigating elsewhere). Force it.
+      if (url !== '/' && url === urlAtClick) {
+        window.location.href = '/';
+      }
+    }, 300);
   };
 
   return (
@@ -121,7 +133,11 @@ export function Header({
       {breakpoint === 'desktop' && projectLinks.length > 0 && (
         <nav aria-label="Project links" className="flex flex-row items-center gap-6">
           {projectLinks.map((link) => {
-            const isActive = link.active ?? project === link.slug;
+            // A project is "active" only while it's actually on screen —
+            // the home route with that ?project=. On /about the param is
+            // carried in the URL but ignored, so no project reads active.
+            const isActive =
+              link.active ?? (pathname === '/' && project === link.slug);
             return (
               <NavItem
                 key={link.slug}
