@@ -82,7 +82,7 @@ function DescriptionMetadata() {
       <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
         <span className="text-heading-lg">Patina,</span> a screen time awareness app that tints your wallpaper as you use your phone. I designed, vibe coded and shipped it. Solo human + AI, zero to one.
       </p>
-      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col text-metadata-md text-text-secondary">
+      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col gap-3 @[768px]:gap-0 text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-text-secondary">
         {METADATA_LINES.map((line) => (
           <span
             key={line}
