@@ -30,19 +30,24 @@ export function PatinaHeroVideo() {
   // browser picks ONE source at parse time and only downloads that
   // file, so file weight stays low for mobile users.
   //
+  // The poster <picture> mirrors that art direction with each video's
+  // actual first frame. It sits behind the (initially transparent)
+  // <video>, positioned identically, so the page opens on the real
+  // first frame — no flash of a different image while the video buffers.
+  //
   // The mobile source has a thin scroll indicator on its right edge.
-  // The .patina-hero-video class below extends the element past the
+  // The .patina-hero-layer class below extends the element past the
   // container's right edge on mobile — wrapper's overflow-hidden
   // clips the artefact. Tune the negative right value to taste.
   return (
     <>
       <style>{`
-        .patina-hero-video {
-          /* <video> is a replaced element — top/bottom alone don't
-             always force its box to fill its absolute-positioned
+        .patina-hero-layer {
+          /* <video> and <img> are replaced elements — top/bottom alone
+             don't always force the box to fill its absolute-positioned
              container in every browser. Pin explicit width + height
-             100% and display:block so the box always covers the
-             parent edge-to-edge before object-cover scales the video. */
+             100% and display:block so the box always covers the parent
+             edge-to-edge before object-cover scales the content. */
           position: absolute;
           inset: 0;
           right: -40px;
@@ -52,21 +57,32 @@ export function PatinaHeroVideo() {
           object-fit: cover;
         }
         @media (min-width: 828px) {
-          .patina-hero-video {
+          .patina-hero-layer {
             right: 0;
             width: 100%;
           }
         }
       `}</style>
+      {/* First-frame poster behind the video — matches each video's
+          opening frame exactly, so there's no flash while the video
+          buffers. The video paints over it once it has data. */}
+      <picture>
+        <source media="(max-width: 828px)" srcSet="/patina/hero-poster-mobile.webp" />
+        <img
+          src="/patina/hero-poster.webp"
+          alt=""
+          aria-hidden="true"
+          className="patina-hero-layer"
+        />
+      </picture>
       <video
         ref={videoRef}
         autoPlay
         muted
         playsInline
         preload="metadata"
-        poster="/patina/hero.webp"
         onEnded={handleEnded}
-        className="patina-hero-video"
+        className="patina-hero-layer"
       >
         <source
           media="(max-width: 828px)"
