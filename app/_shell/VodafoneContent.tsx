@@ -2,10 +2,6 @@ import Image from 'next/image';
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
 
-// EXPLORATION — promote color to a token before merging.
-const QA_CARD_BG = '#F9F9F9';
-const IMAGE_BLOCK_BG = '#F9F9F9';
-
 const METADATA_LINES = [
   'Role .......... Senior Product Designer as a Contractor',
   'Scope ......... Mobile app, design system',
@@ -61,10 +57,7 @@ const QA = {
 
 function HeroImage() {
   return (
-    <div
-      className="shrink-0 w-full h-[calc(100dvh-80px)] rounded-sm overflow-hidden relative"
-      style={{ backgroundColor: IMAGE_BLOCK_BG }}
-    >
+    <div className="shrink-0 w-full h-[calc(100dvh-80px)] rounded-sm overflow-hidden relative bg-background-card-cool">
       <Image
         src="/vodafone/hero.webp"
         alt="Vodafone Broadband — 3D house illustration"
@@ -79,10 +72,7 @@ function HeroImage() {
 
 function DescriptionMetadata() {
   return (
-    <div
-      className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
-      style={{ backgroundColor: QA_CARD_BG }}
-    >
+    <div className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2 bg-background-card-cool">
       <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
         <span className="text-heading-lg">Vodafone Broadband,</span> an award-winning app that lets millions of customers manage their home broadband. I joined their global in-house product team as Senior Product Designer, working on one of the most technically complex consumer apps I&apos;ve worked on.
       </p>
@@ -102,10 +92,7 @@ function DescriptionMetadata() {
 
 function QACard({ question, answer }: { question: string; answer: string }) {
   return (
-    <div
-      className="rounded-sm p-8 @[1100px]:p-20 flex items-center"
-      style={{ backgroundColor: QA_CARD_BG }}
-    >
+    <div className="rounded-sm p-8 @[1100px]:p-20 flex items-center bg-background-card-cool">
       <QAItem question={question} answer={answer} size="lg" />
     </div>
   );
@@ -125,10 +112,7 @@ function FillImage({
   aspect: string;
 }) {
   return (
-    <div
-      className={`w-full @[768px]:h-full ${aspect} relative rounded-sm overflow-hidden`}
-      style={{ backgroundColor: IMAGE_BLOCK_BG }}
-    >
+    <div className={`w-full @[768px]:h-full ${aspect} relative rounded-sm overflow-hidden bg-background-card-cool`}>
       <Image
         src={src}
         alt={alt}

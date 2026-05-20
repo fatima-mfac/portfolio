@@ -5,10 +5,6 @@ import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScro
 import { PatinaHeroVideo } from './PatinaHeroVideo';
 import { PhoneCrossfade } from './PhoneCrossfade';
 
-// EXPLORATION — promote colors to tokens before merging.
-// Cream background used inside Q&A cards; matches the article-container fill in Figma.
-const QA_CARD_BG = '#FFFCF7';
-
 const METADATA_LINES = [
   'Role .......... Solo design and vibe coding, end to end',
   'Scope ......... Brand, Android app, Website',
@@ -75,10 +71,7 @@ function HeroImage() {
 
 function DescriptionMetadata() {
   return (
-    <div
-      className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
-      style={{ backgroundColor: QA_CARD_BG }}
-    >
+    <div className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2 bg-background-card-warm">
       <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
         <span className="text-heading-lg">Patina,</span> a screen time awareness app that tints your wallpaper as you use your phone. I designed, vibe coded and shipped it. Solo human + AI, zero to one.
       </p>
@@ -99,10 +92,7 @@ function DescriptionMetadata() {
 
 function QACard({ question, answer }: { question: string; answer: string }) {
   return (
-    <div
-      className="rounded-sm p-8 @[1100px]:p-20 flex items-center"
-      style={{ backgroundColor: QA_CARD_BG }}
-    >
+    <div className="rounded-sm p-8 @[1100px]:p-20 flex items-center bg-background-card-warm">
       <QAItem question={question} answer={answer} size="lg" />
     </div>
   );
@@ -193,8 +183,8 @@ function FillImage({
 function PhoneVideoCard() {
   return (
     <div
-      className="w-full h-full rounded-sm relative flex items-center justify-center"
-      style={{ backgroundColor: '#FFF9EF', padding: '150px', minHeight: '900px' }}
+      className="w-full h-full rounded-sm relative flex items-center justify-center bg-background-panel-cream"
+      style={{ padding: '150px', minHeight: '900px' }}
     >
       <div className="relative h-full aspect-[640/1386]" style={{ transform: 'scale(1.15)' }}>
         {/* Video sits inside the phone's screen area. The skin.webp has

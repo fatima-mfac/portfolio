@@ -7,11 +7,8 @@ interface ProjectCardProps {
   className?: string;
 }
 
-// EXPLORATION — promote color to a token before merging.
-const CARD_BG = '#FAFAFA';
-
 export function ProjectCard({ title, role, href, className }: ProjectCardProps) {
-  const cardClasses = `group flex flex-col gap-1 py-3 px-4 rounded-sm no-underline cursor-pointer transition-colors duration-fast ease-out hover:bg-background-card ${className ?? ''}`;
+  const cardClasses = `group flex flex-col gap-1 py-3 px-4 rounded-sm no-underline cursor-pointer transition-colors duration-fast ease-out bg-background-card-soft hover:bg-background-card ${className ?? ''}`;
 
   const content = (
     <>
@@ -26,11 +23,11 @@ export function ProjectCard({ title, role, href, className }: ProjectCardProps) 
 
   if (href) {
     return (
-      <Link href={href} scroll={false} className={cardClasses} style={{ backgroundColor: CARD_BG }}>
+      <Link href={href} scroll={false} className={cardClasses}>
         {content}
       </Link>
     );
   }
 
-  return <div className={cardClasses} style={{ backgroundColor: CARD_BG }}>{content}</div>;
+  return <div className={cardClasses}>{content}</div>;
 }
