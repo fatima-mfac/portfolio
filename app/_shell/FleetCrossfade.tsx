@@ -6,9 +6,6 @@ import type { PointerEvent, TransitionEvent } from 'react';
 // Fleet dashboard screens shown in the Herc use case. A slide carousel:
 // it auto-advances on a slow timer, a hovering mouse pauses it, and a
 // horizontal drag (or a dot click) steps between screens.
-//
-// EXPLORATION — #FFF9EF cream is a hardcoded hex (matches the color
-// used in WallpaperScene); promote to a token before merging.
 const IMAGES = [
   { src: '/herc/fleet1.webp', alt: 'Fleet utilization dashboard' },
   { src: '/herc/fleet2.webp', alt: 'Fleet management dashboard' },
@@ -111,10 +108,7 @@ export function FleetCrossfade() {
   };
 
   return (
-    <div
-      className="w-full py-[80px] rounded-sm overflow-hidden"
-      style={{ backgroundColor: '#FFF9EF' }}
-    >
+    <div className="w-full py-[80px] rounded-sm overflow-hidden bg-background-panel-cream">
       <div className="mx-auto flex w-[75%] flex-col items-center gap-6">
         {/* Slide stage — clips the track; the grab cursor signals the
             drag affordance. */}

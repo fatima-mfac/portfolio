@@ -14,6 +14,10 @@
   --color-orange-600: #bb4822;
   --color-white: #ffffff;
   --color-white-70: rgba(255, 255, 255, 0.70);
+  --color-cream-100: #fffcf7;
+  --color-cream-200: #fff9ef;
+  --color-grey-50:   #fafafa;
+  --color-grey-100:  #f9f9f9;
 
   /* Typography primitives */
   --font-family-primary: var(--font-bl-melody), system-ui, sans-serif;
@@ -54,6 +58,10 @@
   --color-background-dark:             var(--color-ink-900);
   --color-background-card:             var(--color-white);
   --color-background-card-translucent: var(--color-white-70);
+  --color-background-card-warm:        var(--color-cream-100);
+  --color-background-card-cool:        var(--color-grey-100);
+  --color-background-card-soft:        var(--color-grey-50);
+  --color-background-panel-cream:      var(--color-cream-200);
   --color-background-hero:             var(--color-orange-600);
   --color-accent-primary:              var(--color-orange-500);
   --color-accent-secondary:            var(--color-orange-600);

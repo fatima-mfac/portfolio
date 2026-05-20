@@ -3,9 +3,6 @@ import { QAItem } from '../../src/components/QAItem/QAItem';
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
 import { FleetCrossfade } from './FleetCrossfade';
 
-// EXPLORATION — promote color to a token before merging.
-const QA_CARD_BG = '#FFFCF7';
-
 const METADATA_LINES = [
   'Role .......... Senior Product Designer',
   'Scope ......... Mobile app, web platform, design system',
@@ -63,10 +60,7 @@ function HeroImage() {
 
 function DescriptionMetadata() {
   return (
-    <div
-      className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
-      style={{ backgroundColor: QA_CARD_BG }}
-    >
+    <div className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2 bg-background-card-warm">
       <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
         <span className="text-heading-lg">Herc Rentals,</span> a B2B platform for renting and managing heavy equipment across app and website. I was part of the product team as Senior Product Designer, owning key features including real time tracking and monitoring of heavy machinery in the field.
       </p>
@@ -86,10 +80,7 @@ function DescriptionMetadata() {
 
 function QACard({ question, answer }: { question: string; answer: string }) {
   return (
-    <div
-      className="rounded-sm p-8 @[1100px]:p-20 flex items-center"
-      style={{ backgroundColor: QA_CARD_BG }}
-    >
+    <div className="rounded-sm p-8 @[1100px]:p-20 flex items-center bg-background-card-warm">
       <QAItem question={question} answer={answer} size="lg" />
     </div>
   );
