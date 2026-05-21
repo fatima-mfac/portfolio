@@ -110,22 +110,36 @@ export function Shell({ children }: ShellProps) {
 
   // Compact-header trigger for /about on desktop. When cards have
   // scrolled far enough that they start crossing into the header's
-  // vertical band, swap the desktop header for the mobile-breakpoint
-  // variant (drops the project nav on the right, keeps logo + primary
-  // nav on the left). Threshold is "scrolled more than ~half a
-  // viewport" so the swap fires right around when the first card hits
-  // the header.
+  // vertical band AND the viewport is too narrow for them to clear
+  // the right-side project nav, swap the desktop header for the
+  // mobile-breakpoint variant (drops the project nav, keeps logo +
+  // primary nav on the left).
+  //
+  // The viewport gate: cards are max-w-[605px] centered; the project
+  // nav cluster is ~334px wide with 32px right padding, so the cards
+  // clear the nav left edge when viewport >= ~1337px. Below that
+  // they would overlap the nav and the swap is warranted; at wider
+  // widths the nav has room to stay visible no matter how far the
+  // page is scrolled.
   useEffect(() => {
     if (!isAbout) return;
     const el = aboutMainRef.current;
     if (!el) return;
-    const threshold = () => window.innerHeight * 0.45;
-    const onScroll = () => {
-      setAboutCompactHeader(el.scrollTop > threshold());
+    const navHasRoom = window.matchMedia('(min-width: 1340px)');
+    const update = () => {
+      if (navHasRoom.matches) {
+        setAboutCompactHeader(false);
+        return;
+      }
+      setAboutCompactHeader(el.scrollTop > window.innerHeight * 0.45);
     };
-    onScroll();
-    el.addEventListener('scroll', onScroll, { passive: true });
-    return () => el.removeEventListener('scroll', onScroll);
+    update();
+    el.addEventListener('scroll', update, { passive: true });
+    navHasRoom.addEventListener('change', update);
+    return () => {
+      el.removeEventListener('scroll', update);
+      navHasRoom.removeEventListener('change', update);
+    };
   }, [isAbout]);
 
   // The header is its own (non-scrollable) element above the columns,
