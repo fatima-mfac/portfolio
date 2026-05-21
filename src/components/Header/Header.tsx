@@ -109,14 +109,13 @@ export function Header({
         <img src="/logo.svg" alt="Fátima Cunha" className="w-8 h-auto" />
         <nav aria-label="Primary navigation" className="flex flex-row items-center gap-6">
           {baseNavLinks.map((link) => {
-            // Index (href '/') is active only on the bare homepage. When
-            // a project is selected the page is a use case, so no
-            // left-nav item should read as active.
+            // Index (href '/') never reads as active — the homepage is
+            // the default landing and shouldn't highlight a nav item.
+            // On a use case (`/` + ?project=) no left-nav item is active
+            // either, since neither Index nor About describes that page.
             const isActive =
               link.active ??
-              (link.href === '/'
-                ? pathname === '/' && !project
-                : pathname === link.href);
+              (link.href === '/' ? false : pathname === link.href);
             return (
               <NavItem
                 key={link.href}
