@@ -20,9 +20,12 @@ export function NavItem({ label, href = '#', state = 'default', className, onCli
   // `font-medium!` (important) overrides only the weight — size and
   // line-height are untouched, so the heavier text doesn't shift the
   // line metrics.
+  // The active nav item is the page the user is already on, so it's
+  // shown but made inert — pointer-events-none disables mouse hover
+  // and clicks, since clicking the current page is a no-op.
   const stateClasses =
     state === 'active'
-      ? 'text-accent-secondary font-medium!'
+      ? 'text-accent-secondary font-medium! pointer-events-none'
       : 'text-text-primary hover:text-accent-secondary hover:font-medium!';
 
   // inline-grid with both spans in the same cell (grid-area 1/1): the
