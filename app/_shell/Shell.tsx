@@ -176,11 +176,14 @@ export function Shell({ children }: ShellProps) {
       }`}>
         {/* Header area — position:sticky so it pins to the top while the
             page scrolls. On use-case/About it slides out of view on
-            scroll-down (translateY) and back on scroll-up; an opaque bg
-            keeps content from showing through where it pins. */}
+            scroll-down (translateY) and back on scroll-up. Use-case
+            pages get an opaque white bg so scrolling content is hidden
+            under the band; About and the HomeStack home stay
+            transparent so the letter ring and cards can scroll past
+            the header to the actual viewport edge. */}
         <div
           className={`sticky top-0 z-10 ${
-            isAbout ? 'bg-background-primary' : showHomeStack ? '' : 'bg-white'
+            isAbout || showHomeStack ? '' : 'bg-white'
           }`}
           onWheel={handleHeaderWheel}
           style={{
