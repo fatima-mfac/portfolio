@@ -82,7 +82,7 @@ const QUESTIONS: Array<{
   {
     question: "What's it like to work with you?",
     answer: [
-      "People say it's easy and fun, that I light things up even when the pressure is high. I tend to focus on the solution rather than the problem, and I push people to aim higher without making them feel bad about where they are. They say I care.",
+      "People say it's easy and fun, that I light things up even when the pressure is high. I care deeply about the quality of my work, ask a lot of questions, and push people to aim higher without making them feel bad about where they are.",
       <>
         It seems I might be a cool person after all. See it for yourself{' '}
         <a
