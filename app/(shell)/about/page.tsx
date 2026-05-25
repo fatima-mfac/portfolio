@@ -60,7 +60,7 @@ const QUESTIONS: Array<{
   },
   {
     question:
-      'After 18 years in consultancy, you chose to step away. Why?',
+      'After years in agency and consultancy, you chose to step away. Why?',
     answer:
       "I wanted the intimacy with a product that consultancy couldn't give me. To stay long enough with a challenge and help shape not just the experience but also the vision.\n\nSo I took a break to travel, study and get more creative. I painted, wrote, built an app, an agentic design system, and learned how to work with AI as a creative partner. Now I'm ready to get back.",
   },
@@ -72,7 +72,7 @@ const QUESTIONS: Array<{
   {
     question: 'What do you want to do next?',
     answer:
-      "Work on a great product, with challenging ideas, with smart, humble people. I would love to find a great team where we push each other to be the best possible, to help teams embrace not being satisfied with the first answer. I'm good at that.\n\nIdeally a product company or early stage startup where design actually shapes what gets built. Remote or Porto based.",
+      "Work on a great product, on problems worth solving, with smart, humble people. I would love to find a great team where we push each other to be the best possible, to help teams embrace not being satisfied with the first answer. I'm good at that. Ideally a product company or early stage startup where design actually shapes what gets built. Remote or Porto based.",
   },
   {
     question: "What won't you do?",
