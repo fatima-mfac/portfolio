@@ -19,7 +19,7 @@ const QA = {
   complex: {
     question: 'So it was a very complex product to work on?',
     answer:
-      "Very. The app runs across multiple markets, with different router models, different legal content, and sometimes completely different flows. I needed to think about how one design decision would ripple across all of those variations. It required a level of attention to detail that most app projects don't demand.",
+      "Yes... the app runs across multiple markets, with different router models, different legal content, and sometimes completely different flows. I needed to think about how one design decision would ripple across all of those variations. It required a level of attention to detail that most app projects don't demand.",
   },
   hardest: {
     question: 'What was the hardest part of the work itself?',
