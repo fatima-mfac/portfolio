@@ -150,7 +150,7 @@ function Hero() {
           lavender hero edge, SVG capped at 800px and right-aligned
           with a 70px gap. Mobile: portrait variant (diagram-M.svg)
           fills the full-width white card. */}
-      <div className="self-stretch rounded-sm bg-background-card px-8 py-16 @[768px]:mx-[60px] @[768px]:px-8 @[768px]:py-[120px] @[1100px]:px-12">
+      <div className="self-stretch rounded-sm bg-background-card px-2 py-3 @[768px]:mx-[60px] @[768px]:px-8 @[768px]:py-[120px] @[1100px]:px-12">
         <img
           src="/zebra-finch/diagram-M.svg"
           alt="Bidirectional Figma to Code agentic pipeline diagram"
