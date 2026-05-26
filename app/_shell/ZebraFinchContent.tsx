@@ -273,7 +273,7 @@ function StackSection() {
   return (
     <section className="flex flex-col gap-6 mx-auto max-w-[700px] w-full">
       <p className="text-heading-xl text-text-primary">My stack</p>
-      <ul className="flex flex-nowrap gap-x-8 items-center">
+      <ul className="flex flex-wrap gap-x-8 gap-y-3 items-center">
         {STACK.map((tool) => (
           <li key={tool.name} className="flex items-center gap-2 whitespace-nowrap">
             {tool.src ? (
