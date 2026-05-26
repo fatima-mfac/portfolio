@@ -115,10 +115,10 @@ function DescriptionMetadata() {
     <div
       className="bg-background-primary rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2"
     >
-      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
+      <p className="px-8 pt-11 pb-0 @[768px]:pt-8 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
         The <span className="text-heading-lg">future of design</span>{' '}isn&apos;t designing interfaces. It&apos;s designing the systems, the guidelines, the constraints, and the fallbacks. I wanted to experiment with that, so I built a pipeline where I set the visual direction, the soul, and the rules, and the AI generates the output using only the design system. This is the foundation for future adaptive interfaces.
       </p>
-      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col gap-3 @[768px]:gap-0 text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-text-secondary">
+      <div className="px-8 pt-10 pb-11 @[768px]:pt-8 @[768px]:pb-8 @[1100px]:p-20 flex flex-col gap-3 @[768px]:gap-0 text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-text-secondary">
         {METADATA_LINES.map((line) => (
           <span
             key={line}
@@ -146,14 +146,20 @@ function Hero() {
       </div>
 
       {/* Diagram — bidirectional Figma ↔ Code agentic pipeline.
-          Framed in a white card that sits 124px inside the lavender
-          hero edge. The SVG itself is capped at 800px and centred
-          inside the white frame. */}
-      <div className="self-stretch mx-[60px] rounded-sm bg-background-card px-8 py-[120px] @[768px]:px-12">
+          Desktop: framed in a white card that sits 60px inside the
+          lavender hero edge, SVG capped at 800px and right-aligned
+          with a 70px gap. Mobile: portrait variant (diagram-M.svg)
+          fills the full-width white card. */}
+      <div className="self-stretch rounded-sm bg-background-card px-8 py-16 @[768px]:mx-[60px] @[768px]:px-8 @[768px]:py-[120px] @[1100px]:px-12">
+        <img
+          src="/zebra-finch/diagram-M.svg"
+          alt="Bidirectional Figma to Code agentic pipeline diagram"
+          className="block w-[85%] mx-auto h-auto @[768px]:hidden"
+        />
         <img
           src="/zebra-finch/diagram.svg"
           alt="Bidirectional Figma to Code agentic pipeline diagram"
-          className="block w-full max-w-[800px] h-auto ml-auto mr-[70px]"
+          className="hidden @[768px]:block w-full max-w-[800px] h-auto ml-auto mr-[70px]"
         />
       </div>
     </section>

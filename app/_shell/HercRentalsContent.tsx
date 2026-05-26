@@ -61,10 +61,10 @@ function HeroImage() {
 function DescriptionMetadata() {
   return (
     <div className="rounded-sm grid grid-cols-1 @[768px]:grid-cols-2 gap-0 @[768px]:gap-2 bg-background-card-warm">
-      <p className="px-8 pt-8 pb-0 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
+      <p className="px-8 pt-11 pb-0 @[768px]:pt-8 @[768px]:pb-8 @[1100px]:p-20 text-heading-lg-book text-text-primary">
         <span className="text-heading-lg">Herc Rentals,</span> a B2B platform for renting and managing heavy equipment across app and website. I was part of the product team as Senior Product Designer, owning key features including real time tracking and monitoring of heavy machinery in the field.
       </p>
-      <div className="px-8 pt-10 pb-8 @[768px]:pt-8 @[1100px]:p-20 flex flex-col gap-3 @[768px]:gap-0 text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-text-secondary">
+      <div className="px-8 pt-10 pb-11 @[768px]:pt-8 @[768px]:pb-8 @[1100px]:p-20 flex flex-col gap-3 @[768px]:gap-0 text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-text-secondary">
         {METADATA_LINES.map((line) => (
           <span
             key={line}
