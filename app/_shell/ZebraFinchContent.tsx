@@ -154,7 +154,7 @@ function Hero() {
         <img
           src="/zebra-finch/diagram-M.svg"
           alt="Bidirectional Figma to Code agentic pipeline diagram"
-          className="block w-[85%] mx-auto h-auto @[768px]:hidden"
+          className="block w-full h-auto @[768px]:hidden"
         />
         <img
           src="/zebra-finch/diagram.svg"
