@@ -126,7 +126,7 @@ function StatCard({ value, label, caption }: { value: string; label: string; cap
         <p className="text-display-stat text-accent-secondary">{value}</p>
         <p className="text-metadata-md text-accent-secondary">{label}</p>
       </div>
-      <p className="text-metadata-md text-text-primary">{caption}</p>
+      <p className="text-metadata-md text-text-secondary">{caption}</p>
     </div>
   );
 }
@@ -270,11 +270,18 @@ export function PatinaContent() {
       </RevealOnScroll>
 
       {/* Stats — 3 retention/behaviour numbers in cream cards. Row of
-          three at @[768px]; stacks to a single column on narrower widths. */}
+          three at @[768px]; below that, a horizontal swipe carousel
+          where each card is 90% of the container so the next card peeks
+          on the right (scroll-snap-x mandatory locks the snap points). */}
       <RevealOnScroll>
-        <section className="grid grid-cols-1 @[768px]:grid-cols-3 gap-2">
+        <section className="flex overflow-x-auto snap-x snap-mandatory gap-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden @[768px]:grid @[768px]:grid-cols-3 @[768px]:overflow-visible">
           {STATS.map((stat) => (
-            <StatCard key={stat.label} {...stat} />
+            <div
+              key={stat.label}
+              className="shrink-0 w-[85%] snap-start @[768px]:w-auto"
+            >
+              <StatCard {...stat} />
+            </div>
           ))}
         </section>
       </RevealOnScroll>
