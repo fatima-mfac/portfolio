@@ -61,6 +61,25 @@ const QA = {
   },
 };
 
+const STATS: ReadonlyArray<{ value: string; label: string; caption: string }> = [
+  {
+    value: '76.9%',
+    label: 'Install Retention',
+    caption: 'Since launch (April 2026)',
+  },
+  {
+    value: '87%',
+    label: 'Decrease in screen time limit reached',
+    caption:
+      'Could mean behaviour change or that users increased their daily limit.',
+  },
+  {
+    value: '80%',
+    label: 'Paused before unlocking',
+    caption: 'From a preliminary survey of 12 early users.',
+  },
+];
+
 function HeroImage() {
   return (
     <div className="shrink-0 w-full h-[calc(100dvh-80px)] rounded-sm overflow-hidden bg-background-hero relative">
@@ -94,6 +113,20 @@ function QACard({ question, answer }: { question: string; answer: string }) {
   return (
     <div className="rounded-sm p-8 @[1100px]:p-20 flex items-center bg-background-card-warm">
       <QAItem question={question} answer={answer} size="lg" />
+    </div>
+  );
+}
+
+/** Single stat card — big mono number + label (orange), caption (ink) below.
+ *  Used in the Stats section directly under the description/metadata block. */
+function StatCard({ value, label, caption }: { value: string; label: string; caption: string }) {
+  return (
+    <div className="bg-background-panel-cream rounded-sm flex flex-col justify-between gap-8 p-8 h-full">
+      <div className="flex flex-col gap-4">
+        <p className="text-display-stat text-accent-secondary">{value}</p>
+        <p className="text-metadata-md text-accent-secondary">{label}</p>
+      </div>
+      <p className="text-metadata-md text-text-primary">{caption}</p>
     </div>
   );
 }
@@ -234,6 +267,16 @@ export function PatinaContent() {
 
       <RevealOnScroll>
         <DescriptionMetadata />
+      </RevealOnScroll>
+
+      {/* Stats — 3 retention/behaviour numbers in cream cards. Row of
+          three at @[768px]; stacks to a single column on narrower widths. */}
+      <RevealOnScroll>
+        <section className="grid grid-cols-1 @[768px]:grid-cols-3 gap-2">
+          {STATS.map((stat) => (
+            <StatCard key={stat.label} {...stat} />
+          ))}
+        </section>
       </RevealOnScroll>
 
       <RevealOnScroll>

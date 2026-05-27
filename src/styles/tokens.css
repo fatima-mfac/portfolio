@@ -97,6 +97,12 @@
   --font-display-2xl-line-height:    1.12;
   --font-display-2xl-letter-spacing: -0.03em;
 
+  /* Typography — Display Stat (large mono number for stat cards) */
+  --font-display-stat-family:         var(--font-family-mono);
+  --font-display-stat-size:           26px;
+  --font-display-stat-line-height:    1;
+  --font-display-stat-letter-spacing: -0.04em;
+
   /* Typography — Heading */
   --font-heading-xl-family:         var(--font-family-primary);
   --font-heading-xl-size:           32px;
@@ -237,6 +243,14 @@
   line-height: var(--font-display-2xl-line-height);
   letter-spacing: var(--font-display-2xl-letter-spacing);
   font-weight: var(--font-weight-medium);
+}
+
+@utility text-display-stat {
+  font-family: var(--font-display-stat-family);
+  font-size: var(--font-display-stat-size);
+  line-height: var(--font-display-stat-line-height);
+  letter-spacing: var(--font-display-stat-letter-spacing);
+  font-weight: var(--font-weight-book);
 }
 
 @utility text-heading-xl {
