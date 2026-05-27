@@ -76,7 +76,7 @@ const STATS: ReadonlyArray<{ value: string; label: string; caption: string }> = 
   {
     value: '80%',
     label: 'Paused before unlocking',
-    caption: 'From a preliminary survey of 12 early users.',
+    caption: 'From a preliminary survey of 10 early users.',
   },
 ];
 
