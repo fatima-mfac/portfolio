@@ -55,9 +55,9 @@ const QA = {
       "The tint wasn't resetting overnight automatically. You had to open the app, which destroyed the core concept. The whole point was that it works silently in the background without you doing anything.\n\nI kept pushing with AI until we found the answer together. But that solution added some friction. So I had to make a decision: accept some friction at onboarding so the core concept could live.\n\nWhile testing with users I realized that tradeoff might cost me more than I thought. I iterated and I'm still measuring the results.",
   },
   next: {
-    question: "What's the next version of Patina?",
+    question: "What's next for Patina?",
     answer:
-      "After gathering more feedback and analyzing analytics, the next version focuses on four things. A 14-day free trial followed by a paid tier for continued use. A color vision accessibility solution for users the current version doesn't serve well enough. Better instrumentation to actually measure whether the signal is changing behavior, not just whether it's being noticed. And fixing visual polish, particularly adjusting some gradients that feel slightly off.",
+      "Patina is still early and mostly testers, since I haven't started active distribution. My approach is measure first, then distribute: I want clean measurement in place to show whether the wallpaper actually shifts screen time, not just whether people notice it. So right now I'm improving instrumentation, refining the UI, and working out how to get it onto more phones.\n\nI'm also exploring a weekly stats view as the basis for a paid tier. The free version stays ambient and background only, while a paid layer adds weekly insight into screen time trends, something to reflect on. I'd only pursue it once the data shows the core mechanic earns it.",
   },
 };
 
@@ -339,16 +339,27 @@ export function PatinaContent() {
         />
       </RevealOnScroll>
 
-      {/* Rows 3–4 — two Q&As stacked on the left, landing.webp spans both
-          on the right */}
+      {/* Rows 3–4 — Q&As + brand-mark image. Desktop: two Q&As stacked
+          left, image spans the full column on the right. Mobile: the
+          image sits BETWEEN the two Q&As (giveUp → image → next) so the
+          visual rhythm isn't all-text then all-image. */}
       <RevealOnScroll>
-        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <div className="grid grid-rows-2 gap-2 h-full">
+        <div>
+          {/* Mobile: giveUp → image → next */}
+          <div className="flex flex-col gap-2 @[768px]:hidden">
             <QACard {...QA.giveUp} />
+            <FillImage src="/patina/patina-logo.webp" alt="Patina brand mark over warm gradient" aspect="aspect-[605/750]" zoom={1.2} />
             <QACard {...QA.next} />
           </div>
-          <FillImage src="/patina/patina-logo.webp" alt="Patina brand mark over warm gradient" aspect="aspect-[605/750]" zoom={1.2} />
-        </section>
+          {/* Desktop: 2-col, Q&As stacked left, image full-height right */}
+          <section className="hidden @[768px]:grid @[768px]:grid-cols-2 gap-2">
+            <div className="grid grid-rows-2 gap-2 h-full">
+              <QACard {...QA.giveUp} />
+              <QACard {...QA.next} />
+            </div>
+            <FillImage src="/patina/patina-logo.webp" alt="Patina brand mark over warm gradient" aspect="aspect-[605/750]" zoom={1.2} />
+          </section>
+        </div>
       </RevealOnScroll>
     </div>
   );
