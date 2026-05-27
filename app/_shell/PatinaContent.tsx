@@ -124,9 +124,9 @@ function StatCard({ value, label, caption }: { value: string; label: string; cap
     <div className="bg-background-panel-cream rounded-sm flex flex-col justify-between gap-8 p-8 h-full">
       <div className="flex flex-col gap-4">
         <p className="text-display-stat text-accent-secondary">{value}</p>
-        <p className="text-metadata-md text-accent-secondary">{label}</p>
+        <p className="text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-accent-secondary">{label}</p>
       </div>
-      <p className="text-metadata-md text-text-secondary">{caption}</p>
+      <p className="text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-text-secondary">{caption}</p>
     </div>
   );
 }

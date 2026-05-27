@@ -43,6 +43,19 @@ const QA = {
   },
 };
 
+const STATS: ReadonlyArray<{ value: string; label: string; caption: string }> = [
+  {
+    value: '25%',
+    label: 'Quarterly growth in new digital accounts',
+    caption: 'Reported by Herc Rentals',
+  },
+  {
+    value: '150%',
+    label: 'management fleet platform adoption growth in 12 months',
+    caption: 'Reported by Herc Rentals',
+  },
+];
+
 function HeroImage() {
   return (
     <div className="shrink-0 w-full h-[calc(100dvh-80px)] rounded-sm overflow-hidden bg-background-hero relative">
@@ -82,6 +95,21 @@ function QACard({ question, answer }: { question: string; answer: string }) {
   return (
     <div className="rounded-sm p-8 @[1100px]:p-20 flex items-center bg-background-card-warm">
       <QAItem question={question} answer={answer} size="lg" />
+    </div>
+  );
+}
+
+/** Single stat card — big mono number + label (orange), caption (ink)
+ *  below. Used in the Stats section directly under the description /
+ *  metadata block. */
+function StatCard({ value, label, caption }: { value: string; label: string; caption: string }) {
+  return (
+    <div className="bg-background-panel-cream rounded-sm flex flex-col justify-between gap-8 p-8 h-full">
+      <div className="flex flex-col gap-4">
+        <p className="text-display-stat text-accent-secondary">{value}</p>
+        <p className="text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-accent-secondary">{label}</p>
+      </div>
+      <p className="text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-text-secondary">{caption}</p>
     </div>
   );
 }
@@ -148,6 +176,23 @@ export function HercRentalsContent() {
 
       <RevealOnScroll>
         <DescriptionMetadata />
+      </RevealOnScroll>
+
+      {/* Stats — 2 growth numbers in cream cards. Row of two at
+          @[768px]; below that, a horizontal swipe carousel where each
+          card is 85% of the container so the next card peeks on the
+          right (scroll-snap-x mandatory locks the snap points). */}
+      <RevealOnScroll>
+        <section className="flex overflow-x-auto snap-x snap-mandatory gap-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden @[768px]:grid @[768px]:grid-cols-2 @[768px]:overflow-visible">
+          {STATS.map((stat) => (
+            <div
+              key={stat.label}
+              className="shrink-0 w-[85%] snap-start @[768px]:w-auto"
+            >
+              <StatCard {...stat} />
+            </div>
+          ))}
+        </section>
       </RevealOnScroll>
 
       {/* Section 1: phone card LEFT | two Q&As stacked RIGHT */}
