@@ -68,10 +68,10 @@ const STATS: ReadonlyArray<{ value: string; label: string; caption: string }> = 
     caption: 'Since launch (April 2026)',
   },
   {
-    value: '87%',
-    label: 'Decrease in screen time limit reached',
+    value: '55%',
+    label: 'Drop in users reaching their daily limit',
     caption:
-      'Could mean behaviour change or that users increased their daily limit.',
+      'Early testers, small sample. Directional, not proof. Could also reflect users raising their limit.',
   },
   {
     value: '80%',
