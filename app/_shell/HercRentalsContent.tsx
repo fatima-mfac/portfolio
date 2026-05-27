@@ -7,7 +7,6 @@ const METADATA_LINES = [
   'Role .......... Senior Product Designer',
   'Scope ......... Mobile app, web platform, design system',
   'Tools ......... Figma',
-  'Results ....... 25% quarterly growth in new digital accounts, 150% management fleet platform adoption growth in 12 months',
 ];
 
 const QA = {
