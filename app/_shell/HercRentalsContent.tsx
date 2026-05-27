@@ -50,7 +50,7 @@ const STATS: ReadonlyArray<{ value: string; label: string; caption: string }> = 
   },
   {
     value: '150%',
-    label: 'management fleet platform adoption growth in 12 months',
+    label: 'Management fleet platform adoption growth in 12 months',
     caption: 'Reported by Herc Rentals',
   },
 ];
@@ -104,7 +104,7 @@ function QACard({ question, answer }: { question: string; answer: string }) {
 function StatCard({ value, label, caption }: { value: string; label: string; caption: string }) {
   return (
     <div className="bg-background-panel-cream rounded-sm flex flex-col justify-between gap-8 p-8 h-full">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
         <p className="text-display-stat text-accent-secondary">{value}</p>
         <p className="text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-accent-secondary">{label}</p>
       </div>

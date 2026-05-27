@@ -122,7 +122,7 @@ function QACard({ question, answer }: { question: string; answer: string }) {
 function StatCard({ value, label, caption }: { value: string; label: string; caption: string }) {
   return (
     <div className="bg-background-panel-cream rounded-sm flex flex-col justify-between gap-8 p-8 h-full">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
         <p className="text-display-stat text-accent-secondary">{value}</p>
         <p className="text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-accent-secondary">{label}</p>
       </div>
