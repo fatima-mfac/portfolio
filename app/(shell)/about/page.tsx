@@ -212,7 +212,7 @@ export default function AboutPage() {
             // and the short card 1 ("Curious. Curious. Curious.") ends
             // up visibly narrower than the others.
             const article = (
-              <article className="bg-background-card rounded-sm p-7 md:p-14 w-full">
+              <article className="bg-background-card rounded-sm p-7 md:p-10 w-full">
                 <QAItem question={q.question} answer={q.answer} size="sm" />
               </article>
             );
