@@ -47,9 +47,9 @@ const DEFAULT_PROJECTS: ProjectLink[] = [
 
 /**
  * Header — site nav with two independent halves:
- *   • Left primary nav (Index / About / Contact) — selects the section
- *     (left column on desktop). Clicking preserves the current `?project=`
- *     so the right column stays intact when switching sections.
+ *   • Left primary nav (Index / About / Contact) — selects the section.
+ *     Links go to their bare path; no `?project=` is carried over, since
+ *     projects only render on the homepage.
  *   • Right project links (Patina / Vodafone / …) — selects the right
  *     column via `?project=`. Clicking preserves the current pathname.
  */
@@ -66,11 +66,11 @@ export function Header({
   const baseNavLinks =
     navLinks ?? (breakpoint === 'mobile' ? DEFAULT_NAV_MOBILE : DEFAULT_NAV_DESKTOP);
 
-  // Left nav: navigate to link.href, preserving current ?project= so the
-  // right column keeps its selected project. EXCEPT Index — it acts as a
-  // "reset to homepage" affordance.
-  const buildNavHref = (href: string) =>
-    href === '/' ? '/' : project ? `${href}?project=${project}` : href;
+  // Left nav links go to their bare path — no ?project= is carried over.
+  // Projects only render on the homepage; /about ignores the param and
+  // /work is a standalone route, so preserving it would only litter the
+  // URL (e.g. /about?project=zebra-finch) with no effect. Jumping into a
+  // project from these pages is handled by the right project nav below.
 
   // Right project nav: stay on the current pathname, change ?project=.
   // EXCEPT /about — projects live on the homepage, so clicking a project
@@ -123,7 +123,7 @@ export function Header({
               <NavItem
                 key={link.href}
                 label={link.label}
-                href={buildNavHref(link.href)}
+                href={link.href}
                 state={isActive ? 'active' : 'default'}
                 onClick={link.href === '/' ? handleHomeReset : undefined}
               />
