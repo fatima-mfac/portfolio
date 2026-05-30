@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Bungee_Shade } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const blMelody = localFont({
@@ -62,6 +63,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${blMelody.variable} ${bungeeShade.variable}`}>
       <body>{children}</body>
+      {/* Plausible Analytics — privacy-friendly, no cookies. Auto-tracks
+          App Router soft navigations via History API hooks, including
+          ?project=… query strings (which Cloudflare collapses). */}
+      <Script
+        defer
+        src="https://plausible.io/js/pa-QZORQJrrw0GHNktv3ZqmE.js"
+        strategy="afterInteractive"
+      />
+      <Script id="plausible-init" strategy="afterInteractive">
+        {`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()`}
+      </Script>
     </html>
   );
 }
