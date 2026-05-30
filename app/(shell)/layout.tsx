@@ -1,5 +1,6 @@
 import { Suspense, type ReactNode } from 'react';
 import { Shell } from '../_shell/Shell';
+import { PlausibleProjectTracker } from '../_shell/PlausibleProjectTracker';
 
 /**
  * Shared layout for the section routes (`/`, `/about`, future `/contact`).
@@ -20,6 +21,10 @@ import { Shell } from '../_shell/Shell';
 export default function ShellLayout({ children }: { children: ReactNode }) {
   return (
     <Suspense>
+      {/* Fires a Plausible "Project Viewed" custom event on every
+          ?project= change. Sits inside the same Suspense boundary as
+          Shell because it also reads search params. */}
+      <PlausibleProjectTracker />
       <Shell>{children}</Shell>
     </Suspense>
   );
