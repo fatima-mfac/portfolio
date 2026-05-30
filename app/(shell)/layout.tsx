@@ -8,8 +8,8 @@ import { PlausibleProjectTracker } from '../_shell/PlausibleProjectTracker';
  * Hosting the Shell here means the Header and the right-column slot
  * survive route changes between sections. Only the `children` slot —
  * the left-column content — re-renders when the path changes, so
- * navigating from `/?project=patina` to `/about?project=patina` does
- * not flicker the right column.
+ * navigating between sections does not flicker the right column.
+ * (Section nav links carry no `?project=`; /about ignores it.)
  *
  * Routes outside this group (e.g. `/work`) render under the root layout
  * only and do not get the Shell.
