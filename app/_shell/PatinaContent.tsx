@@ -82,7 +82,7 @@ const STATS: ReadonlyArray<{ value: string; label: string; caption: string }> = 
 
 function HeroImage() {
   return (
-    <div className="shrink-0 w-full h-[calc(100dvh-80px)] rounded-sm overflow-hidden bg-background-hero relative">
+    <div className="shrink-0 w-full h-[calc(100dvh-80px)] rounded-sm overflow-hidden bg-background-dark relative">
       <PatinaHeroVideo />
     </div>
   );
