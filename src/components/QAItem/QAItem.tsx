@@ -28,7 +28,10 @@ export function QAItem({ question, answer, size = 'sm', className }: QAItemProps
   //   lg answer:   text-body-xl     (17px Book,   lh ~28)
   const questionClass =
     size === 'lg'
-      ? 'text-heading-sm md:text-heading-lg'
+      ? // Desktop questions tighten to -0.029em (= -0.7px at 24px), a touch
+        // tighter than text-heading-lg's -0.02em. Scoped here so the
+        // shared token (used by description headings) is untouched.
+        'text-heading-sm md:text-heading-lg md:tracking-[-0.029em]!'
       : 'text-body-xl font-medium!';
   const answerClass = 'text-body-xl';
   const gapClass = size === 'lg' ? 'gap-2 md:gap-4' : 'gap-2';
