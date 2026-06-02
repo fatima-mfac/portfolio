@@ -1,13 +1,15 @@
 import Link from 'next/link';
+import type { MouseEventHandler } from 'react';
 
 interface ProjectCardProps {
   title: string;
   role: string;
   href?: string;
   className?: string;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
-export function ProjectCard({ title, role, href, className }: ProjectCardProps) {
+export function ProjectCard({ title, role, href, className, onClick }: ProjectCardProps) {
   const cardClasses = `group flex flex-col gap-1 py-3 px-4 rounded-sm no-underline cursor-pointer transition-colors duration-fast ease-out bg-background-card-soft hover:bg-background-card ${className ?? ''}`;
 
   const content = (
@@ -23,7 +25,7 @@ export function ProjectCard({ title, role, href, className }: ProjectCardProps) 
 
   if (href) {
     return (
-      <Link href={href} scroll={false} className={cardClasses}>
+      <Link href={href} scroll={false} onClick={onClick} className={cardClasses}>
         {content}
       </Link>
     );

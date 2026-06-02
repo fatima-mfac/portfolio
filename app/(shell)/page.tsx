@@ -1,6 +1,9 @@
+'use client';
+
 import { FilterTag } from '../../src/components/FilterTag/FilterTag';
 import { ProjectCard } from '../../src/components/ProjectCard/ProjectCard';
 import { HomeHero } from '../_shell/HomeHero';
+import { markProjectNavSource } from '../../src/lib/projectNavSource';
 
 const FILTERS = ['Leadership', 'Complex systems', 'Vibe Coding'];
 
@@ -63,6 +66,7 @@ function ProjectsSection() {
               title={project.title}
               role={project.role}
               href={`/?project=${project.slug}`}
+              onClick={() => markProjectNavSource('card')}
             />
           </li>
         ))}

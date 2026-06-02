@@ -3,6 +3,7 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { Header } from '../../src/components/Header/Header';
+import { markProjectNavSource } from '../../src/lib/projectNavSource';
 
 interface WorkEntryProps {
   label: string;
@@ -29,6 +30,7 @@ function WorkEntry({ label, subtitle, href }: WorkEntryProps) {
     <Link
       href={href}
       scroll={false}
+      onClick={() => markProjectNavSource('work')}
       aria-label={`Open ${label} use case`}
       className="flex flex-col gap-1 no-underline w-full"
     >
