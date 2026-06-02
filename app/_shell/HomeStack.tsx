@@ -523,6 +523,32 @@ export function HomeStack() {
   // on an undefined `focused`.
   const focused = filteredCards[focusedIdx] ?? filteredCards[0];
 
+  // Plausible: how deep into the card stack the visitor scrolls. Fires a
+  // `Homepage Explored` event once per depth — 'middle' when they pass the
+  // midpoint card, 'end' when they reach the last one. Mirrors the case
+  // study read-depth signal so homepage exploration is comparable in the
+  // dashboard. Reaching the end implies passing the middle, so both fire.
+  const exploredFiredRef = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    const total = filteredCards.length;
+    if (total <= 1) return;
+    const lastIdx = total - 1;
+    const midIdx = Math.floor(lastIdx / 2);
+    const fire = (depth: 'middle' | 'end') => {
+      if (exploredFiredRef.current.has(depth)) return;
+      exploredFiredRef.current.add(depth);
+      if (typeof window.plausible === 'function') {
+        window.plausible('Homepage Explored', { props: { depth } });
+      }
+    };
+    if (focusedIdx >= lastIdx) {
+      fire('middle');
+      fire('end');
+    } else if (focusedIdx >= midIdx) {
+      fire('middle');
+    }
+  }, [focusedIdx, filteredCards.length]);
+
   // Measure the entering focused content so cards below sit exactly
   // FOCUS_GAP_BOTTOM below it.
   useLayoutEffect(() => {

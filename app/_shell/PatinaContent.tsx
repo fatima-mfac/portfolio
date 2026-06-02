@@ -4,6 +4,7 @@ import { ExternalLink } from '../../src/components/ExternalLink/ExternalLink';
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
 import { PatinaHeroVideo } from './PatinaHeroVideo';
 import { PhoneCrossfade } from './PhoneCrossfade';
+import { CaseStudyReadMarker } from './CaseStudyReadMarker';
 
 const METADATA_LINES = [
   'Role .......... Solo design and vibe coding, end to end',
@@ -314,6 +315,8 @@ export function PatinaContent() {
         </section>
       </RevealOnScroll>
 
+      <CaseStudyReadMarker project="patina" depth="middle" />
+
       {/* Row 1 — two Q&As side by side */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
@@ -361,6 +364,8 @@ export function PatinaContent() {
           </section>
         </div>
       </RevealOnScroll>
+
+      <CaseStudyReadMarker project="patina" depth="end" />
     </div>
   );
 }

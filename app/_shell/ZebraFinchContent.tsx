@@ -1,4 +1,5 @@
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
+import { CaseStudyReadMarker } from './CaseStudyReadMarker';
 
 const METADATA_LINES = [
   'Role .......... Solo design and build',
@@ -301,12 +302,17 @@ export function ZebraFinchContent() {
         </RevealOnScroll>
       </div>
       <ProcessSection />
+
+      <CaseStudyReadMarker project="zebra-finch" depth="middle" />
+
       <RevealOnScroll>
         <PrinciplesSection />
       </RevealOnScroll>
       <RevealOnScroll>
         <StackSection />
       </RevealOnScroll>
+
+      <CaseStudyReadMarker project="zebra-finch" depth="end" />
     </div>
   );
 }

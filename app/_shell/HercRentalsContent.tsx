@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
 import { FleetCrossfade } from './FleetCrossfade';
+import { CaseStudyReadMarker } from './CaseStudyReadMarker';
 
 const METADATA_LINES = [
   'Role .......... Senior Product Designer',
@@ -211,6 +212,8 @@ export function HercRentalsContent() {
         <FleetCrossfade />
       </RevealOnScroll>
 
+      <CaseStudyReadMarker project="herc-rentals" depth="middle" />
+
       {/* Section 2: 2x2 — Q&A + map / equipment phone + Q&A */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
@@ -235,6 +238,8 @@ export function HercRentalsContent() {
           </div>
         </section>
       </RevealOnScroll>
+
+      <CaseStudyReadMarker project="herc-rentals" depth="end" />
     </div>
   );
 }
