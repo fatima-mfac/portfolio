@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { consumeProjectNavSource } from '../../src/lib/projectNavSource';
 
 /**
  * On every `?project=<slug>` change, fires two Plausible events:
@@ -58,8 +59,11 @@ export function PlausibleProjectTracker() {
     if (typeof window === 'undefined') return;
     if (typeof window.plausible !== 'function') return;
 
-    // Custom event — for Goals breakdown per project slug.
-    window.plausible('Project Viewed', { props: { project } });
+    // Custom event — for Goals breakdown per project slug. `source`
+    // records how they got here (card / nav / work / direct), filterable
+    // in the Properties view.
+    const source = consumeProjectNavSource();
+    window.plausible('Project Viewed', { props: { project, source } });
     // Manual pageview with a synthetic path — Plausible strips query
     // strings before grouping, so `/?project=patina` would still bucket
     // into `/`. `/project/<slug>` is a unique pathname that survives

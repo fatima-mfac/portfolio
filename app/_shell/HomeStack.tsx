@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ProjectCard } from '../../src/components/ProjectCard/ProjectCard';
 import { FilterTag } from '../../src/components/FilterTag/FilterTag';
+import { markProjectNavSource } from '../../src/lib/projectNavSource';
 
 /**
  * EXPLORATION — homepage v3.
@@ -343,6 +344,7 @@ function FocusedContent({
     <Link
       ref={refEl as React.RefObject<HTMLAnchorElement | null>}
       href={`/?project=${card.project}`}
+      onClick={() => markProjectNavSource('card')}
       className="block max-w-[940px] group focus:outline-none focus-visible:outline-none"
     >
       {labelEl}
@@ -874,6 +876,7 @@ export function HomeStack() {
         {focused && !NO_THUMBNAIL_IDS.has(focused.id) && (
           <Link
             href={`/?project=${focused.project}`}
+            onClick={() => markProjectNavSource('card')}
             className="block w-full"
             onMouseEnter={() => setThumbHovered(true)}
             onMouseLeave={() => setThumbHovered(false)}
@@ -1072,6 +1075,7 @@ export function HomeStack() {
           )}
           <Link
             href={`/?project=${focused.project}`}
+            onClick={() => markProjectNavSource('card')}
             className="absolute inset-0 flex items-center justify-center"
             onMouseEnter={() => setThumbHovered(true)}
             onMouseLeave={() => setThumbHovered(false)}

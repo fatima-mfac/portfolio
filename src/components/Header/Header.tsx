@@ -2,6 +2,7 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 import { NavItem } from '../NavItem/NavItem';
+import { markProjectNavSource } from '../../lib/projectNavSource';
 
 export type HeaderBreakpoint = 'desktop' | 'mobile';
 
@@ -146,6 +147,7 @@ export function Header({
                 label={link.label}
                 href={buildProjectHref(link.slug)}
                 state={isActive ? 'active' : 'default'}
+                onClick={() => markProjectNavSource('nav')}
               />
             );
           })}
