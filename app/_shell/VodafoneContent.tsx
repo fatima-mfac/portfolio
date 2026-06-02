@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import Image from 'next/image';
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
+import { CaseStudyReadMarker } from './CaseStudyReadMarker';
 
 const METADATA_LINES = [
   'Role .......... Senior Product Designer as a Contractor',
@@ -189,6 +190,8 @@ export function VodafoneContent() {
         </section>
       </RevealOnScroll>
 
+      <CaseStudyReadMarker project="vodafone" depth="middle" />
+
       {/* Section 4: two Q&As side-by-side, full width */}
       <RevealOnScroll>
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
@@ -204,6 +207,8 @@ export function VodafoneContent() {
           <QACard {...QA.lostBattle} />
         </section>
       </RevealOnScroll>
+
+      <CaseStudyReadMarker project="vodafone" depth="end" />
     </div>
   );
 }
