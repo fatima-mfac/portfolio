@@ -26,6 +26,10 @@ interface HeaderProps {
   navLinks?: NavLink[];
   projectLinks?: ProjectLink[];
   className?: string;
+  /** Experimental: vertical nav. The primary nav (Index/About) stacks
+   *  centered, inline to the right of the logo; the project/use-case nav
+   *  stacks right-aligned on the far right. Off by default. */
+  stacked?: boolean;
 }
 
 const DEFAULT_NAV_DESKTOP: NavLink[] = [
@@ -59,6 +63,7 @@ export function Header({
   navLinks,
   projectLinks = DEFAULT_PROJECTS,
   className,
+  stacked = false,
 }: HeaderProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -102,13 +107,20 @@ export function Header({
 
   return (
     <header
-      className={`flex flex-row items-center justify-between w-full bg-transparent ${className ?? ''}`}
+      className={`flex flex-row w-full bg-transparent justify-between ${
+        stacked ? 'items-start' : 'items-center'
+      } ${className ?? ''}`}
     >
-      <div className="flex flex-row items-center gap-6">
+      <div className={`flex flex-row gap-6 ${stacked ? 'items-start' : 'items-center'}`}>
         {/* Brand mark — not a link; the Index nav item is the homepage
             affordance. */}
         <img src="/logo.svg" alt="Fátima Cunha" className="w-8 h-auto" />
-        <nav aria-label="Primary navigation" className="flex flex-row items-center gap-6">
+        <nav
+          aria-label="Primary navigation"
+          className={`flex ${
+            stacked ? 'flex-col items-center -space-y-1' : 'flex-row items-center gap-6'
+          }`}
+        >
           {baseNavLinks.map((link) => {
             // Index (href '/') is active on the bare homepage. When
             // a project is selected the page is a use case, so no
@@ -134,7 +146,12 @@ export function Header({
       </div>
 
       {breakpoint === 'desktop' && projectLinks.length > 0 && (
-        <nav aria-label="Project links" className="flex flex-row items-center gap-6">
+        <nav
+          aria-label="Project links"
+          className={`flex ${
+            stacked ? 'flex-col items-end -space-y-1' : 'flex-row items-center gap-6'
+          }`}
+        >
           {projectLinks.map((link) => {
             // A project is "active" only while it's actually on screen —
             // the home route with that ?project=. On /about the param is
