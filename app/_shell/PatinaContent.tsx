@@ -338,7 +338,7 @@ export function PatinaContent() {
         <FillImage
           src="/patina/patina-site.webp"
           alt="Patina website preview"
-          aspect="aspect-[2434/1616]"
+          aspect="aspect-[2440/1444]"
         />
       </RevealOnScroll>
 
