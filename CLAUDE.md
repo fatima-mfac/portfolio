@@ -52,6 +52,17 @@ portfolio/
 
 ---
 
+## Hosting & Deployment
+
+- **Host**: Cloudflare Pages (not Vercel)
+- The site is a **static export** — `output: 'export'` in `next.config.ts`, build output in `out/`, no server runtime
+- Deploys are triggered by pushes to `main` via the Cloudflare Pages Git integration — merging to `main` means deploying to production
+- Redirects live in `public/_redirects` (Cloudflare Pages format) — Next's `redirects()` does not work under static export
+- **Rollback**: every previous deployment is kept in the Cloudflare Pages dashboard and can be re-promoted to production instantly
+- `images.unoptimized` is required by the static export — pre-compress source images if file size matters
+
+---
+
 ## Source of Truth
 
 **Code is the source of truth.** The hierarchy is:
