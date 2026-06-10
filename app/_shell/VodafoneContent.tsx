@@ -55,19 +55,6 @@ const QA = {
     answer:
       'Different in the best way. The product environment changes how you design. You optimize less for the handoff and more for the product. Everyone is on the same page, working toward the same goals, making informed decisions based on real data. You grow the product, not just launch it. That felt like my natural environment. A lot of people over the years told me I was built for product.',
   },
-  lostBattle: {
-    question: 'Tell me about a lost battle.',
-    // First paragraph: opener + setup, separated by a hard line break
-    // (no paragraph gap). Second paragraph: the punchline, with the
-    // usual paragraph gap above.
-    answer: [
-      <>
-        I have a funny one.<br />
-        The app has a network status section at the top you see every time you open it. When we updated to the new design system, the illustration library had nothing that represented Wi-Fi. Strange, given the entire product is about Wi-Fi. I asked why, and it had simply been left off the order sent to the agency that did the illustrations.
-      </>,
-      'The solution was to use a cloud upload icon instead. Users noticed in testing. They said upload, cloud storage. Not Wi-Fi. I pushed for a proper illustration and even suggested prompting AI to generate one. The answer from leadership was that we needed to stick with what we had in the design system. It still bothers me to this day.',
-    ],
-  },
 };
 
 function HeroImage() {
@@ -197,14 +184,6 @@ export function VodafoneContent() {
         <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
           <QACard {...QA.technical} />
           <QACard {...QA.inHouse} />
-        </section>
-      </RevealOnScroll>
-
-      {/* Section 5: network illustration LEFT | "lost battle" Q&A RIGHT */}
-      <RevealOnScroll>
-        <section className="grid grid-cols-1 @[768px]:grid-cols-2 gap-2">
-          <FillImage src="/vodafone/network-illustration.webp" alt="Network status illustration" aspect="aspect-[605/440]" />
-          <QACard {...QA.lostBattle} />
         </section>
       </RevealOnScroll>
 
