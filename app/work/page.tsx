@@ -1,50 +1,61 @@
 'use client';
 
 import { Suspense } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Header } from '../../src/components/Header/Header';
-import { markProjectNavSource } from '../../src/lib/projectNavSource';
+import { markProjectNavSource, projectHref } from '../../src/lib/projectNavSource';
 
-interface WorkEntryProps {
+interface WorkCardProps {
+  /** `?project=` slug — routed through projectHref() to the v3 page (or
+   *  the v1 homepage overlay for Zebra Finch). */
+  slug: string;
+  /** Mono uppercase label. */
   label: string;
-  subtitle: string;
-  href: string;
+  /** One- or two-word tagline under the label. */
+  tagline: string;
+  /** Thumbnail in public/work/. */
+  image: string;
 }
 
-// Title + one-line context for each project. Tagline copy comes from
-// the Figma mobile work frame (node 1:488); update both places in
-// sync if a tagline changes.
-const PROJECTS: WorkEntryProps[] = [
-  // Patina/Vodafone/Herc route to their standalone v3 pages; Zebra Finch
-  // still opens as a v1 use case on the homepage. Mirrors projectHref().
-  { label: 'Patina',       subtitle: 'Mobile. Solo',                    href: '/patina-v3'              },
-  { label: 'Zebra Finch',  subtitle: 'Agentic Design System Pipeline',  href: '/?project=zebra-finch'   },
-  { label: 'Vodafone',     subtitle: 'Mobile. In-house',                href: '/vodafone-v3'            },
-  { label: 'Herc Rentals', subtitle: 'B2B Fleet Management Platform',   href: '/herc-v3'                },
+// Order + copy match the Figma "Work-Mobile" frame (node 742:13411).
+const PROJECTS: WorkCardProps[] = [
+  { slug: 'patina',       label: 'PATINA',       tagline: 'Mobile. Solo',                  image: '/work/patina.png'   },
+  { slug: 'vodafone',     label: 'VODAFONE',     tagline: 'Mobile. In-house',              image: '/work/vodafone.png' },
+  { slug: 'herc-rentals', label: 'HERC RENTALS', tagline: 'B2B Fleet Platform',            image: '/work/herc.png'     },
+  { slug: 'zebra-finch',  label: 'ZEBRA FINCH',  tagline: 'Agentic Design System Pipeline', image: '/work/zebra.png'   },
 ];
 
 /**
- * Page-local entry. A tappable two-line stack: project name + short
- * tagline. Sits on the page background — no card chrome.
+ * A work card: white panel with a landscape thumbnail on top, a mono
+ * uppercase label, and a tagline. The whole card is the tap target.
  */
-function WorkEntry({ label, subtitle, href }: WorkEntryProps) {
+function WorkCard({ slug, label, tagline, image }: WorkCardProps) {
   return (
     <Link
-      href={href}
+      href={projectHref(slug)}
       scroll={false}
       onClick={() => markProjectNavSource('work')}
       aria-label={`Open ${label} use case`}
-      className="flex flex-col gap-1 no-underline w-full"
+      className="group flex flex-col gap-3 rounded-[12px] bg-background-card-warm p-3 no-underline ring-1 ring-black/[0.08]"
     >
-      {/* Title styled to match the homepage headline (HomeStack
-          FocusedContent, mobile): 32px / medium / -2px tracking. */}
-      <span
-        className="font-medium text-text-primary"
-        style={{ fontSize: 32, lineHeight: '36px', letterSpacing: '-2px' }}
-      >
-        {label}
-      </span>
-      <span className="text-body-lg text-text-secondary">{subtitle}</span>
+      <div className="relative aspect-[143/100] w-full overflow-hidden rounded-[6px]">
+        <Image
+          src={image}
+          alt={label}
+          fill
+          sizes="(min-width: 768px) 200px, 45vw"
+          className="object-cover transition-transform duration-fast ease-out group-hover:scale-[1.03]"
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        {/* 16px Roboto Mono SemiBold, slight negative tracking — matches
+            the Figma label. */}
+        <span className="font-[family-name:var(--font-family-mono)] text-[14px] font-semibold leading-tight tracking-[-0.01em] text-text-primary">
+          {label}
+        </span>
+        <span className="text-body-lg text-text-secondary">{tagline}</span>
+      </div>
     </Link>
   );
 }
@@ -76,9 +87,9 @@ export default function WorkPage() {
           </div>
         </Suspense>
 
-        <main className="w-full max-w-[420px] mt-4 px-0 md:px-5 flex flex-col gap-6 pb-12">
+        <main className="mx-auto mt-4 grid w-full max-w-[420px] grid-cols-2 gap-4 pb-12 md:px-5">
           {PROJECTS.map((project) => (
-            <WorkEntry key={project.href} {...project} />
+            <WorkCard key={project.slug} {...project} />
           ))}
         </main>
       </div>
