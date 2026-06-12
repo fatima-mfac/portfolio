@@ -779,6 +779,17 @@ function IntroHeroCover() {
         @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
           .iho-stack { margin-top: 128px; }
         }
+        /* Hero entrance — same fade + 16px rise as the Zebra hero
+           (RevealOnScroll offset 16 / 900ms). Lives on the hero box so it
+           composes with the pin transform on the parent. */
+        @keyframes iho-hero-in {
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .iho-hero-in { animation: iho-hero-in 900ms cubic-bezier(.2,.8,.2,1) both; }
+        @media (prefers-reduced-motion: reduce) {
+          .iho-hero-in { animation: none; }
+        }
       `}</style>
 
       {/* Opening line — in normal flow, words stagger in once fonts are ready. */}
@@ -820,7 +831,7 @@ function IntroHeroCover() {
         {/* Hero layer (z-10, covers the text; stretches to the cell height). */}
         <div ref={heroTrackRef} className="relative z-10">
           <div ref={heroPinRef} className="will-change-transform">
-            <div className="w-full h-[100dvh] rounded-[20px] overflow-hidden bg-background-dark relative">
+            <div className="iho-hero-in w-full h-[100dvh] rounded-[20px] overflow-hidden bg-background-dark relative">
               <PatinaHeroVideo />
             </div>
           </div>
