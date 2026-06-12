@@ -112,6 +112,11 @@ const QUESTIONS: Array<{
     answer:
       "I think AI is the best thing that could have happened to someone who loves learning, debating ideas, and building things. The perfect tool for restless minds. I think it's worth the risk of extinction.",
   },
+  {
+    question: 'What about this Portfolio?',
+    answer:
+      "I wanted to build something that actually sounds and feels like me. When I review other portfolios, the case studies often feel impersonal and a bit boring. Everyone sounds the same. After some thought I landed on a Q&A format. By interviewing myself, I could ask the tough, practical questions and answer them directly. It's me thinking.\n\nI spent a lot of time writing this. Turns out AI does not help much when you're trying to express your own distinctive voice.\n\nI designed the layout foundations in Figma, then vibe coded the rest with Claude Code. The motion, the spacing, the typography, all tweaked directly in the codebase, not the canvas.",
+  },
 ];
 
 export default function AboutPage() {

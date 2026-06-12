@@ -54,7 +54,8 @@ const CARDS: Card[] = [
     project: 'patina',
     label: 'FATIMA CUNHA',
     description: "I design and improve products. Lately I shipped my own app and created an agentic design system.",
-    image: '/patina/home1.webp',
+    image: '/home/default-home.png',
+    imageMobile: '/home/default-home-M.png',
     categories: ['Product Thinking', 'AI Native'],
     bg: '#F0F1FA',
   },
@@ -75,8 +76,8 @@ const CARDS: Card[] = [
     label: 'PATINA',
     description:
       'I built an app to make you put your phone down. I had the idea, designed it, built it and shipped it. Solo.',
-    image: '/patina/patina3.webp',
-    imageMobile: '/patina/patina3-M.webp',
+    image: '/patina/patina-home3.png',
+    imageMobile: '/patina/patina-home3-M.png',
     categories: ['AI Native'],
     bg: '#F0F1FA',
   },
@@ -118,7 +119,7 @@ const CARDS: Card[] = [
     project: 'vodafone',
     label: 'VODAFONE',
     description:
-      'Making a deeply technical concept feel clear to someone who just wants their Wi-Fi to work.',
+      'Making deeply technical concepts feel clear to someone who just wants their Wi-Fi to work.',
     image: '/vodafone/home1.webp',
     imageMobile: '/vodafone/home1-M.webp',
     categories: ['Complex Systems'],
@@ -130,8 +131,8 @@ const CARDS: Card[] = [
     label: 'APP HERC RENTALS',
     description:
       'Created a visual system to represent different equipment, their location and states, in real time.',
-    image: '/herc/home2.webp',
-    imageMobile: '/herc/home2-M.webp',
+    image: '/herc/home2.png',
+    imageMobile: '/herc/home2-M.png',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -141,8 +142,8 @@ const CARDS: Card[] = [
     label: 'PATINA',
     description:
       'Set up analytics to measure if a color seen for two seconds changes what you do next.',
-    image: '/patina/patina-home2.webp',
-    imageMobile: '/patina/patina-home2-M.webp',
+    image: '/patina/patina-home2.png',
+    imageMobile: '/patina/patina-home2-M.png',
     categories: ['Product Thinking'],
     bg: '#F0F1FA',
   },
@@ -162,9 +163,9 @@ const CARDS: Card[] = [
     project: 'vodafone',
     label: 'VODAFONE',
     description:
-      'Designed for a product that behaves differently depending on where you are in the world.',
-    image: '/vodafone/home2.webp',
-    imageMobile: '/vodafone/home2-M.webp',
+      'Designed for a product that runs across multiple markets and router models, where one decision ripples across all of them.',
+    image: '/vodafone/vodafone-home2.png',
+    imageMobile: '/vodafone/vodafone-home2-M.png',
     categories: ['Complex Systems'],
     bg: '#F0F1FA',
   },
@@ -174,15 +175,16 @@ const CARDS: Card[] = [
     label: 'THIS PORTFOLIO',
     description:
       'Vibe coded this portfolio using my agentic design system pipeline.',
-    image: '/zebra-finch/zebra2.webp',
+    image: '/home/folio-home.png',
+    imageMobile: '/home/folio-home-M.png',
     categories: ['AI Native'],
     bg: '#F0F1FA',
   },
 ];
 
-// Cards rendered without a thumbnail image — the intro card and the
-// portfolio card both stand on their copy alone.
-const NO_THUMBNAIL_IDS = new Set(['intro', 'portfolio']);
+// Cards rendered without a thumbnail image. Empty now that the intro and
+// portfolio cards have their own home/ thumbnails; kept as the gating hook.
+const NO_THUMBNAIL_IDS = new Set<string>();
 
 const SMALL_H = 90;
 // Fallback height for the focused hero before its real height is measured.
@@ -910,7 +912,7 @@ export function HomeStack() {
             <img
               src={focused.imageMobile ?? focused.image}
               alt={focused.label}
-              className="w-full rounded-md"
+              className="w-full rounded-[12px]"
               key={`mobile-img-${focused.id}`}
               // 400ms delay (with `both` fill) holds the thumbnail hidden
               // until the card transition settles, so it doesn't fade in
@@ -1094,7 +1096,7 @@ export function HomeStack() {
               <img
                 src={leavingCard.image}
                 alt=""
-                className="max-h-full max-w-full object-contain"
+                className="max-h-full max-w-full object-contain rounded-[12px]"
                 key={`leaving-img-${leavingCard.id}`}
               />
             </div>
@@ -1109,7 +1111,7 @@ export function HomeStack() {
             <img
               src={focused.image}
               alt={focused.label}
-              className="max-h-full max-w-full object-contain"
+              className="max-h-full max-w-full object-contain rounded-[12px]"
               key={focused.id}
               style={{ animation: 'home-stack-in 320ms cubic-bezier(.2,.8,.2,1)' }}
             />
