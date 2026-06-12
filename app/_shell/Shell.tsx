@@ -83,11 +83,23 @@ export function Shell({ children }: ShellProps) {
   // matching the card-slide easing. Held until the homepage headline
   // motion finishes (~delay 0.35s + duration 0.5s + per-word stagger),
   // so the sequence reads: headline reveals → header + cards arrive.
-  const [headerEntered, setHeaderEntered] = useState(false);
+  //
+  // EXCEPT when the Shell mounts already showing a use case (a `project`
+  // param — e.g. arriving at Zebra Finch from the nav). There's no
+  // homepage headline to choreograph against, so the header lands
+  // instantly, matching the standalone case-study pages (which have no
+  // entrance). Without this, switching from a case study to Zebra would
+  // replay the full drop-in — the nav visibly "loads". Initialised in the
+  // useState so it's true on the very first render (no opacity-0 flash).
+  const [headerEntered, setHeaderEntered] = useState(() => Boolean(project));
   useEffect(() => {
+    if (project) {
+      setHeaderEntered(true);
+      return;
+    }
     const id = window.setTimeout(() => setHeaderEntered(true), 1100);
     return () => window.clearTimeout(id);
-  }, []);
+  }, [project]);
 
   // Hide the header on scroll-down, reveal on scroll-up — use-case and
   // About pages only; the homepage header is always shown. Window scroll
