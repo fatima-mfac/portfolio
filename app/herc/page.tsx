@@ -14,6 +14,7 @@ import { Screensaver } from '../../src/components/Screensaver/Screensaver';
 import { SmokeCanvas } from '../patina-v2/SmokeCanvas';
 import { FleetCrossfade } from '../_shell/FleetCrossfade';
 import { CaseStudyReadMarker } from '../_shell/CaseStudyReadMarker';
+import { CaseStudyViewTracker } from '../_shell/CaseStudyViewTracker';
 import { projectHref } from '../../src/lib/projectNavSource';
 
 /**
@@ -847,6 +848,7 @@ export default function HercV3Page() {
   return (
     <div className="relative min-h-screen bg-white flex flex-col">
       <SmoothScroll />
+      <CaseStudyViewTracker project="herc-rentals" />
       {/* Idle screensaver — same as the v1 shell. */}
       <Screensaver />
 

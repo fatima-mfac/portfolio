@@ -1,9 +1,13 @@
 # Cloudflare Pages redirects.
-# Legacy use-case URLs (/patina, /vodafone, …) used to be standalone
-# routes before the right column became query-param driven. These keep
-# old links and bookmarks working by sending them to the new form.
 # (Next's redirects() can't run in a static export — see next.config.ts.)
-/patina        /?project=patina        301
-/vodafone      /?project=vodafone      301
+
+# Old dev route names → clean public case-study URLs.
+/patina-v3     /patina    301
+/vodafone-v3   /vodafone  301
+/herc-v3       /herc      301
+
+# Herc's project slug differs from its URL — send the slug form to the page.
+/herc-rentals  /herc      301
+
+# Zebra Finch has no standalone page — open it as the homepage overlay.
 /zebra-finch   /?project=zebra-finch   301
-/herc-rentals  /?project=herc-rentals  301

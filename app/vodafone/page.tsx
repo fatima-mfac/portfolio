@@ -12,6 +12,7 @@ import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScro
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { Screensaver } from '../../src/components/Screensaver/Screensaver';
 import { CaseStudyReadMarker } from '../_shell/CaseStudyReadMarker';
+import { CaseStudyViewTracker } from '../_shell/CaseStudyViewTracker';
 import { projectHref } from '../../src/lib/projectNavSource';
 
 /**
@@ -836,6 +837,7 @@ export default function VodafoneV3Page() {
   return (
     <div className="relative min-h-screen bg-white flex flex-col">
       <SmoothScroll />
+      <CaseStudyViewTracker project="vodafone" />
       {/* Idle screensaver — same as the v1 shell. */}
       <Screensaver />
 
