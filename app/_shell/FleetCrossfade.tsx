@@ -6,21 +6,15 @@ import type { PointerEvent, TransitionEvent } from 'react';
 // Fleet dashboard screens shown in the Herc use case. A slide carousel:
 // it auto-advances on a slow timer, a hovering mouse pauses it, and a
 // horizontal drag (or a dot click) steps between screens.
-const IMAGES = [
+type CrossfadeImage = { src: string; alt: string };
+
+// Default fleet screens (the v1 use case). The v3 page passes its own via
+// the `images` prop, so changing them there never touches v1.
+const DEFAULT_IMAGES: ReadonlyArray<CrossfadeImage> = [
   { src: '/herc/fleet1.webp', alt: 'Fleet utilization dashboard' },
   { src: '/herc/fleet2.webp', alt: 'Fleet management dashboard' },
   { src: '/herc/fleet3.webp', alt: 'Fleet management dashboard' },
-] as const;
-
-// Clone the last screen before the first and the first after the last
-// so the track can loop seamlessly in both directions: when a slide
-// lands on a clone, the position snaps (without animation) to its real
-// twin, which shows the identical image.
-//   track:  [ fleet3' , fleet1 , fleet2 , fleet3 , fleet1' ]
-//   pos:        0         1        2        3         4
-const SLIDES = [IMAGES[IMAGES.length - 1], ...IMAGES, IMAGES[0]];
-const FIRST_REAL = 1;
-const LAST_REAL = IMAGES.length;
+];
 
 // How long each screen holds before advancing, and the slide length.
 const HOLD_MS = 5000;
@@ -35,16 +29,28 @@ const DRAG_THRESHOLD = 40;
  * drag or a pagination-dot click steps between screens. The seamless
  * loop is handled by the cloned slides at each end of the track.
  */
-export function FleetCrossfade() {
-  // `pos` indexes SLIDES (0..4); 1..3 are the real screens.
+export function FleetCrossfade({
+  images = DEFAULT_IMAGES,
+}: {
+  images?: ReadonlyArray<CrossfadeImage>;
+}) {
+  // Clone the last screen before the first and the first after the last so
+  // the track loops seamlessly: when a slide lands on a clone, the position
+  // snaps (no animation) to its real twin showing the identical image.
+  //   track: [ last' , ...images , first' ]
+  const SLIDES = [images[images.length - 1], ...images, images[0]];
+  const FIRST_REAL = 1;
+  const LAST_REAL = images.length;
+
+  // `pos` indexes SLIDES; 1..LAST_REAL are the real screens.
   const [pos, setPos] = useState(FIRST_REAL);
   const [animated, setAnimated] = useState(true);
   const [paused, setPaused] = useState(false);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
 
-  // Real image index (0..2) — drives the pagination dots.
+  // Real image index — drives the pagination dots.
   const realIndex =
-    (((pos - FIRST_REAL) % IMAGES.length) + IMAGES.length) % IMAGES.length;
+    (((pos - FIRST_REAL) % images.length) + images.length) % images.length;
 
   const goForward = () => setPos((p) => Math.min(p + 1, SLIDES.length - 1));
   const goBackward = () => setPos((p) => Math.max(p - 1, 0));
@@ -152,7 +158,7 @@ export function FleetCrossfade() {
         {/* Pagination dots — signal how many screens there are and
             which one is showing; clicking jumps to that screen. */}
         <div className="flex gap-2">
-          {IMAGES.map((img, i) => (
+          {images.map((img, i) => (
             <button
               key={img.src}
               type="button"
