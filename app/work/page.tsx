@@ -15,10 +15,12 @@ interface WorkEntryProps {
 // the Figma mobile work frame (node 1:488); update both places in
 // sync if a tagline changes.
 const PROJECTS: WorkEntryProps[] = [
-  { label: 'Patina',       subtitle: 'Mobile. Solo',                    href: '/?project=patina'        },
+  // Patina/Vodafone/Herc route to their standalone v3 pages; Zebra Finch
+  // still opens as a v1 use case on the homepage. Mirrors projectHref().
+  { label: 'Patina',       subtitle: 'Mobile. Solo',                    href: '/patina-v3'              },
   { label: 'Zebra Finch',  subtitle: 'Agentic Design System Pipeline',  href: '/?project=zebra-finch'   },
-  { label: 'Vodafone',     subtitle: 'Mobile. In-house',                href: '/?project=vodafone'      },
-  { label: 'Herc Rentals', subtitle: 'B2B Fleet Management Platform',   href: '/?project=herc-rentals'  },
+  { label: 'Vodafone',     subtitle: 'Mobile. In-house',                href: '/vodafone-v3'            },
+  { label: 'Herc Rentals', subtitle: 'B2B Fleet Management Platform',   href: '/herc-v3'                },
 ];
 
 /**
