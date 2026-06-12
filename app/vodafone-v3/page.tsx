@@ -2,6 +2,7 @@
 
 import { Fragment, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import gsap from 'gsap';
 import Lenis from 'lenis';
 import Snap from 'lenis/snap';
@@ -11,6 +12,7 @@ import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScro
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { Screensaver } from '../../src/components/Screensaver/Screensaver';
 import { CaseStudyReadMarker } from '../_shell/CaseStudyReadMarker';
+import { projectHref } from '../../src/lib/projectNavSource';
 
 /**
  * EXPERIMENT — Vodafone case study, HYBRID (v3).
@@ -233,10 +235,9 @@ function IntroHeroCover() {
   // text scrolls up behind it, by translating the hero down by the scroll
   // amount, capped to the slack between the hero and its taller grid cell.
   // shift is 0 at the very top, so the rendered (static) layout already
-  // matches — no jump on load. Desktop + motion-safe only.
+  // matches — no jump on load. Motion-safe only (now mobile + desktop).
   useEffect(() => {
     const active = () =>
-      window.matchMedia('(min-width: 768px)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const update = () => {
       const track = heroTrackRef.current;
@@ -259,7 +260,7 @@ function IntroHeroCover() {
     };
   }, []);
 
-  const TEXT_PAD = 'pl-8 @[1100px]:pl-[max(80px,calc(25cqw_-_229px))]';
+  const TEXT_PAD = 'pl-0 md:pl-8 @[1100px]:pl-[max(80px,calc(25cqw_-_229px))]';
   const BIG_TEXT =
     'max-w-[935px] font-[350] text-[clamp(32px,calc(23.09px_+_2.286vw),56px)] leading-[1.08] tracking-[-0.045em] text-text-primary';
 
@@ -268,16 +269,22 @@ function IntroHeroCover() {
       {/* The cover-and-reveal grid is plain CSS (not Tailwind utilities) so it
           ships in the server HTML and is active on first paint — no layout
           shift on load — and so the desktop overlap isn't subject to
-          arbitrary-variant source-order quirks. GAP_TOP = 128 (grid margin),
-          GAP_END = 88 (in the text layer's padding-bottom). The grid only
-          turns on ≥768px with motion allowed; otherwise it's a normal column
-          with all text visible. */}
+          arbitrary-variant source-order quirks. GAP_TOP = 128/48 (grid
+          margin, desktop/mobile), GAP_END = 88 (in the text layer's
+          padding-bottom). The grid turns on at every width with motion
+          allowed; under reduced motion it's a normal column with all text
+          visible. The pinned-travel padding tracks the hero height — 70dvh
+          on mobile, 100dvh on desktop — since the slack is (cell − hero). */}
       <style>{`
         .vfh-stack { margin-top: 1.08em; }
         .vfh-text { padding-bottom: 40px; }
-        @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-          .vfh-stack { display: grid; margin-top: 128px; }
+        @media (prefers-reduced-motion: no-preference) {
+          .vfh-stack { display: grid; margin-top: 48px; }
           .vfh-stack > * { grid-area: 1 / 1; }
+          .vfh-text { padding-bottom: calc(70dvh + 88px); }
+        }
+        @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+          .vfh-stack { margin-top: 128px; }
           .vfh-text { padding-bottom: calc(100dvh + 88px); }
         }
       `}</style>
@@ -285,7 +292,7 @@ function IntroHeroCover() {
       {/* Opening line — in normal flow. Hidden until fonts.ready, then its
           words stagger in. */}
       <div
-        className={`pt-[104px] ${TEXT_PAD}`}
+        className={`pt-[24px] md:pt-[104px] ${TEXT_PAD}`}
         style={{ visibility: textReady ? 'visible' : 'hidden' }}
       >
         <div className={BIG_TEXT}>
@@ -310,7 +317,7 @@ function IntroHeroCover() {
               <Words text="I joined their global in-house product team on one of the most complex consumer apps I've worked on." />
             </p>
           </div>
-          <div className="mt-[88px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
+          <div className="mt-[40px] md:mt-[88px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
             {METADATA_LINES.map((line) => (
               <span key={line} className="meta-line whitespace-pre-wrap">
                 {line}
@@ -322,7 +329,7 @@ function IntroHeroCover() {
         {/* Hero layer (z-10, covers the text; stretches to the cell height). */}
         <div ref={heroTrackRef} className="relative z-10">
           <div ref={heroPinRef} className="will-change-transform">
-            <div className="w-full h-[100dvh] rounded-[20px] overflow-hidden bg-background-card-cool relative">
+            <div className="w-full h-[70dvh] md:h-[100dvh] rounded-[20px] overflow-hidden bg-background-card-cool relative">
               <Image
                 src="/vodafone/hero.webp"
                 alt="Vodafone Broadband — 3D house illustration"
@@ -570,7 +577,7 @@ function LearnRow({
       <span className="shrink-0 text-[40px] leading-none font-medium text-text-primary md:text-[56px]">
         {n}
       </span>
-      <div className="max-w-[450px] text-[17px] leading-[28px] tracking-[-0.28px] text-text-secondary">
+      <div className="max-w-[450px] text-[17px] leading-[28px] tracking-[-0.28px] font-[350] text-text-secondary">
         {children}
       </div>
     </div>
@@ -767,16 +774,18 @@ function LearningsReveal({ rows }: { rows: ReactNode[] }) {
  *  (bg-background-card-soft card, label-sm title + body-lg role, hover to
  *  card bg + text-secondary), keeping the thumbnail image. */
 function ProjectCard({
+  slug,
   src,
   label,
   children,
 }: {
+  slug: string;
   src: string;
   label: string;
   children: ReactNode;
 }) {
   return (
-    <div className="group flex items-center gap-3 rounded-sm bg-background-card-soft p-3 no-underline ring-1 ring-black/[0.08] md:min-w-0 md:flex-1 md:max-w-[450px]">
+    <Link href={projectHref(slug)} className="group flex items-center gap-3 rounded-sm bg-background-card-soft p-3 no-underline ring-1 ring-black/[0.08] md:min-w-0 md:flex-1 md:max-w-[450px]">
       <div className="relative h-[80px] w-[115px] shrink-0 overflow-hidden rounded-[4px]">
         <Image src={src} alt={label} fill sizes="115px" className="object-cover" />
       </div>
@@ -784,7 +793,7 @@ function ProjectCard({
         <span className="text-label-sm tracking-[0.06em]! text-text-primary">{label}</span>
         <span className="text-body-lg text-text-primary line-clamp-2">{children}</span>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -1049,15 +1058,15 @@ export default function VodafoneV3Page() {
                 MORE PROJECTS
               </p>
               <div className="mt-4 flex flex-col gap-4 md:flex-row md:gap-8">
-                <ProjectCard src="/patina/patina3.webp" label="PATINA">
+                <ProjectCard slug="patina" src="/patina/patina3.webp" label="PATINA">
                   I built an app to make you put your phone down. I had the idea, designed it,
                   built it and shipped it. Solo.
                 </ProjectCard>
-                <ProjectCard src="/zebra-finch/zebra1.webp" label="ZEBRA FINCH">
+                <ProjectCard slug="zebra-finch" src="/zebra-finch/zebra1.webp" label="ZEBRA FINCH">
                   The future of design isn&apos;t building interfaces. It&apos;s designing the
                   system. I&apos;m building that.
                 </ProjectCard>
-                <ProjectCard src="/herc/home1.webp" label="HERC RENTALS">
+                <ProjectCard slug="herc-rentals" src="/herc/home1.webp" label="HERC RENTALS">
                   Designed a B2B real time fleet management platform that led to 150% growth in
                   12 months.
                 </ProjectCard>

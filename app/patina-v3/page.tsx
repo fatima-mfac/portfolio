@@ -2,6 +2,7 @@
 
 import { Fragment, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import gsap from 'gsap';
 import Lenis from 'lenis';
 import Snap from 'lenis/snap';
@@ -14,6 +15,7 @@ import { Screensaver } from '../../src/components/Screensaver/Screensaver';
 import { PatinaHeroVideo } from '../_shell/PatinaHeroVideo';
 import { SmokeCanvas } from '../patina-v2/SmokeCanvas';
 import { CaseStudyReadMarker } from '../_shell/CaseStudyReadMarker';
+import { projectHref } from '../../src/lib/projectNavSource';
 
 /**
  * EXPERIMENT — Patina case study, HYBRID (v3).
@@ -431,7 +433,7 @@ function LearnRow({
       <span className="shrink-0 text-[40px] leading-none font-medium text-text-primary md:text-[56px]">
         {n}
       </span>
-      <div className="max-w-[450px] text-[17px] leading-[28px] tracking-[-0.28px] text-text-secondary">
+      <div className="max-w-[450px] text-[17px] leading-[28px] tracking-[-0.28px] font-[350] text-text-secondary">
         {children}
       </div>
     </div>
@@ -626,16 +628,18 @@ function LearningsReveal({ rows }: { rows: ReactNode[] }) {
 
 /** Small related-project card (kept from patina-v2). */
 function ProjectCard({
+  slug,
   src,
   label,
   children,
 }: {
+  slug: string;
   src: string;
   label: string;
   children: ReactNode;
 }) {
   return (
-    <div className="group flex items-center gap-3 rounded-sm bg-background-card-soft p-3 no-underline ring-1 ring-black/[0.08] md:min-w-0 md:flex-1 md:max-w-[450px]">
+    <Link href={projectHref(slug)} className="group flex items-center gap-3 rounded-sm bg-background-card-soft p-3 no-underline ring-1 ring-black/[0.08] md:min-w-0 md:flex-1 md:max-w-[450px]">
       <div className="relative h-[80px] w-[115px] shrink-0 overflow-hidden rounded-[4px]">
         <Image src={src} alt={label} fill sizes="115px" className="object-cover" />
       </div>
@@ -643,7 +647,7 @@ function ProjectCard({
         <span className="text-label-sm tracking-[0.06em]! text-text-primary">{label}</span>
         <span className="text-body-lg text-text-primary line-clamp-2">{children}</span>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -729,7 +733,6 @@ function IntroHeroCover() {
   // amount, capped to the slack between the hero and its taller grid cell.
   useEffect(() => {
     const active = () =>
-      window.matchMedia('(min-width: 768px)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const update = () => {
       const track = heroTrackRef.current;
@@ -752,28 +755,34 @@ function IntroHeroCover() {
     };
   }, []);
 
-  const TEXT_PAD = 'pl-8 @[1100px]:pl-[max(80px,calc(25cqw_-_229px))]';
+  const TEXT_PAD = 'pl-0 md:pl-8 @[1100px]:pl-[max(80px,calc(25cqw_-_229px))]';
   const BIG_TEXT =
     'max-w-[935px] font-[350] text-[clamp(32px,calc(23.09px_+_2.286vw),56px)] leading-[1.08] tracking-[-0.045em] text-text-primary';
 
   return (
     <div ref={rootRef} className="md:relative">
       {/* Plain CSS so it ships in the server HTML (no load shift). The grid
-          only turns on ≥768px with motion allowed; otherwise it's a normal
-          column with all text visible. */}
+          turns on at every width with motion allowed; under reduced motion
+          it's a normal column with all text visible. The hero is 100dvh at
+          every width here, so the pinned-travel padding is 100dvh + 88
+          throughout (slack = cell − hero); only the top margin tightens on
+          mobile (48 vs 128). */}
       <style>{`
         .iho-stack { margin-top: 1.08em; }
         .iho-text { padding-bottom: 40px; }
-        @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-          .iho-stack { display: grid; margin-top: 128px; }
+        @media (prefers-reduced-motion: no-preference) {
+          .iho-stack { display: grid; margin-top: 48px; }
           .iho-stack > * { grid-area: 1 / 1; }
           .iho-text { padding-bottom: calc(100dvh + 88px); }
+        }
+        @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+          .iho-stack { margin-top: 128px; }
         }
       `}</style>
 
       {/* Opening line — in normal flow, words stagger in once fonts are ready. */}
       <div
-        className={`pt-[104px] ${TEXT_PAD}`}
+        className={`pt-[24px] md:pt-[104px] ${TEXT_PAD}`}
         style={{ visibility: textReady ? 'visible' : 'hidden' }}
       >
         <div className={BIG_TEXT}>
@@ -797,7 +806,7 @@ function IntroHeroCover() {
               <Words text="I designed, vibe coded and shipped it. Solo human + AI, zero to one." />
             </p>
           </div>
-          <div className="mt-[88px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
+          <div className="mt-[40px] md:mt-[88px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
             {METADATA_LINES.map((line) => (
               <span key={line} className="meta-line whitespace-pre-wrap">
                 {line}
@@ -1096,15 +1105,15 @@ export default function PatinaV3Page() {
                 MORE PROJECTS
               </p>
               <div className="mt-4 flex flex-col gap-4 md:flex-row md:gap-8">
-                <ProjectCard src="/vodafone/vodafone3.webp" label="VODAFONE">
+                <ProjectCard slug="vodafone" src="/vodafone/vodafone3.webp" label="VODAFONE">
                   Joined every user testing session. Watched users react to my work as it
                   happened.
                 </ProjectCard>
-                <ProjectCard src="/zebra-finch/zebra1.webp" label="ZEBRA FINCH">
+                <ProjectCard slug="zebra-finch" src="/zebra-finch/zebra1.webp" label="ZEBRA FINCH">
                   The future of design isn&apos;t building interfaces. It&apos;s designing the
                   system. I&apos;m building that.
                 </ProjectCard>
-                <ProjectCard src="/herc/home1.webp" label="HERC RENTALS">
+                <ProjectCard slug="herc-rentals" src="/herc/home1.webp" label="HERC RENTALS">
                   Designed a B2B real time fleet management platform that led to 150% growth in
                   12 months.
                 </ProjectCard>
