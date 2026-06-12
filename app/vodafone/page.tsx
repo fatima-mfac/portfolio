@@ -531,12 +531,17 @@ function ImageBleedPanel({
   aspect,
   bg = 'bg-[#F4F2F2]',
   fillHeight = false,
+  imgPosition = '',
 }: {
   src: string;
   alt: string;
   aspect: string;
   bg?: string;
   fillHeight?: boolean;
+  /** Object-position override (e.g. `object-bottom`) for art that should
+   *  bleed off one edge when `fillHeight` stretches the panel taller than
+   *  the contained image. */
+  imgPosition?: string;
 }) {
   return (
     <div
@@ -548,7 +553,7 @@ function ImageBleedPanel({
         fill
         sizes="(min-width: 768px) 605px, 100vw"
         quality={92}
-        className="object-contain"
+        className={`object-contain ${imgPosition}`}
       />
     </div>
   );
@@ -960,6 +965,7 @@ export default function VodafoneV3Page() {
                   alt="Vodafone app — connected devices list"
                   aspect="aspect-[1510/1006]"
                   fillHeight
+                  imgPosition="object-bottom"
                 />
               </div>
             </section>
