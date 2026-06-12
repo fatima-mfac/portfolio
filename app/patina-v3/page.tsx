@@ -1,7 +1,8 @@
 'use client';
 
-import { Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Fragment, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
+import gsap from 'gsap';
 import Lenis from 'lenis';
 import Snap from 'lenis/snap';
 import { Header } from '../../src/components/Header/Header';
@@ -9,8 +10,10 @@ import { BackButton } from '../../src/components/BackButton/BackButton';
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
 import { ExternalLink } from '../../src/components/ExternalLink/ExternalLink';
 import { QAItem } from '../../src/components/QAItem/QAItem';
+import { Screensaver } from '../../src/components/Screensaver/Screensaver';
 import { PatinaHeroVideo } from '../_shell/PatinaHeroVideo';
 import { SmokeCanvas } from '../patina-v2/SmokeCanvas';
+import { CaseStudyReadMarker } from '../_shell/CaseStudyReadMarker';
 
 /**
  * EXPERIMENT — Patina case study, HYBRID (v3).
@@ -141,63 +144,6 @@ function PinnedColumn({
   );
 }
 
-/**
- * Frame-synced vertical parallax (from patina-v2). Translates its child so it
- * scrolls UP at a fraction (`speed`) of the real scroll — e.g. speed 0.5 = half
- * speed — so it lags behind faster siblings. Used for the intro under the hero:
- * the text drifts up slowly while the hero (full speed, higher z) passes over
- * it. Active ≥ md, driven by the shared Lenis loop, capped to the parent's
- * height, no-op under reduced-motion.
- */
-function ParallaxY({
-  children,
-  speed = 0.5,
-  className,
-}: {
-  children: ReactNode;
-  speed?: number;
-  className?: string;
-}) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const moveRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    const move = moveRef.current;
-    if (!track || !move) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const update = () => {
-      const row = track.parentElement;
-      if (!row || !window.matchMedia('(min-width: 768px)').matches) {
-        move.style.transform = '';
-        return;
-      }
-      // How far the wrapper has scrolled above the viewport top.
-      const scrolled = Math.max(0, -row.getBoundingClientRect().top);
-      // translateY DOWN by scrolled·(1−speed) so the net upward travel is
-      // scrolled·speed (it moves up slower). Capped to the wrapper height.
-      const shift = Math.min(row.offsetHeight, scrolled * (1 - speed));
-      move.style.transform = `translateY(${shift.toFixed(2)}px)`;
-    };
-    update();
-    frameCallbacks.add(update);
-    window.addEventListener('resize', update);
-    return () => {
-      frameCallbacks.delete(update);
-      window.removeEventListener('resize', update);
-    };
-  }, [speed]);
-
-  return (
-    <div ref={trackRef} className={className}>
-      <div ref={moveRef} className="will-change-transform">
-        {children}
-      </div>
-    </div>
-  );
-}
-
 // ─────────────────────────── DATA (from patina-v2) ───────────────────────────
 
 const METADATA_LINES = [
@@ -257,7 +203,7 @@ const QA = {
   whatsNext: {
     question: "What's next for Patina?",
     answer:
-      "Two things are coming before real distribution:\n\nFirst, the homepage is getting today and weekly screen time stats, which means reorganising the layout and moving settings out. Tabs system make it easier jumping between today, week and settings. Simple nav.\n\nSecond, is a shake feature on the lock screen. A quick shake shows your exact screen time without unlocking. For users who want more precise awareness without opening the phone, and as a partial solution for colour blindness.\n\nPatina is still early. I haven't started active distribution because I want clean measurement in place first. The core question is whether the wallpaper actually shifts screen time, not just whether people notice the colour.",
+      "Two things are coming before real distribution:\n\nFirst, the homepage is getting today and weekly screen time stats, which means reorganising the layout and moving settings out. Tabs system make it easier jumping between today, week and settings. Simple nav.\n\nSecond, I am testing a lock screen shake feature that shows your exact screen time without unlocking, offering more precise awareness and a partial solution for color blindness. Because shaking feels a bit contradictory to Patina's quiet nature, it might become a setting to keep the number always visible instead. Either way, it was fun to try.\n\nPatina is still early. I haven't started active distribution because I want clean measurement in place first. The core question is whether the wallpaper actually shifts screen time, not just whether people notice the colour.",
   },
 };
 
@@ -285,7 +231,7 @@ const STATS: ReadonlyArray<{ value: string; label: string; caption: string }> = 
  *  so the shared component (used by the live case study) stays untouched. */
 const QA_TYPE =
   '[&>p:first-child]:text-[clamp(20px,calc(18.51px_+_0.381vw),24px)] [&>p:first-child]:leading-[1.33] [&>p:first-child]:tracking-[-0.029em]! [&>p:first-child]:font-medium ' +
-  '[&>p~p]:text-[17px] [&>p~p]:leading-[1.444] [&>p~p]:tracking-[-0.02em] [&>p~p]:font-[350]';
+  '[&>p~p]:text-[17px] [&>p~p]:leading-[1.625] [&>p~p]:tracking-[-0.01em] [&>p~p]:font-[350]';
 
 function QACard({ question, answer }: { question: string; answer: string }) {
   return (
@@ -302,7 +248,7 @@ function QACard({ question, answer }: { question: string; answer: string }) {
 
 function StatCard({ value, label, caption }: { value: string; label: string; caption: string }) {
   return (
-    <div className="h-full bg-background-panel-cream rounded-[20px] flex flex-col justify-between gap-8 p-8">
+    <div className="h-full bg-background-card-warm rounded-[20px] flex flex-col justify-between gap-8 p-8">
       <div className="flex flex-col gap-3">
         <p className="text-display-stat text-accent-secondary">{value}</p>
         <p className="text-metadata-md leading-[1.5]! @[768px]:leading-[2]! text-accent-secondary">
@@ -478,7 +424,7 @@ function LearnRow({
 }) {
   return (
     <div
-      className={`flex items-start gap-6 @[1100px]:gap-[100px] @[1100px]:justify-end @[1100px]:pr-[max(0px,calc(25cqw_-_309px))] ${
+      className={`flex flex-col @[768px]:flex-row items-start gap-4 @[768px]:gap-6 @[1100px]:gap-[100px] @[1100px]:justify-end @[1100px]:pr-[max(0px,calc(25cqw_-_309px))] ${
         first ? 'pb-12 @[1100px]:pb-[12vh]' : 'border-t border-black/10 py-12 @[1100px]:py-[12vh]'
       }`}
     >
@@ -497,24 +443,33 @@ function LearnLead({ children }: { children: ReactNode }) {
 }
 
 /**
- * "What did you learn?" with a pinned question and answers that reveal one
- * by one as you scroll. The question is sticky (pinned) and sits vertically
- * centered on answer 1 by default. Each answer stays hidden until its number
- * scrolls up level with the pinned question, then fades in. Answer 1 is shown
- * from the start (the question is already aligned with it).
- *
- * Reveal is driven off the question's live vertical centre each Lenis frame,
- * so it tracks the pin correctly whether the question is still flowing or
- * already stuck. Below @[1100px] the question isn't pinned (it stacks above),
- * so all rows are shown immediately.
+ * "What did you learn?" with a pinned question and answers that fade in with
+ * a soft upward motion, one at a time, as each scrolls into view (standard
+ * RevealOnScroll, like every other block on the page). The question is sticky
+ * (pinned) on desktop and sits vertically centered on answer 1; below
+ * @[1100px] it isn't pinned (it stacks above the answers). Lenis snap still
+ * eases the scroll to rest with each answer centred on the pinned question.
  */
-/** The number+text block of an answer lives one level inside the reveal
- *  wrapper (wrapper → LearnRow → [number, text]). These measure that block
- *  only — excluding the wrapper and the row's padding — so the pinned question
- *  can centre on the visible content and the snap points land on it. With the
- *  reveal now opacity-only (no transform), getBoundingClientRect is exact. */
+/** The number+text block of an answer lives two levels inside the row
+ *  wrapper (wrapper → RevealOnScroll div → LearnRow → [number, text]). These
+ *  measure that block only — excluding the wrappers and the row's padding —
+ *  so the pinned question can centre on the visible content and the snap
+ *  points land on it. The RevealOnScroll div is translated down while still
+ *  hidden, so its current translateY is subtracted to get the true layout
+ *  position regardless of reveal state. */
 function answerInner(wrapper: HTMLElement) {
-  const inner = (wrapper.firstElementChild ?? wrapper) as HTMLElement;
+  const reveal = wrapper.firstElementChild as HTMLElement | null;
+  const inner = (reveal?.firstElementChild ?? reveal ?? wrapper) as HTMLElement;
+  // Pre-reveal, RevealOnScroll holds its div at translateY(offset) — remove
+  // that shift so measures reflect the settled layout, not the animation.
+  let shift = 0;
+  if (reveal) {
+    const t = getComputedStyle(reveal).transform;
+    if (t.startsWith('matrix(')) {
+      const parts = t.slice(7, -1).split(',');
+      if (parts.length === 6) shift = parseFloat(parts[5]) || 0;
+    }
+  }
   let top = Infinity;
   let bottom = -Infinity;
   for (const child of Array.from(inner.children)) {
@@ -524,9 +479,9 @@ function answerInner(wrapper: HTMLElement) {
   }
   if (bottom <= top) {
     const r = inner.getBoundingClientRect();
-    return { top: r.top, bottom: r.bottom };
+    return { top: r.top - shift, bottom: r.bottom - shift };
   }
-  return { top, bottom };
+  return { top: top - shift, bottom: bottom - shift };
 }
 function measureContentHeight(wrapper: HTMLElement) {
   const { top, bottom } = answerInner(wrapper);
@@ -539,52 +494,39 @@ function measureContentCenterDoc(wrapper: HTMLElement) {
 
 function LearningsReveal({ rows }: { rows: ReactNode[] }) {
   const qRef = useRef<HTMLHeadingElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [revealed, setRevealed] = useState<boolean[]>(() => rows.map((_, i) => i === 0));
   const [qOffset, setQOffset] = useState(0);
 
-  useEffect(() => {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isPinned = () => window.matchMedia('(min-width: 1100px)').matches;
-    if (reduce || !isPinned()) {
-      setRevealed(rows.map(() => true));
-    }
+  // Whether the pinned (question-beside-answers) layout is actually active.
+  // Must key off the real layout — the @[1100px] CONTAINER query — not a
+  // viewport media query: with the page's px-20 padding the container crosses
+  // 1100px at a ~1260px viewport, and in between a viewport check reports
+  // "pinned" while the layout is stacked.
+  const isPinned = () => {
+    const w = wrapRef.current;
+    return !!w && getComputedStyle(w).display === 'flex';
+  };
 
+  useEffect(() => {
     const update = () => {
       const q = qRef.current;
       const firstWrap = rowRefs.current[0];
       if (!q || !firstWrap) return;
 
-      // Mobile: the question isn't pinned (it stacks above the answers), so no
-      // centering offset and every answer is shown — no scroll-reveal.
+      // Mobile: the question isn't pinned (it stacks above the answers), so
+      // no centering offset.
       if (!isPinned()) {
         setQOffset((prev) => (prev !== 0 ? 0 : prev));
-        setRevealed((p) => (p.every(Boolean) ? p : rows.map(() => true)));
         return;
       }
 
       // Desktop: centre the pinned question on answer 1's number+text block —
-      // measure the LearnRow's own children (one level inside the reveal
-      // wrapper), so neither the wrapper nor the row's bottom spacing drags it.
+      // measure the LearnRow's own children, so neither the wrappers nor the
+      // row's bottom spacing drags it.
       const contentH = measureContentHeight(firstWrap);
       const off = (contentH - q.offsetHeight) / 2;
       setQOffset((prev) => (Math.abs(prev - off) > 0.5 ? off : prev));
-
-      const qRect = q.getBoundingClientRect();
-      const line = qRect.top + qRect.height / 2; // pinned question centre
-      setRevealed((prev) => {
-        let changed = false;
-        const next = prev.slice();
-        rowRefs.current.forEach((el, i) => {
-          if (!el || next[i]) return;
-          // reveal once the row's number has risen level with the question
-          if (el.getBoundingClientRect().top <= line + 20) {
-            next[i] = true;
-            changed = true;
-          }
-        });
-        return changed ? next : prev;
-      });
     };
 
     update();
@@ -609,7 +551,7 @@ function LearningsReveal({ rows }: { rows: ReactNode[] }) {
       pointRemovers.forEach((r) => r());
       pointRemovers = [];
       const first = rowRefs.current[0];
-      if (!snap || !first) return;
+      if (!snap || !first || !isPinned()) return;
       // Question pins at top:100px, centred on answer 1's content. Each snap
       // target is the scroll where that answer's content centre meets the line.
       const pinLineY = 100 + measureContentHeight(first) / 2;
@@ -629,7 +571,7 @@ function LearningsReveal({ rows }: { rows: ReactNode[] }) {
         snap.destroy();
         snap = null;
       }
-      if (!lenis || !window.matchMedia('(min-width: 1100px)').matches) return;
+      if (!lenis || !isPinned()) return;
       snap = new Snap(lenis, {
         type: 'proximity',
         distanceThreshold: '15%',
@@ -651,7 +593,7 @@ function LearningsReveal({ rows }: { rows: ReactNode[] }) {
 
   return (
     <section className="rounded-[20px] bg-background-card-warm px-8 py-16 @[1100px]:px-20 @[1100px]:py-32">
-      <div className="@[1100px]:flex @[1100px]:items-start">
+      <div ref={wrapRef} className="@[1100px]:flex @[1100px]:items-start">
         <div className="@[1100px]:sticky @[1100px]:top-[100px] @[1100px]:self-start">
           {/* Same question typography as the v3 QACards (QA_TYPE). */}
           <h2
@@ -665,20 +607,15 @@ function LearningsReveal({ rows }: { rows: ReactNode[] }) {
         {/* A little bottom space lets the last answer scroll up level with the
             pinned question; the main scroll length comes from the generous
             spacing between the rows above, so there's no big end gap. */}
-        <div className="mt-8 @[1100px]:mt-0 @[1100px]:flex-1 @[1100px]:pb-[10vh]">
+        <div className="mt-12 @[1100px]:mt-0 @[1100px]:flex-1 @[1100px]:pb-[10vh]">
           {rows.map((row, i) => (
             <div
               key={i}
               ref={(el) => {
                 rowRefs.current[i] = el;
               }}
-              style={{
-                opacity: revealed[i] ? 1 : 0,
-                transition: 'opacity 700ms ease-out',
-                willChange: 'opacity',
-              }}
             >
-              {row}
+              <RevealOnScroll offset={72} duration={900}>{row}</RevealOnScroll>
             </div>
           ))}
         </div>
@@ -698,15 +635,13 @@ function ProjectCard({
   children: ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-[8px] border-[0.5px] border-[#d7d7d7] bg-background-card-soft p-2 transition-colors duration-fast ease-out hover:bg-background-card md:min-w-0 md:flex-1 md:max-w-[395px]">
+    <div className="group flex items-center gap-3 rounded-sm bg-background-card-soft p-3 no-underline ring-1 ring-black/[0.08] md:min-w-0 md:flex-1 md:max-w-[450px]">
       <div className="relative h-[80px] w-[115px] shrink-0 overflow-hidden rounded-[4px]">
         <Image src={src} alt={label} fill sizes="115px" className="object-cover" />
       </div>
-      <div className="flex min-w-0 flex-col">
-        <p className="font-[family-name:var(--font-family-mono)] text-[11px] font-medium leading-[22px] tracking-[-0.11px] text-text-primary">
-          {label}
-        </p>
-        <p className="text-[14px] leading-[1.24] tracking-[-0.7px] text-[#90908a]">{children}</p>
+      <div className="flex min-w-0 flex-col gap-1 transition-opacity duration-fast ease-out group-hover:opacity-70">
+        <span className="text-label-sm tracking-[0.06em]! text-text-primary">{label}</span>
+        <span className="text-body-lg text-text-primary line-clamp-2">{children}</span>
       </div>
     </div>
   );
@@ -716,21 +651,185 @@ function ProjectCard({
 // `@[768px]:items-start` so the PinnedColumn stays short enough to pin.
 const ROW = 'grid grid-cols-1 @[768px]:grid-cols-2 gap-[16px]';
 
+/** Splits a string into per-word spans (`.word`, inline-block) so an animation
+ *  can target each word. A normal space text node sits between words so they
+ *  wrap and space like ordinary text. */
+function Words({ text, className }: { text: string; className?: string }) {
+  const words = text.split(/\s+/).filter(Boolean);
+  return (
+    <>
+      {words.map((word, i) => (
+        <Fragment key={i}>
+          <span className={`word inline-block will-change-[transform,opacity] ${className ?? ''}`}>
+            {word}
+          </span>
+          {i < words.length - 1 ? ' ' : null}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+/**
+ * Cover-and-reveal intro (ported from Vodafone v3). On desktop only the opening
+ * line shows above the hero; the rest of the intro (second paragraph + metadata
+ * + link) sits hidden BEHIND the hero. Scrolling holds the hero fixed while that
+ * text scrolls up and emerges above the hero's top edge, then the hero releases.
+ * Words stagger in (gsap) once fonts are ready. Desktop + motion-safe only — on
+ * mobile / reduced-motion it's a normal stacked column.
+ */
+function IntroHeroCover() {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const heroTrackRef = useRef<HTMLDivElement>(null);
+  const heroPinRef = useRef<HTMLDivElement>(null);
+
+  const [textReady, setTextReady] = useState(false);
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setTextReady(true);
+      return;
+    }
+    const words = Array.from(root.querySelectorAll<HTMLElement>('.word'));
+    const metaLines = Array.from(root.querySelectorAll<HTMLElement>('.meta-line'));
+    const tweens: gsap.core.Tween[] = [];
+    let done = false;
+    const run = () => {
+      if (done) return;
+      done = true;
+      setTextReady(true);
+      tweens.push(
+        gsap.fromTo(
+          words,
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 1.1, ease: 'power2.out', stagger: 0.05 },
+        ),
+      );
+      if (metaLines.length) {
+        tweens.push(
+          gsap.fromTo(
+            metaLines,
+            { opacity: 0, y: 10 },
+            { opacity: 1, y: 0, duration: 1.1, ease: 'power2.out', stagger: 0.05, delay: 0.15 },
+          ),
+        );
+      }
+    };
+    document.fonts?.ready.then(run).catch(run);
+    const fallback = window.setTimeout(run, 1500);
+    return () => {
+      tweens.forEach((t) => t.kill());
+      window.clearTimeout(fallback);
+    };
+  }, []);
+
+  // Frame-synced pin: hold the hero at its initial viewport position while the
+  // text scrolls up behind it, by translating the hero down by the scroll
+  // amount, capped to the slack between the hero and its taller grid cell.
+  useEffect(() => {
+    const active = () =>
+      window.matchMedia('(min-width: 768px)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const update = () => {
+      const track = heroTrackRef.current;
+      const pin = heroPinRef.current;
+      if (!track || !pin) return;
+      if (!active()) {
+        pin.style.transform = '';
+        return;
+      }
+      const maxShift = track.offsetHeight - pin.offsetHeight;
+      const shift = maxShift <= 0 ? 0 : Math.min(maxShift, Math.max(0, window.scrollY));
+      pin.style.transform = `translateY(${shift.toFixed(2)}px)`;
+    };
+    update();
+    frameCallbacks.add(update);
+    window.addEventListener('resize', update);
+    return () => {
+      frameCallbacks.delete(update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  const TEXT_PAD = 'pl-8 @[1100px]:pl-[max(80px,calc(25cqw_-_229px))]';
+  const BIG_TEXT =
+    'max-w-[935px] font-[350] text-[clamp(32px,calc(23.09px_+_2.286vw),56px)] leading-[1.08] tracking-[-0.045em] text-text-primary';
+
+  return (
+    <div ref={rootRef} className="md:relative">
+      {/* Plain CSS so it ships in the server HTML (no load shift). The grid
+          only turns on ≥768px with motion allowed; otherwise it's a normal
+          column with all text visible. */}
+      <style>{`
+        .iho-stack { margin-top: 1.08em; }
+        .iho-text { padding-bottom: 40px; }
+        @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+          .iho-stack { display: grid; margin-top: 128px; }
+          .iho-stack > * { grid-area: 1 / 1; }
+          .iho-text { padding-bottom: calc(100dvh + 88px); }
+        }
+      `}</style>
+
+      {/* Opening line — in normal flow, words stagger in once fonts are ready. */}
+      <div
+        className={`pt-[104px] ${TEXT_PAD}`}
+        style={{ visibility: textReady ? 'visible' : 'hidden' }}
+      >
+        <div className={BIG_TEXT}>
+          <p className="mb-0">
+            <Words text="Patina," className="font-medium" />{' '}
+            <Words text="a screen time awareness app that tints your wallpaper as you use your phone." />
+          </p>
+        </div>
+      </div>
+
+      {/* Cover-and-reveal stack: rest of intro (z-0) + hero (z-10) share one
+          grid cell so the hero overlaps the text; the text layer's tall bottom
+          padding makes the cell taller than the hero — that's the pinned travel. */}
+      <div className="iho-stack">
+        <div
+          className={`iho-text relative z-0 ${TEXT_PAD}`}
+          style={{ visibility: textReady ? 'visible' : 'hidden' }}
+        >
+          <div className={BIG_TEXT}>
+            <p className="mb-0">
+              <Words text="I designed, vibe coded and shipped it. Solo human + AI, zero to one." />
+            </p>
+          </div>
+          <div className="mt-[88px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
+            {METADATA_LINES.map((line) => (
+              <span key={line} className="meta-line whitespace-pre-wrap">
+                {line}
+              </span>
+            ))}
+          </div>
+          <ExternalLink url="patinascreen.com" className="mt-8" />
+        </div>
+
+        {/* Hero layer (z-10, covers the text; stretches to the cell height). */}
+        <div ref={heroTrackRef} className="relative z-10">
+          <div ref={heroPinRef} className="will-change-transform">
+            <div className="w-full h-[100dvh] rounded-[20px] overflow-hidden bg-background-dark relative">
+              <PatinaHeroVideo />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PatinaV3Page() {
-  // Auto-hide header: slides up out of view while scrolling down. On the way
-  // back up it stays hidden until you've scrolled up a deliberate amount
-  // (SHOW_AFTER_UP px accumulated), so a tiny upward nudge doesn't pop it in.
-  // It's always visible near the top of the page. The header has no background
-  // of its own — it's transparent over the page at every scroll position.
+  // Auto-hide header, v1 style: slides out of view while scrolling down (past
+  // a small top band) and returns immediately on any upward scroll.
   const [hideHeader, setHideHeader] = useState(false);
   // The mobile back arrow is shown ONLY near the very top of the page — it must
   // not reappear mid-page on scroll-up the way the desktop header does.
   const [atTop, setAtTop] = useState(true);
   useEffect(() => {
     const TOP_BAND = 120; // px from top within which the back arrow is shown
-    const SHOW_AFTER_UP = 160; // px of cumulative upward scroll before it returns
     let lastY = window.scrollY;
-    let upAccum = 0;
     let ticking = false;
     // Reflect the current scroll position immediately (e.g. restored scroll on
     // reload / deep link) instead of waiting for the first scroll event.
@@ -740,17 +839,7 @@ export default function PatinaV3Page() {
       ticking = true;
       requestAnimationFrame(() => {
         const y = window.scrollY;
-        const dy = y - lastY;
-        if (dy > 0) {
-          // Scrolling down — hide past the hero band, reset the up counter.
-          upAccum = 0;
-          if (y > 120) setHideHeader(true);
-        } else if (dy < 0) {
-          // Scrolling up — only reveal after enough cumulative travel.
-          upAccum += -dy;
-          if (upAccum >= SHOW_AFTER_UP) setHideHeader(false);
-        }
-        if (y < 24) setHideHeader(false); // always visible pinned to the very top
+        setHideHeader(y > lastY && y > 60);
         setAtTop((prev) => {
           const next = y < TOP_BAND;
           return prev !== next ? next : prev;
@@ -764,19 +853,16 @@ export default function PatinaV3Page() {
   }, []);
 
   return (
-    // Top gradient (v2 style): a single smooth fade from cream at the very top
-    // straight to white — no mid hold-stop, so there's no fade band/banding.
-    // It still reaches white right at the hero's bottom edge, then stays white
-    // for the rest of the page. The hero is 100dvh and sits ~692px below the
-    // page top (header + intro + gap), so its bottom is at calc(100dvh + 692px),
-    // using dvh so the endpoint tracks the hero across viewport heights.
-    <div className="relative min-h-screen bg-[linear-gradient(to_bottom,#FCF4EA_0px,#ffffff_calc(100dvh_+_692px))] flex flex-col">
+    <div className="relative min-h-screen bg-white flex flex-col">
       <SmoothScroll />
+      {/* Idle screensaver — same as the v1 shell. */}
+      <Screensaver />
 
-      {/* Sticky header — auto-hides on scroll down, returns on scroll up. */}
+      {/* Sticky header — v1 style: standard horizontal Header on an opaque
+          white band, hides on scroll down, returns on scroll up. */}
       <Suspense>
         <div
-          className={`sticky top-0 z-50 bg-transparent transition-transform duration-300 ease-out ${
+          className={`sticky top-0 z-50 bg-white transition-transform duration-300 ease-out ${
             hideHeader ? '-translate-y-full' : 'translate-y-0'
           }`}
         >
@@ -784,7 +870,6 @@ export default function PatinaV3Page() {
             <div className="hidden md:block">
               <Header
                 breakpoint="desktop"
-                stacked
                 projectLinks={[
                   { label: 'Patina', slug: 'patina', active: true },
                   { label: 'Zebra Finch', slug: 'zebra-finch' },
@@ -806,44 +891,13 @@ export default function PatinaV3Page() {
 
       <main className="w-full px-4 md:px-20 pb-24">
         <div className="@container flex flex-col gap-[16px]">
-          {/* 1 + 2 — Parallax-and-pass (v2): the intro drifts up at half scroll
-              speed (lower z) while the hero scrolls at full speed on top
-              (z-10), so the hero video slides up over the big text. The left
-              padding matches the Q&A cards' inner text. Desktop only. */}
-          <div className="md:relative">
-            <ParallaxY speed={0.5} className="md:relative md:z-0">
-              <RevealOnScroll>
-                <div className="pt-6 pb-10 md:pb-16 pl-8 @[1100px]:pl-[max(80px,calc(25cqw_-_229px))]">
-                  <div className="max-w-[935px] font-[350] text-[clamp(32px,calc(23.09px_+_2.286vw),56px)] leading-[1.08] tracking-[-0.045em] text-text-primary">
-                    <p className="mb-0">
-                      <span className="font-medium">Patina, </span>a screen time awareness app that
-                      tints your wallpaper as you use your phone.
-                      <br />
-                      <br />
-                      I designed, vibe coded and shipped it. Solo human + AI, zero to one.
-                    </p>
-                  </div>
-                  <div className="mt-10 flex max-w-[640px] flex-col text-metadata-md text-text-primary">
-                    {METADATA_LINES.map((line) => (
-                      <span key={line} className="whitespace-pre-wrap">
-                        {line}
-                      </span>
-                    ))}
-                  </div>
-                  <ExternalLink url="patinascreen.com" className="mt-8" />
-                </div>
-              </RevealOnScroll>
-            </ParallaxY>
-
-            <RevealOnScroll offset={16} duration={900} className="md:relative md:z-10">
-              <div className="w-full h-[100dvh] rounded-[20px] overflow-hidden bg-background-dark relative">
-                <PatinaHeroVideo />
-              </div>
-            </RevealOnScroll>
-          </div>
+          {/* 1 + 2 — Cover-and-reveal: only the opening line shows above the
+              hero on load; scrolling slides the rest of the intro out from
+              behind the pinned hero, then the hero releases. Desktop only. */}
+          <IntroHeroCover />
 
           {/* 3 — Metrics (3-up; mobile swipe carousel) */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <section className="flex overflow-x-auto snap-x snap-mandatory gap-[16px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden @[768px]:grid @[768px]:grid-cols-3 @[768px]:overflow-visible">
               {STATS.map((stat) => (
                 <div key={stat.label} className="shrink-0 w-[85%] snap-start @[768px]:w-auto">
@@ -854,10 +908,10 @@ export default function PatinaV3Page() {
           </RevealOnScroll>
 
           {/* 4 — PIN A: video phone pinned left, whyBuild/validate scroll right */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <section className={ROW}>
               <PhoneVideoCard />
-              <div className="grid grid-rows-2 gap-[16px] h-full">
+              <div className="flex flex-col gap-[16px] @[768px]:grid @[768px]:grid-rows-2 @[768px]:h-full">
                 <QACard {...QA.whyBuild} />
                 <QACard {...QA.validate} />
               </div>
@@ -865,7 +919,7 @@ export default function PatinaV3Page() {
           </RevealOnScroll>
 
           {/* 5 — Color banner */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <FillImage
               src="/patina/color-banner2.png"
               alt="Patina color palette banner"
@@ -874,9 +928,9 @@ export default function PatinaV3Page() {
           </RevealOnScroll>
 
           {/* 6 — PIN B: impulse/colorBlind scroll left, tint phone pinned right */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <section className={ROW}>
-              <div className="grid grid-rows-2 gap-[16px] h-full">
+              <div className="flex flex-col gap-[16px] @[768px]:grid @[768px]:grid-rows-2 @[768px]:h-full">
                 <QACard {...QA.impulse} />
                 <QACard {...QA.colorBlind} />
               </div>
@@ -885,7 +939,7 @@ export default function PatinaV3Page() {
           </RevealOnScroll>
 
           {/* 7 — Brand logos */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <section className={ROW}>
               <FillImage
                 src="/patina/logo1.png"
@@ -902,9 +956,9 @@ export default function PatinaV3Page() {
 
           {/* 8 — Name origin + Minimalist Q&A stacked in the left column, the
               smoke shader filling the right. */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <section className={ROW}>
-              <div className="grid grid-rows-2 gap-[16px] h-full">
+              <div className="flex flex-col gap-[16px] @[768px]:grid @[768px]:grid-rows-2 @[768px]:h-full">
                 <QACard {...QA.nameOrigin} />
                 <QACard {...QA.minimalist} />
               </div>
@@ -912,9 +966,12 @@ export default function PatinaV3Page() {
             </section>
           </RevealOnScroll>
 
+          {/* Plausible read-depth: reached roughly halfway (same as v1). */}
+          <CaseStudyReadMarker project="patina" depth="middle" />
+
           {/* 9 — websiteIntro Q&A pinned at the top — a card one image tall
               with the text centered in it — while web1/web2 scroll past. */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <section className={`${ROW} @[768px]:items-start`}>
               <PinnedColumn className="@[768px]:self-start" pinTop={24}>
                 <div className="w-full rounded-[20px] bg-background-card-warm flex flex-col justify-center p-8 @[1100px]:p-20">
@@ -942,7 +999,7 @@ export default function PatinaV3Page() {
           </RevealOnScroll>
 
           {/* 10 — Website preview */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <FillImage
               src="/patina/patina-site2.png"
               alt="Patina website preview"
@@ -951,9 +1008,9 @@ export default function PatinaV3Page() {
           </RevealOnScroll>
 
           {/* 11 — PIN D: giveUp/biggestMistake scroll left, wallpaper phone pinned right */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <section className={ROW}>
-              <div className="grid grid-rows-2 gap-[16px] h-full">
+              <div className="flex flex-col gap-[16px] @[768px]:grid @[768px]:grid-rows-2 @[768px]:h-full">
                 <QACard {...QA.giveUp} />
                 <QACard {...QA.biggestMistake} />
               </div>
@@ -967,7 +1024,7 @@ export default function PatinaV3Page() {
 
           {/* 12 — whatsNext Q&A pinned at the top (one card tall, text centered)
               while three phones (two stills + the shake video) scroll past. */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <section className={`${ROW} @[768px]:items-start`}>
               <div className="flex flex-col gap-[16px]">
                 <PhonePanelCard
@@ -1033,9 +1090,9 @@ export default function PatinaV3Page() {
           />
 
           {/* 14 — More projects (no card background — plain full-width block) */}
-          <RevealOnScroll>
+          <RevealOnScroll offset={72} duration={900}>
             <section className="pt-4 @[1100px]:pt-8">
-              <p className="font-[family-name:var(--font-family-mono)] text-[11px] leading-[22px] tracking-[-0.11px] text-text-secondary">
+              <p className="font-[family-name:var(--font-family-mono)] text-[11px] leading-[22px] tracking-[0.06em]! text-text-secondary">
                 MORE PROJECTS
               </p>
               <div className="mt-4 flex flex-col gap-4 md:flex-row md:gap-8">
@@ -1054,6 +1111,9 @@ export default function PatinaV3Page() {
               </div>
             </section>
           </RevealOnScroll>
+
+          {/* Plausible read-depth: reached the very end (same as v1). */}
+          <CaseStudyReadMarker project="patina" depth="end" />
         </div>
       </main>
     </div>
