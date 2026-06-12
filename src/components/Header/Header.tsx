@@ -2,7 +2,7 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 import { NavItem } from '../NavItem/NavItem';
-import { markProjectNavSource } from '../../lib/projectNavSource';
+import { markProjectNavSource, projectHref } from '../../lib/projectNavSource';
 
 export type HeaderBreakpoint = 'desktop' | 'mobile';
 
@@ -78,11 +78,10 @@ export function Header({
   // URL (e.g. /about?project=zebra-finch) with no effect. Jumping into a
   // project from these pages is handled by the right project nav below.
 
-  // Right project nav: stay on the current pathname, change ?project=.
-  // EXCEPT /about — projects live on the homepage, so clicking a project
-  // from About jumps back to `/?project=…` (About is its own standalone page).
-  const buildProjectHref = (slug: string) =>
-    pathname === '/about' ? `/?project=${slug}` : `${pathname}?project=${slug}`;
+  // Right project nav. Patina/Herc/Vodafone route to their standalone v3
+  // pages; Zebra Finch still opens as a v1 use case on the homepage
+  // (`/?project=…`). Centralised in projectHref so cards + nav stay in sync.
+  const buildProjectHref = (slug: string) => projectHref(slug);
 
   // Reset handler for the Index nav item — returns to the bare homepage
   // and resets HomeStack state. The <Link> itself does the soft (client)

@@ -34,3 +34,19 @@ export function consumeProjectNavSource(): ProjectNavSource {
   pending = null;
   return source;
 }
+
+/**
+ * Destination route for a project slug. Patina, Herc, and Vodafone now have
+ * their own standalone v3 pages, so they route straight there; anything else
+ * (currently Zebra Finch) still renders as a v1 use case on the homepage via
+ * the `?project=` search param.
+ */
+const V3_ROUTES: Record<string, string> = {
+  patina: '/patina-v3',
+  'herc-rentals': '/herc-v3',
+  vodafone: '/vodafone-v3',
+};
+
+export function projectHref(slug: string): string {
+  return V3_ROUTES[slug] ?? `/?project=${slug}`;
+}
