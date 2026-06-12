@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tag — default to alert</title>
+<style>
+  :root{
+    /* from the Figma node */
+    --yellow: #FFC20F;   /* herc/yellow-100 */
+    --white:  #FFFFFF;   /* grayscale/white */
+    --black:  #000000;   /* grayscale/black */
+    --red:    #E5392A;   /* alert ring + ripple */
+
+    --pin: 56px;         /* yellow dot diameter */
+    --label-text: 22px;
+    --stage-bg: #FBF7F0; /* soft warm canvas, close to the Figma background */
+  }
+
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; height:100%; overflow:hidden; }
+  body{
+    /* transparent so the map image shows through when embedded as an
+       overlay iframe (stage-bg kept for standalone previewing) */
+    background: transparent;
+    color: var(--black);
+    font-family: "Gotham Narrow", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:56px;
+    min-height:100%;
+    padding:48px;
+  }
+
+  /* ---------- the tag ---------- */
+  .scale{
+    transform: translateY(55px) scale(0.7);  /* whole tag at 70%, nudged 55px down */
+    transform-origin: center center;
+  }
+  .tag{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    /* center the ripple system on the pin centre */
+    --center: calc(var(--pin) / 2);
+    transform: translateX(0);
+    opacity:1;
+    transition: transform 2s cubic-bezier(.16,.84,.44,1), opacity .45s ease;  /* long walk-in from off-card, decelerate to a stop */
+  }
+  .tag.no-anim{ transition:none; }   /* for the instant reset to the right while invisible */
+  @media (prefers-reduced-motion: reduce){
+    .tag{ transition:none; }
+  }
+
+  .label{
+    background: var(--white);
+    color: var(--black);
+    font-weight: 500;
+    font-size: var(--label-text);
+    line-height:1.5;
+    letter-spacing:-0.01em;
+    white-space:nowrap;
+    padding: 4px 9px 4px 46px;     /* extra left so text clears the pin */
+    margin-left: calc(var(--pin) / -2);
+    border-radius: 0 5px 5px 0;
+    position:relative;
+    z-index:2;                     /* label sits above the ripples */
+  }
+
+  .pin{
+    position:relative;
+    width: var(--pin);
+    height: var(--pin);
+    flex:0 0 auto;
+    z-index:4;                     /* dot on top of everything */
+  }
+  .dot{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background: var(--yellow);
+    box-shadow: 0 0 0 10px var(--white);  /* strong white stroke in default */
+    z-index:4;
+  }
+  /* white outline in default kept via the dot's box-shadow above */
+  /* red ring, only in alert */
+  .ring{
+    position:absolute;
+    inset:-10px;
+    border-radius:50%;
+    border: 13px solid var(--red);  /* extra width tucks behind the dot; overshoot never exposes a gap */
+    transform: scale(0.4);
+    opacity:0;
+    z-index:3;
+    transition: opacity .25s ease;   /* opacity fades; scale handled by animation */
+  }
+
+  /* ---------- epicenter ripples ---------- */
+  .pulses{
+    position:absolute;
+    left: var(--center);
+    top: 50%;
+    width: 0; height: 0;
+    z-index:1;                     /* behind label and dot */
+    pointer-events:none;
+    opacity:1;                     /* crisp on the way in (no transition here) */
+  }
+  .pulse{
+    position:absolute;
+    left:50%; top:50%;
+    width: calc(var(--pin) + 14px);
+    height: calc(var(--pin) + 14px);
+    margin-left: calc((var(--pin) + 14px) / -2);
+    margin-top:  calc((var(--pin) + 14px) / -2);
+    border-radius:50%;
+    background: var(--red);
+    opacity:0;
+    transform: scale(0.5);
+  }
+  /* two waves fired close together, then a short pause, then two again */
+  .tag.alert .pulse{ animation: epicenter 1.8s ease-out infinite; }
+  .tag.alert .pulse:nth-child(2){ animation-delay:.3s; }
+
+  /* ring re-plays its pop on every wave of two; dot stays solid during alert */
+  .tag.alert .ring{
+    animation: ringPop 1.8s ease-out infinite;
+  }
+  .tag.alert:not(.fading) .ring{
+    opacity:1;
+  }
+  .tag.alert:not(.fading) .dot{
+    box-shadow:none;             /* no white gap between yellow and red */
+  }
+
+  /* on reset: fade the halos out instead of cutting */
+  .tag.fading .pulses{
+    opacity:0;
+    transition: opacity .55s ease;
+  }
+
+  @keyframes epicenter{
+    0%   { transform: scale(0.5); opacity:.45; }
+    45%  { opacity:.14; }
+    72%  { transform: scale(3.6); opacity:0; }   /* wave done expanding */
+    100% { transform: scale(3.6); opacity:0; }   /* short pause */
+  }
+
+  /* ring re-entry: same overshoot as the default-to-alert pop, once per cycle */
+  @keyframes ringPop{
+    0%   { transform: scale(0.4); }
+    16%  { transform: scale(1.08); }   /* overshoot */
+    26%  { transform: scale(1); }
+    100% { transform: scale(1); }
+  }
+
+  /* respect reduced motion: no expansion, just the static alert state */
+  @media (prefers-reduced-motion: reduce){
+    .ring{ transition:none; }
+    .tag.alert .ring{ animation:none; transform:scale(1); }
+    .tag.alert .pulse{ animation:none; opacity:.18; transform:scale(2.4); }
+    .tag.alert .pulse:nth-child(2){ display:none; }
+    .tag.fading .pulses{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="scale">
+  <div class="tag" id="tag">
+    <div class="pulses">
+      <span class="pulse"></span>
+      <span class="pulse"></span>
+    </div>
+    <div class="pin">
+      <span class="ring"></span>
+      <span class="dot"></span>
+    </div>
+    <div class="label">Big Chevy Truck</div>
+  </div>
+  </div>
+
+<script>
+  const tag = document.getElementById('tag');
+
+  const ENTER_MS = 2000;   // walk-in from outside the card (matches the CSS transition)
+  const STOP_MS  = 450;    // pause after it stops, before the first wave
+  const ALERT_MS = 10600;  // hold alert (fade to default starts 1s later)
+  const FADE_MS  = 600;    // halos ease out
+  const REST_MS  = 1200;   // settle in default before leaving
+  const EXIT_MS  = 480;    // fade out before looping back
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function runCycle(){
+    if (reduce){
+      // no travel: just play the alert and loop
+      tag.classList.add('alert');
+      setTimeout(() => {
+        tag.classList.add('fading');
+        setTimeout(() => {
+          tag.classList.remove('alert', 'fading');
+          setTimeout(runCycle, REST_MS);
+        }, FADE_MS);
+      }, ALERT_MS);
+      return;
+    }
+
+    // 1. park fully OUTSIDE the card's right edge, no transition — the card
+    //    edge clips it, so it "walks in" from off-card rather than fading in
+    //    near its resting spot.
+    tag.classList.add('no-anim');
+    tag.style.transform = 'translateX(100vw)';
+    tag.style.opacity = '1';
+    void tag.offsetWidth;                       // commit the reset
+    tag.classList.remove('no-anim');
+
+    // 2. glide right to left + fade in, decelerate to a stop
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      tag.style.transform = 'translateX(0)';
+      tag.style.opacity = '1';
+    }));
+
+    // 3. once stopped, run the wave bursts
+    setTimeout(() => {
+      tag.classList.add('alert');
+      setTimeout(() => {
+        tag.classList.add('fading');
+        setTimeout(() => {
+          tag.classList.remove('alert', 'fading');
+          // 4. settle, fade out, then loop from the beginning
+          setTimeout(() => {
+            tag.style.opacity = '0';
+            setTimeout(runCycle, EXIT_MS);
+          }, REST_MS);
+        }, FADE_MS);
+      }, ALERT_MS);
+    }, ENTER_MS + STOP_MS);
+  }
+
+  // Don't start until the card is actually on screen, so the walk-in is seen
+  // from the beginning. IntersectionObserver inside an iframe accounts for the
+  // parent page's viewport, so "intersecting" = the card itself is visible.
+  // Until then the tag waits parked off-card (skipped under reduced motion,
+  // where there's no travel to hide).
+  if (!reduce){
+    tag.classList.add('no-anim');
+    tag.style.transform = 'translateX(100vw)';
+    void tag.offsetWidth;
+    tag.classList.remove('no-anim');
+  }
+  let started = false;
+  const io = new IntersectionObserver((entries) => {
+    if (started) return;
+    for (const e of entries){
+      if (e.isIntersecting){
+        started = true;
+        io.disconnect();
+        runCycle();
+        break;
+      }
+    }
+  }, { threshold: 0.3 });
+  io.observe(document.body);
+</script>
+</body>
+</html>
