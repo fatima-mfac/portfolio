@@ -124,6 +124,7 @@ export function AboutHeroDescription({ children }: { children: ReactNode }) {
               switched off once the user starts scrolling so faded
               links never catch a stray click. */}
           <nav
+            id="about-contact"
             aria-label="Contact"
             className="flex justify-center gap-8 text-metadata-md"
             style={{ pointerEvents: progress > 0.1 ? 'none' : 'auto' }}

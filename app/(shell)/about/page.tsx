@@ -17,6 +17,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { QAItem } from '../../../src/components/QAItem/QAItem';
 import { RevealOnScroll } from '../../../src/components/RevealOnScroll/RevealOnScroll';
+import { AboutContactGap } from './AboutContactGap';
 import { AboutHeroDescription } from './AboutHeroDescription';
 import { AboutLetterRing, type AboutLetter } from './AboutLetterRing';
 
@@ -183,8 +184,10 @@ export default function AboutPage() {
             - Desktop: main fills the viewport (Shell.tsx makes it
               md:absolute md:inset-0), so the header doesn't shift the
               main down → only peek (~265px) is subtracted.
-            Tune the peek by changing the px values. */}
-        <div className="h-[calc(100dvh-345px)] md:h-[calc(100dvh-265px)]" aria-hidden="true" />
+            Tune the peek by changing the px values. The mobile spacer is
+            grown at runtime by AboutContactGap when a short/narrow phone
+            would otherwise let the peeking card crowd the contact line. */}
+        <AboutContactGap />
 
         {/* Q&A cards. The first card peeks at the bottom on initial
             load as a scroll affordance — but the whole stack stays
