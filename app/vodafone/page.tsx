@@ -182,8 +182,9 @@ function Words({ text, className }: { text: string; className?: string }) {
 
 function IntroHeroCover() {
   const rootRef = useRef<HTMLDivElement>(null); // queried for .word / .meta-line
-  const heroTrackRef = useRef<HTMLDivElement>(null); // hero grid cell (stretched)
-  const heroPinRef = useRef<HTMLDivElement>(null); // the 100dvh hero (translated)
+  const heroTrackRef = useRef<HTMLDivElement>(null); // hero grid cell (stretched) — desktop
+  const heroPinRef = useRef<HTMLDivElement>(null); // the 100dvh hero (translated) — desktop
+  const heroMobileRef = useRef<HTMLDivElement>(null); // mobile hero that slides down to reveal
 
   // Entrance (motion.dev-style, run with gsap since motion/motion-plus aren't
   // installed): once the fonts are ready, reveal the text and stagger each
@@ -236,9 +237,11 @@ function IntroHeroCover() {
   // text scrolls up behind it, by translating the hero down by the scroll
   // amount, capped to the slack between the hero and its taller grid cell.
   // shift is 0 at the very top, so the rendered (static) layout already
-  // matches — no jump on load. Motion-safe only (now mobile + desktop).
+  // matches — no jump on load. DESKTOP only (≥768px) + motion-safe; mobile
+  // uses the slide-down reveal below instead.
   useEffect(() => {
     const active = () =>
+      window.matchMedia('(min-width: 768px)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const update = () => {
       const track = heroTrackRef.current;
@@ -251,6 +254,35 @@ function IntroHeroCover() {
       const maxShift = track.offsetHeight - pin.offsetHeight;
       const shift = maxShift <= 0 ? 0 : Math.min(maxShift, Math.max(0, window.scrollY));
       pin.style.transform = `translateY(${shift.toFixed(2)}px)`;
+    };
+    update();
+    frameCallbacks.add(update);
+    window.addEventListener('resize', update);
+    return () => {
+      frameCallbacks.delete(update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  // MOBILE (<768px) reveal: the hero covers the intro, then slides straight
+  // down off the bottom as you scroll, uncovering the text held beneath it;
+  // once it's off, the page scrolls on. The sticky+clipped stage (in JSX)
+  // holds the text and clips the descending hero; this just drives the
+  // hero's translateY from scroll. The hero clears the stage over the first
+  // ~85% of the sticky travel, leaving a brief beat on the revealed text.
+  useEffect(() => {
+    const update = () => {
+      const hero = heroMobileRef.current;
+      if (!hero) return;
+      const isMobile = window.matchMedia('(max-width: 767px)').matches;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!isMobile || reduce) {
+        hero.style.transform = '';
+        return;
+      }
+      const stageH = window.innerHeight; // ≈ the 100dvh sticky stage
+      const progress = Math.min(1, Math.max(0, window.scrollY / (stageH * 0.85)));
+      hero.style.transform = `translateY(${(progress * stageH).toFixed(1)}px)`;
     };
     update();
     frameCallbacks.add(update);
@@ -279,13 +311,11 @@ function IntroHeroCover() {
       <style>{`
         .vfh-stack { margin-top: 1.08em; }
         .vfh-text { padding-bottom: 40px; }
-        @media (prefers-reduced-motion: no-preference) {
-          .vfh-stack { display: grid; margin-top: 48px; }
-          .vfh-stack > * { grid-area: 1 / 1; }
-          .vfh-text { padding-bottom: calc(70dvh + 88px); }
-        }
+        /* DESKTOP cover-and-reveal: grid overlap + pinned hero. Mobile uses
+           the slide-down stage in the JSX instead. */
         @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-          .vfh-stack { margin-top: 128px; }
+          .vfh-stack { display: grid; margin-top: 128px; }
+          .vfh-stack > * { grid-area: 1 / 1; }
           .vfh-text { padding-bottom: calc(100dvh + 88px); }
         }
         /* Hero entrance — same fade + 16px rise as the Zebra hero
@@ -301,52 +331,98 @@ function IntroHeroCover() {
         }
       `}</style>
 
-      {/* Opening line — in normal flow. Hidden until fonts.ready, then its
-          words stagger in. */}
-      <div
-        className={`pt-[24px] md:pt-[104px] ${TEXT_PAD}`}
-        style={{ visibility: textReady ? 'visible' : 'hidden' }}
-      >
-        <div className={BIG_TEXT}>
-          <p className="mb-0">
-            <Words text="Vodafone Broadband," className="font-medium" />{' '}
-            <Words text="an award-winning app that lets millions of customers manage their home broadband." />
-          </p>
-        </div>
-      </div>
-
-      {/* Cover-and-reveal stack: the rest of the intro (z-0) and the hero
-          (z-10) share one grid cell so the hero overlaps the text with no
-          measured margins. The text layer's tall bottom padding makes the
-          cell taller than the hero — that extra height is the pinned travel. */}
-      <div className="vfh-stack">
+      {/* ── DESKTOP (≥768px): cover-and-reveal — grid overlap + pinned hero,
+          text emerges from behind. Hidden on mobile. ───────────────────── */}
+      <div className="hidden md:block">
+        {/* Opening line — hidden until fonts.ready, then words stagger in. */}
         <div
-          className={`vfh-text relative z-0 ${TEXT_PAD}`}
+          className={`pt-[104px] ${TEXT_PAD}`}
           style={{ visibility: textReady ? 'visible' : 'hidden' }}
         >
           <div className={BIG_TEXT}>
             <p className="mb-0">
-              <Words text="I joined their global in-house product team on one of the most complex consumer apps I've worked on." />
+              <Words text="Vodafone Broadband," className="font-medium" />{' '}
+              <Words text="an award-winning app that lets millions of customers manage their home broadband." />
             </p>
-          </div>
-          <div className="mt-[40px] md:mt-[88px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
-            {METADATA_LINES.map((line) => (
-              <span key={line} className="meta-line whitespace-pre-wrap">
-                {line}
-              </span>
-            ))}
           </div>
         </div>
 
-        {/* Hero layer (z-10, covers the text; stretches to the cell height). */}
-        <div ref={heroTrackRef} className="relative z-10">
-          <div ref={heroPinRef} className="will-change-transform">
-            <div className="vfh-hero-in w-full h-[70dvh] md:h-[100dvh] rounded-[20px] overflow-hidden bg-background-card-cool relative">
+        {/* Cover-and-reveal stack: the rest of the intro (z-0) and the hero
+            (z-10) share one grid cell so the hero overlaps the text. The text
+            layer's tall bottom padding makes the cell taller than the hero —
+            that extra height is the pinned travel. */}
+        <div className="vfh-stack">
+          <div
+            className={`vfh-text relative z-0 ${TEXT_PAD}`}
+            style={{ visibility: textReady ? 'visible' : 'hidden' }}
+          >
+            <div className={BIG_TEXT}>
+              <p className="mb-0">
+                <Words text="I joined their global in-house product team on one of the most complex consumer apps I've worked on." />
+              </p>
+            </div>
+            <div className="mt-[88px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
+              {METADATA_LINES.map((line) => (
+                <span key={line} className="meta-line whitespace-pre-wrap">
+                  {line}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div ref={heroTrackRef} className="relative z-10">
+            <div ref={heroPinRef} className="will-change-transform">
+              <div className="vfh-hero-in w-full h-[100dvh] rounded-[20px] overflow-hidden bg-background-card-cool relative">
+                <Image
+                  src="/vodafone/hero.webp"
+                  alt="Vodafone Broadband — 3D house illustration"
+                  fill
+                  sizes="1217px"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── MOBILE (<768px): slide-down reveal — the hero covers the intro
+          and slides straight down off the bottom as you scroll, uncovering
+          the text held by the sticky, clipped stage; then the page scrolls
+          on. The wrapper is 200dvh so the sticky stage holds for ~100dvh of
+          travel (the slide). heroMobileRef gets the translateY. ─────────── */}
+      <div className="md:hidden relative h-[200dvh]">
+        <div className="sticky top-0 h-[100dvh] overflow-hidden">
+          {/* Text underneath — static; the slide is its reveal. */}
+          <div className={`absolute inset-0 flex flex-col pt-[24px] ${TEXT_PAD}`}>
+            <div className={BIG_TEXT}>
+              <p className="mb-0">
+                <span className="font-medium">Vodafone Broadband,</span>{' '}
+                an award-winning app that lets millions of customers manage their home broadband.
+              </p>
+              <p className="mb-0 mt-[1.08em]">
+                I joined their global in-house product team on one of the most
+                complex consumer apps I&apos;ve worked on.
+              </p>
+            </div>
+            <div className="mt-[40px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
+              {METADATA_LINES.map((line) => (
+                <span key={line} className="whitespace-pre-wrap">
+                  {line}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Hero on top — slides down off the bottom (translateY via JS). */}
+          <div ref={heroMobileRef} className="absolute inset-0 will-change-transform">
+            <div className="vfh-hero-in h-full w-full overflow-hidden rounded-[20px] bg-background-card-cool relative">
               <Image
                 src="/vodafone/hero.webp"
                 alt="Vodafone Broadband — 3D house illustration"
                 fill
-                sizes="(min-width: 768px) 1217px, 100vw"
+                sizes="100vw"
                 className="object-cover"
                 priority
               />
