@@ -734,6 +734,7 @@ function IntroHeroCover() {
   // amount, capped to the slack between the hero and its taller grid cell.
   useEffect(() => {
     const active = () =>
+      window.matchMedia('(min-width: 768px)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const update = () => {
       const track = heroTrackRef.current;
@@ -762,22 +763,16 @@ function IntroHeroCover() {
 
   return (
     <div ref={rootRef} className="md:relative">
-      {/* Plain CSS so it ships in the server HTML (no load shift). The grid
-          turns on at every width with motion allowed; under reduced motion
-          it's a normal column with all text visible. The hero is 100dvh at
-          every width here, so the pinned-travel padding is 100dvh + 88
-          throughout (slack = cell − hero); only the top margin tightens on
-          mobile (48 vs 128). */}
+      {/* Plain CSS so it ships in the server HTML (no load shift). DESKTOP
+          cover-and-reveal: grid overlap + pinned hero. Mobile uses the plain
+          stacked block in the JSX instead. */}
       <style>{`
         .iho-stack { margin-top: 1.08em; }
         .iho-text { padding-bottom: 40px; }
-        @media (prefers-reduced-motion: no-preference) {
-          .iho-stack { display: grid; margin-top: 48px; }
+        @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+          .iho-stack { display: grid; margin-top: 128px; }
           .iho-stack > * { grid-area: 1 / 1; }
           .iho-text { padding-bottom: calc(100dvh + 88px); }
-        }
-        @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-          .iho-stack { margin-top: 128px; }
         }
         /* Hero entrance — same fade + 16px rise as the Zebra hero
            (RevealOnScroll offset 16 / 900ms). Lives on the hero box so it
@@ -792,7 +787,7 @@ function IntroHeroCover() {
         }
       `}</style>
 
-      {/* Opening line — in normal flow, words stagger in once fonts are ready. */}
+      {/* Opening line — words stagger in once fonts are ready. */}
       <div
         className={`pt-[24px] md:pt-[104px] ${TEXT_PAD}`}
         style={{ visibility: textReady ? 'visible' : 'hidden' }}
@@ -805,9 +800,9 @@ function IntroHeroCover() {
         </div>
       </div>
 
-      {/* Cover-and-reveal stack: rest of intro (z-0) + hero (z-10) share one
-          grid cell so the hero overlaps the text; the text layer's tall bottom
-          padding makes the cell taller than the hero — that's the pinned travel. */}
+      {/* Cover-and-reveal on desktop; a plain stack on mobile — the grid +
+          pin only engage ≥768px, so below that these same elements just flow:
+          opening line, second paragraph, metadata, link, then the hero. */}
       <div className="iho-stack">
         <div
           className={`iho-text relative z-0 ${TEXT_PAD}`}
@@ -828,10 +823,11 @@ function IntroHeroCover() {
           <ExternalLink url="patinascreen.com" className="mt-8" />
         </div>
 
-        {/* Hero layer (z-10, covers the text; stretches to the cell height). */}
+        {/* Hero — covers the text on desktop (grid); on mobile it's just the
+            last item in the stack. 70dvh on mobile, full height on desktop. */}
         <div ref={heroTrackRef} className="relative z-10">
           <div ref={heroPinRef} className="will-change-transform">
-            <div className="iho-hero-in w-full h-[100dvh] rounded-[20px] overflow-hidden bg-background-dark relative">
+            <div className="iho-hero-in w-full h-[70dvh] md:h-[100dvh] rounded-[20px] overflow-hidden bg-background-dark relative">
               <PatinaHeroVideo />
             </div>
           </div>

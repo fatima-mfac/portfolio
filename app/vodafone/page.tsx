@@ -301,91 +301,56 @@ function IntroHeroCover() {
         }
       `}</style>
 
-      {/* ── DESKTOP (≥768px): cover-and-reveal — grid overlap + pinned hero,
-          text emerges from behind. Hidden on mobile. ───────────────────── */}
-      <div className="hidden md:block">
-        {/* Opening line — hidden until fonts.ready, then words stagger in. */}
+      {/* Opening line — hidden until fonts.ready, then words stagger in. */}
+      <div
+        className={`pt-[24px] md:pt-[104px] ${TEXT_PAD}`}
+        style={{ visibility: textReady ? 'visible' : 'hidden' }}
+      >
+        <div className={BIG_TEXT}>
+          <p className="mb-0">
+            <Words text="Vodafone Broadband," className="font-medium" />{' '}
+            <Words text="an award-winning app that lets millions of customers manage their home broadband." />
+          </p>
+        </div>
+      </div>
+
+      {/* Cover-and-reveal on desktop; a plain stack on mobile — the grid +
+          pin only engage ≥768px, so below that these same elements just flow:
+          opening line, second paragraph, metadata, then the hero. */}
+      <div className="vfh-stack">
         <div
-          className={`pt-[104px] ${TEXT_PAD}`}
+          className={`vfh-text relative z-0 ${TEXT_PAD}`}
           style={{ visibility: textReady ? 'visible' : 'hidden' }}
         >
           <div className={BIG_TEXT}>
             <p className="mb-0">
-              <Words text="Vodafone Broadband," className="font-medium" />{' '}
-              <Words text="an award-winning app that lets millions of customers manage their home broadband." />
+              <Words text="I joined their global in-house product team on one of the most complex consumer apps I've worked on." />
             </p>
           </div>
-        </div>
-
-        {/* Cover-and-reveal stack: the rest of the intro (z-0) and the hero
-            (z-10) share one grid cell so the hero overlaps the text. The text
-            layer's tall bottom padding makes the cell taller than the hero —
-            that extra height is the pinned travel. */}
-        <div className="vfh-stack">
-          <div
-            className={`vfh-text relative z-0 ${TEXT_PAD}`}
-            style={{ visibility: textReady ? 'visible' : 'hidden' }}
-          >
-            <div className={BIG_TEXT}>
-              <p className="mb-0">
-                <Words text="I joined their global in-house product team on one of the most complex consumer apps I've worked on." />
-              </p>
-            </div>
-            <div className="mt-[88px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
-              {METADATA_LINES.map((line) => (
-                <span key={line} className="meta-line whitespace-pre-wrap">
-                  {line}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div ref={heroTrackRef} className="relative z-10">
-            <div ref={heroPinRef} className="will-change-transform">
-              <div className="vfh-hero-in w-full h-[100dvh] rounded-[20px] overflow-hidden bg-background-card-cool relative">
-                <Image
-                  src="/vodafone/hero.webp"
-                  alt="Vodafone Broadband — 3D house illustration"
-                  fill
-                  sizes="1217px"
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </div>
+          <div className="mt-[40px] md:mt-[88px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
+            {METADATA_LINES.map((line) => (
+              <span key={line} className="meta-line whitespace-pre-wrap">
+                {line}
+              </span>
+            ))}
           </div>
         </div>
-      </div>
 
-      {/* ── MOBILE (<768px): plain stacked intro — first paragraph, second
-          paragraph, metadata, then the hero. Nothing hidden, no reveal. ── */}
-      <div className={`md:hidden pt-[24px] ${TEXT_PAD}`}>
-        <div className={BIG_TEXT}>
-          <p className="mb-0">
-            <span className="font-medium">Vodafone Broadband,</span>{' '}
-            an award-winning app that lets millions of customers manage their home broadband.
-          </p>
-          <p className="mb-0 mt-[1.08em]">
-            I joined their global in-house product team on one of the most
-            complex consumer apps I&apos;ve worked on.
-          </p>
-        </div>
-        <div className="mt-[40px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
-          {METADATA_LINES.map((line) => (
-            <span key={line} className="whitespace-pre-wrap">
-              {line}
-            </span>
-          ))}
-        </div>
-        <div className="vfh-hero-in mt-8 w-full h-[70dvh] overflow-hidden rounded-[20px] bg-background-card-cool relative">
-          <Image
-            src="/vodafone/hero.webp"
-            alt="Vodafone Broadband — 3D house illustration"
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
+        {/* Hero — covers the text on desktop (grid); on mobile it's just the
+            last item in the stack. 70dvh on mobile, full height on desktop. */}
+        <div ref={heroTrackRef} className="relative z-10">
+          <div ref={heroPinRef} className="will-change-transform">
+            <div className="vfh-hero-in w-full h-[70dvh] md:h-[100dvh] rounded-[20px] overflow-hidden bg-background-card-cool relative">
+              <Image
+                src="/vodafone/hero.webp"
+                alt="Vodafone Broadband — 3D house illustration"
+                fill
+                sizes="(min-width: 768px) 1217px, 100vw"
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
