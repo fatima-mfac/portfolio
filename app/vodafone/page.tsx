@@ -185,6 +185,7 @@ function IntroHeroCover() {
   const heroTrackRef = useRef<HTMLDivElement>(null); // hero grid cell (stretched) — desktop
   const heroPinRef = useRef<HTMLDivElement>(null); // the 100dvh hero (translated) — desktop
   const heroMobileRef = useRef<HTMLDivElement>(null); // mobile hero that slides down to reveal
+  const revealWrapRef = useRef<HTMLDivElement>(null); // mobile reveal zone (drives slide progress)
 
   // Entrance (motion.dev-style, run with gsap since motion/motion-plus aren't
   // installed): once the fonts are ready, reveal the text and stagger each
@@ -264,25 +265,29 @@ function IntroHeroCover() {
     };
   }, []);
 
-  // MOBILE (<768px) reveal: the hero covers the intro, then slides straight
-  // down off the bottom as you scroll, uncovering the text held beneath it;
-  // once it's off, the page scrolls on. The sticky+clipped stage (in JSX)
-  // holds the text and clips the descending hero; this just drives the
-  // hero's translateY from scroll. The hero clears the stage over the first
-  // ~85% of the sticky travel, leaving a brief beat on the revealed text.
+  // MOBILE (<768px) reveal: the first paragraph stays pinned at the top of a
+  // sticky, clipped stage; the hero covers the region beneath it and slides
+  // straight down off the bottom as you scroll, uncovering the rest of the
+  // intro; then the page scrolls on. The stage + clip live in the JSX; this
+  // drives the hero's translateY. Progress is measured from when the reveal
+  // wrapper reaches the top (the stage engages), so the hero only starts
+  // sliding once the first paragraph is at the top — not on the first pixel.
   useEffect(() => {
     const update = () => {
       const hero = heroMobileRef.current;
-      if (!hero) return;
+      const wrap = revealWrapRef.current;
+      if (!hero || !wrap) return;
       const isMobile = window.matchMedia('(max-width: 767px)').matches;
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!isMobile || reduce) {
         hero.style.transform = '';
         return;
       }
-      const stageH = window.innerHeight; // ≈ the 100dvh sticky stage
-      const progress = Math.min(1, Math.max(0, window.scrollY / (stageH * 0.85)));
-      hero.style.transform = `translateY(${(progress * stageH).toFixed(1)}px)`;
+      const slideDist = hero.offsetHeight; // the hero region (below the 1st para)
+      const wrapTop = wrap.getBoundingClientRect().top + window.scrollY; // doc top
+      const into = window.scrollY - wrapTop; // scroll into the sticky zone
+      const progress = slideDist <= 0 ? 0 : Math.min(1, Math.max(0, into / slideDist));
+      hero.style.transform = `translateY(${(progress * slideDist).toFixed(1)}px)`;
     };
     update();
     frameCallbacks.add(update);
@@ -387,45 +392,54 @@ function IntroHeroCover() {
         </div>
       </div>
 
-      {/* ── MOBILE (<768px): slide-down reveal — the hero covers the intro
-          and slides straight down off the bottom as you scroll, uncovering
-          the text held by the sticky, clipped stage; then the page scrolls
-          on. The wrapper is 200dvh so the sticky stage holds for ~100dvh of
-          travel (the slide). heroMobileRef gets the translateY. ─────────── */}
-      <div className="md:hidden relative h-[200dvh]">
-        <div className="sticky top-0 h-[100dvh] overflow-hidden">
-          {/* Text underneath — static; the slide is its reveal. */}
-          <div className={`absolute inset-0 flex flex-col pt-[24px] ${TEXT_PAD}`}>
+      {/* ── MOBILE (<768px): slide-down reveal. The first paragraph stays
+          pinned at the top of a sticky, clipped stage; the hero covers the
+          region below it and slides down off the bottom as you scroll,
+          uncovering the rest of the intro; then the page scrolls on. The
+          200dvh wrapper gives the sticky its travel. ──────────────────── */}
+      <div ref={revealWrapRef} className="md:hidden relative h-[200dvh]">
+        <div className="sticky top-0 flex h-[100dvh] flex-col overflow-hidden pt-[24px]">
+          {/* First paragraph — always visible, at the top of the stage. */}
+          <div className={`shrink-0 ${TEXT_PAD}`}>
             <div className={BIG_TEXT}>
               <p className="mb-0">
                 <span className="font-medium">Vodafone Broadband,</span>{' '}
                 an award-winning app that lets millions of customers manage their home broadband.
               </p>
-              <p className="mb-0 mt-[1.08em]">
-                I joined their global in-house product team on one of the most
-                complex consumer apps I&apos;ve worked on.
-              </p>
-            </div>
-            <div className="mt-[40px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
-              {METADATA_LINES.map((line) => (
-                <span key={line} className="whitespace-pre-wrap">
-                  {line}
-                </span>
-              ))}
             </div>
           </div>
 
-          {/* Hero on top — slides down off the bottom (translateY via JS). */}
-          <div ref={heroMobileRef} className="absolute inset-0 will-change-transform">
-            <div className="vfh-hero-in h-full w-full overflow-hidden rounded-[20px] bg-background-card-cool relative">
-              <Image
-                src="/vodafone/hero.webp"
-                alt="Vodafone Broadband — 3D house illustration"
-                fill
-                sizes="100vw"
-                className="object-cover"
-                priority
-              />
+          {/* Reveal region — the rest of the intro, uncovered as the hero
+              slides down over it. */}
+          <div className="relative mt-6 flex-1">
+            <div className={`absolute inset-0 flex flex-col ${TEXT_PAD}`}>
+              <div className={BIG_TEXT}>
+                <p className="mb-0">
+                  I joined their global in-house product team on one of the most
+                  complex consumer apps I&apos;ve worked on.
+                </p>
+              </div>
+              <div className="mt-[40px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
+                {METADATA_LINES.map((line) => (
+                  <span key={line} className="whitespace-pre-wrap">
+                    {line}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Hero — covers the region, slides down off the bottom (JS). */}
+            <div ref={heroMobileRef} className="absolute inset-0 will-change-transform">
+              <div className="vfh-hero-in h-full w-full overflow-hidden rounded-[20px] bg-background-card-cool relative">
+                <Image
+                  src="/vodafone/hero.webp"
+                  alt="Vodafone Broadband — 3D house illustration"
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>
