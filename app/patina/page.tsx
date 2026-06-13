@@ -843,28 +843,18 @@ function IntroHeroCover() {
 
 export default function PatinaV3Page() {
   // Auto-hide header, v1 style: slides out of view while scrolling down (past
-  // a small top band) and returns immediately on any upward scroll.
+  // a small top band) and returns immediately on any upward scroll. The mobile
+  // back arrow rides the same band, so it reappears with it on scroll-up.
   const [hideHeader, setHideHeader] = useState(false);
-  // The mobile back arrow is shown ONLY near the very top of the page — it must
-  // not reappear mid-page on scroll-up the way the desktop header does.
-  const [atTop, setAtTop] = useState(true);
   useEffect(() => {
-    const TOP_BAND = 120; // px from top within which the back arrow is shown
     let lastY = window.scrollY;
     let ticking = false;
-    // Reflect the current scroll position immediately (e.g. restored scroll on
-    // reload / deep link) instead of waiting for the first scroll event.
-    setAtTop(window.scrollY < TOP_BAND);
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
         const y = window.scrollY;
         setHideHeader(y > lastY && y > 60);
-        setAtTop((prev) => {
-          const next = y < TOP_BAND;
-          return prev !== next ? next : prev;
-        });
         lastY = y;
         ticking = false;
       });
@@ -902,7 +892,7 @@ export default function PatinaV3Page() {
             </div>
             <div
               className={`md:hidden transition-opacity duration-300 ease-out ${
-                atTop ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                hideHeader ? 'opacity-0 pointer-events-none' : 'opacity-100'
               }`}
             >
               <BackButton href="/work" ariaLabel="Back to Work" />

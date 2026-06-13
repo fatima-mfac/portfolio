@@ -184,9 +184,6 @@ function IntroHeroCover() {
   const rootRef = useRef<HTMLDivElement>(null); // queried for .word / .meta-line
   const heroTrackRef = useRef<HTMLDivElement>(null); // hero grid cell (stretched) — desktop
   const heroPinRef = useRef<HTMLDivElement>(null); // the 100dvh hero (translated) — desktop
-  const heroMobileRef = useRef<HTMLDivElement>(null); // mobile hero that slides down to reveal
-  const revealWrapRef = useRef<HTMLDivElement>(null); // mobile reveal zone (drives slide progress)
-  const revealTextRef = useRef<HTMLDivElement>(null); // mobile text being uncovered (sets slide distance)
 
   // Entrance (motion.dev-style, run with gsap since motion/motion-plus aren't
   // installed): once the fonts are ready, reveal the text and stagger each
@@ -263,62 +260,6 @@ function IntroHeroCover() {
     return () => {
       frameCallbacks.delete(update);
       window.removeEventListener('resize', update);
-    };
-  }, []);
-
-  // MOBILE (<768px) reveal: the first paragraph stays pinned at the top of a
-  // sticky, clipped stage; the hero covers the region beneath it and slides
-  // down by exactly the height of the uncovered text — so it STOPS just below
-  // the metadata and stays there (it doesn't slide all the way off). The
-  // wrapper is sized to (stage + that travel + a short beat) so the sticky
-  // releases right after, with no long dead-scroll. Progress is measured from
-  // when the reveal wrapper reaches the top (the stage engages).
-  const GAP_BELOW_META = 24; // resting gap between metadata and the hero
-  const HOLD_BEAT = 64; // a little scroll on the revealed state before release
-  useEffect(() => {
-    const enabled = () =>
-      window.matchMedia('(max-width: 767px)').matches &&
-      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // slide distance = the text we need to uncover (+ a resting gap).
-    const slideDistance = () => {
-      const text = revealTextRef.current;
-      return text ? text.offsetHeight + GAP_BELOW_META : 0;
-    };
-    // Size the wrapper so the sticky holds for just the slide + a short beat.
-    const measure = () => {
-      const wrap = revealWrapRef.current;
-      if (!wrap) return;
-      if (!enabled()) {
-        wrap.style.height = '';
-        return;
-      }
-      wrap.style.height = `${window.innerHeight + slideDistance() + HOLD_BEAT}px`;
-    };
-    const update = () => {
-      const hero = heroMobileRef.current;
-      const wrap = revealWrapRef.current;
-      if (!hero || !wrap) return;
-      if (!enabled()) {
-        hero.style.transform = '';
-        return;
-      }
-      const dist = slideDistance();
-      const wrapTop = wrap.getBoundingClientRect().top + window.scrollY; // doc top
-      const into = window.scrollY - wrapTop; // scroll into the sticky zone
-      const progress = dist <= 0 ? 0 : Math.min(1, Math.max(0, into / dist));
-      hero.style.transform = `translateY(${(progress * dist).toFixed(1)}px)`;
-    };
-    const onResize = () => {
-      measure();
-      update();
-    };
-    measure();
-    update();
-    frameCallbacks.add(update);
-    window.addEventListener('resize', onResize);
-    return () => {
-      frameCallbacks.delete(update);
-      window.removeEventListener('resize', onResize);
     };
   }, []);
 
@@ -416,60 +357,35 @@ function IntroHeroCover() {
         </div>
       </div>
 
-      {/* ── MOBILE (<768px): slide-down reveal. The first paragraph is in
-          normal flow (visible by default, scrolls up as the reveal begins).
-          Below it a sticky, clipped stage holds the second paragraph +
-          metadata with the hero covering them; the hero slides down by the
-          height of that text and STOPS just below the metadata — staying as
-          a card — then the page scrolls on. JS sizes the wrapper. ──────── */}
-      <div ref={revealWrapRef} className="md:hidden relative h-[180dvh]">
-        {/* Pinned stage — the whole intro holds still here while you scroll;
-            only the hero moves. The page resumes scrolling once the sticky
-            releases (after the text is fully revealed). */}
-        <div className="sticky top-0 flex h-[100dvh] flex-col overflow-hidden pt-[24px]">
-          {/* First paragraph — fixed at the top throughout the reveal. */}
-          <div className={`shrink-0 ${TEXT_PAD}`}>
-            <div className={BIG_TEXT}>
-              <p className="mb-0">
-                <span className="font-medium">Vodafone Broadband,</span>{' '}
-                an award-winning app that lets millions of customers manage their home broadband.
-              </p>
-            </div>
-          </div>
-
-          {/* Reveal region — text uncovered as the hero slides down over it. */}
-          <div className="relative mt-6 flex-1">
-            {/* Text being uncovered — top-anchored; its height sets the slide. */}
-            <div ref={revealTextRef} className={`absolute inset-x-0 top-0 flex flex-col ${TEXT_PAD}`}>
-              <div className={BIG_TEXT}>
-                <p className="mb-0">
-                  I joined their global in-house product team on one of the most
-                  complex consumer apps I&apos;ve worked on.
-                </p>
-              </div>
-              <div className="mt-[40px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
-                {METADATA_LINES.map((line) => (
-                  <span key={line} className="whitespace-pre-wrap">
-                    {line}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Hero — covers the text, slides down to rest below it (JS). */}
-            <div ref={heroMobileRef} className="absolute inset-0 will-change-transform">
-              <div className="vfh-hero-in h-full w-full overflow-hidden rounded-[20px] bg-background-card-cool relative">
-                <Image
-                  src="/vodafone/hero.webp"
-                  alt="Vodafone Broadband — 3D house illustration"
-                  fill
-                  sizes="100vw"
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </div>
-          </div>
+      {/* ── MOBILE (<768px): plain stacked intro — first paragraph, second
+          paragraph, metadata, then the hero. Nothing hidden, no reveal. ── */}
+      <div className={`md:hidden pt-[24px] ${TEXT_PAD}`}>
+        <div className={BIG_TEXT}>
+          <p className="mb-0">
+            <span className="font-medium">Vodafone Broadband,</span>{' '}
+            an award-winning app that lets millions of customers manage their home broadband.
+          </p>
+          <p className="mb-0 mt-[1.08em]">
+            I joined their global in-house product team on one of the most
+            complex consumer apps I&apos;ve worked on.
+          </p>
+        </div>
+        <div className="mt-[40px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
+          {METADATA_LINES.map((line) => (
+            <span key={line} className="whitespace-pre-wrap">
+              {line}
+            </span>
+          ))}
+        </div>
+        <div className="vfh-hero-in mt-8 w-full h-[70dvh] overflow-hidden rounded-[20px] bg-background-card-cool relative">
+          <Image
+            src="/vodafone/hero.webp"
+            alt="Vodafone Broadband — 3D house illustration"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
+          />
         </div>
       </div>
     </div>
@@ -938,28 +854,18 @@ const ROW = 'grid grid-cols-1 @[768px]:grid-cols-2 gap-[16px]';
 
 export default function VodafoneV3Page() {
   // Auto-hide header, v1 style: slides out of view while scrolling down (past
-  // a small top band) and returns immediately on any upward scroll.
+  // a small top band) and returns immediately on any upward scroll. The mobile
+  // back arrow rides the same band, so it reappears with it on scroll-up.
   const [hideHeader, setHideHeader] = useState(false);
-  // The mobile back arrow is shown ONLY near the very top of the page — it must
-  // not reappear mid-page on scroll-up the way the desktop header does.
-  const [atTop, setAtTop] = useState(true);
   useEffect(() => {
-    const TOP_BAND = 120; // px from top within which the back arrow is shown
     let lastY = window.scrollY;
     let ticking = false;
-    // Reflect the current scroll position immediately (e.g. restored scroll on
-    // reload / deep link) instead of waiting for the first scroll event.
-    setAtTop(window.scrollY < TOP_BAND);
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
         const y = window.scrollY;
         setHideHeader(y > lastY && y > 60);
-        setAtTop((prev) => {
-          const next = y < TOP_BAND;
-          return prev !== next ? next : prev;
-        });
         lastY = y;
         ticking = false;
       });
@@ -997,7 +903,7 @@ export default function VodafoneV3Page() {
             </div>
             <div
               className={`md:hidden transition-opacity duration-300 ease-out ${
-                atTop ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                hideHeader ? 'opacity-0 pointer-events-none' : 'opacity-100'
               }`}
             >
               <BackButton href="/work" ariaLabel="Back to Work" />
