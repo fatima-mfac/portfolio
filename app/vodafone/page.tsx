@@ -422,20 +422,23 @@ function IntroHeroCover() {
           metadata with the hero covering them; the hero slides down by the
           height of that text and STOPS just below the metadata — staying as
           a card — then the page scrolls on. JS sizes the wrapper. ──────── */}
-      <div className="md:hidden">
-        {/* First paragraph — visible by default. */}
-        <div className={`pt-[24px] ${TEXT_PAD}`}>
-          <div className={BIG_TEXT}>
-            <p className="mb-0">
-              <span className="font-medium">Vodafone Broadband,</span>{' '}
-              an award-winning app that lets millions of customers manage their home broadband.
-            </p>
+      <div ref={revealWrapRef} className="md:hidden relative h-[180dvh]">
+        {/* Pinned stage — the whole intro holds still here while you scroll;
+            only the hero moves. The page resumes scrolling once the sticky
+            releases (after the text is fully revealed). */}
+        <div className="sticky top-0 flex h-[100dvh] flex-col overflow-hidden pt-[24px]">
+          {/* First paragraph — fixed at the top throughout the reveal. */}
+          <div className={`shrink-0 ${TEXT_PAD}`}>
+            <div className={BIG_TEXT}>
+              <p className="mb-0">
+                <span className="font-medium">Vodafone Broadband,</span>{' '}
+                an award-winning app that lets millions of customers manage their home broadband.
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Reveal zone. */}
-        <div ref={revealWrapRef} className="relative mt-6 h-[180dvh]">
-          <div className="sticky top-0 h-[100dvh] overflow-hidden">
+          {/* Reveal region — text uncovered as the hero slides down over it. */}
+          <div className="relative mt-6 flex-1">
             {/* Text being uncovered — top-anchored; its height sets the slide. */}
             <div ref={revealTextRef} className={`absolute inset-x-0 top-0 flex flex-col ${TEXT_PAD}`}>
               <div className={BIG_TEXT}>
