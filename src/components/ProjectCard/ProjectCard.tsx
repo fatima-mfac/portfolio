@@ -24,8 +24,10 @@ export function ProjectCard({ title, role, href, className, onClick }: ProjectCa
   );
 
   if (href) {
+    // Preserve scroll only for in-page `?project=` swaps; real route changes
+    // (e.g. /patina) scroll to the top.
     return (
-      <Link href={href} scroll={false} onClick={onClick} className={cardClasses}>
+      <Link href={href} scroll={!href.includes('?')} onClick={onClick} className={cardClasses}>
         {content}
       </Link>
     );

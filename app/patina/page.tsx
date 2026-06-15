@@ -53,12 +53,33 @@ function onLenis(fn: (lenis: Lenis | null) => void) {
 
 function SmoothScroll() {
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // A case study always opens at the top — including on browser back/forward.
+    // Next (and the browser) restore the previous scroll position on history
+    // navigation, and that restore runs AFTER this child effect — so a one-shot
+    // scroll-to-top loses the race. Take over restoration (manual) and re-assert
+    // the top for the first several frames so it wins whenever the restore fires.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    const FORCE_TOP_FRAMES = 8;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let frames = FORCE_TOP_FRAMES;
+      const tick = () => {
+        window.scrollTo(0, 0);
+        if (--frames > 0) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      return;
+    }
     const lenis = new Lenis();
     setActiveLenis(lenis);
     let raf = 0;
+    let forceTop = FORCE_TOP_FRAMES;
     const loop = (time: number) => {
       lenis.raf(time);
+      if (forceTop > 0) {
+        lenis.scrollTo(0, { immediate: true });
+        forceTop--;
+      }
       frameCallbacks.forEach((cb) => cb());
       raf = requestAnimationFrame(loop);
     };

@@ -36,7 +36,10 @@ export function NavItem({ label, href = '#', state = 'default', className, onCli
     <Link
       href={href}
       aria-current={state === 'active' ? 'page' : undefined}
-      scroll={false}
+      // Preserve scroll only for in-page `?project=` swaps (homepage overlay).
+      // For real route changes (e.g. /patina) let Next scroll to the top — so
+      // jumping from the bottom of one use case to another opens it at the top.
+      scroll={!href.includes('?')}
       onClick={onClick}
       className={`inline-grid items-center py-1 no-underline whitespace-nowrap transition-colors duration-fast ease-out text-body-lg ${stateClasses} ${className ?? ''}`}
     >
