@@ -361,6 +361,9 @@ export function HomeStack() {
   // True while the focused card's thumbnail image is hovered — lifts the
   // heading's hover highlight so hovering the image tints the text too.
   const [thumbHovered, setThumbHovered] = useState(false);
+  // EXPERIMENT: the deck auto-advances on a timer; hovering the card area
+  // pauses it so you can read. True while the pointer is over the stack.
+  const [autoPaused, setAutoPaused] = useState(false);
   // Initial "cards parked low" state — true until the intro scroll seats
   // the cards. The first scroll drags them up continuously; once seated,
   // this flips false and the card-wheel behavior takes over.
@@ -508,6 +511,24 @@ export function HomeStack() {
       sessionStorage.setItem('homeStack:focusedIdx', String(next));
     }
   };
+
+  // EXPERIMENT: auto-advance the deck one card every AUTO_ADVANCE_MS, looping
+  // back to the top at the end. Pauses while the pointer is over the stack
+  // (autoPaused) so you can read. Hover-only devices — touch screens can't
+  // pause, so they keep the manual scroll. The effect re-runs on each focus
+  // change, so every card gets a fresh full dwell.
+  const AUTO_ADVANCE_MS = 3500;
+  useEffect(() => {
+    if (autoPaused) return;
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    const total = filteredCards.length;
+    if (total <= 1) return;
+    const id = window.setTimeout(() => {
+      setFocusedIdxAndPersist((focusedIdx + 1) % total);
+    }, AUTO_ADVANCE_MS);
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoPaused, focusedIdx, filteredCards.length]);
 
   useLayoutEffect(() => {
     const update = () => {
@@ -1047,6 +1068,8 @@ export function HomeStack() {
             underlines/period) holds invisible during the mount pre-roll. */}
         <div
           className="absolute left-0"
+          onMouseEnter={() => setAutoPaused(true)}
+          onMouseLeave={() => setAutoPaused(false)}
           style={{
             top: slotY(0),
             right: 0,
@@ -1105,8 +1128,8 @@ export function HomeStack() {
             href={projectHref(focused.project)}
             onClick={() => markProjectNavSource('card')}
             className="absolute inset-0 flex items-center justify-center"
-            onMouseEnter={() => setThumbHovered(true)}
-            onMouseLeave={() => setThumbHovered(false)}
+            onMouseEnter={() => { setThumbHovered(true); setAutoPaused(true); }}
+            onMouseLeave={() => { setThumbHovered(false); setAutoPaused(false); }}
           >
             <img
               src={focused.image}
