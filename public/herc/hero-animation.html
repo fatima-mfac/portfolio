@@ -439,7 +439,14 @@
   drawLayer.addEventListener('mousedown', startDraw);
   drawLayer.addEventListener('mousemove', moveDraw);
   drawLayer.addEventListener('mouseup', endDraw);
-  drawLayer.addEventListener('mouseleave', (e) => { endDraw(e); hideCursorHint(); });
+  drawLayer.addEventListener('mouseleave', (e) => {
+    endDraw(e);
+    hideCursorHint();
+    // Re-arm the hint so it appears again next time the map is hovered —
+    // drawing a geofence retires it (hintRetired), but that should only last
+    // for the current hover, not forever.
+    hintRetired = false;
+  });
   drawLayer.addEventListener('mouseenter', (e) => {
     if (interactionReady) moveCursorHint(e);
     showCursorHintIfEligible();

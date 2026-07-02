@@ -170,7 +170,7 @@ function PinnedColumn({
 // ─────────────────────────── DATA (from patina-v2) ───────────────────────────
 
 const METADATA_LINES = [
-  'Role .......... Senior Product Designer',
+  'Role .......... Senior Designer',
   'Scope ......... Mobile app, web platform, design system',
   'Tools ......... Figma',
 ];
