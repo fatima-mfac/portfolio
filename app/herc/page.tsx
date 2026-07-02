@@ -185,7 +185,7 @@ const QA = {
   role: {
     question: 'What was your role in the team?',
     answer:
-      'I was responsible for co-creating the visual direction, building the design system from scratch, designing and prototyping entire flows for complex features. I also handled presentations to very demanding stakeholders.\n\nMy main focus was the fleet management and tracking side of the platform (telematics), which was the most technically demanding and complex part of the product to design for.',
+      'I was responsible for co-creating the visual direction, building the design system from scratch, designing and prototyping entire flows for complex features. I also handled presentations to very demanding stakeholders.\n\nI was responsible for the fleet management and tracking side of the platform (telematics), which was one of the most demanding and complex part of the product to design for.',
   },
   ui: {
     question: 'Construction is not a beautiful world. How did you approach the UI?',
@@ -205,7 +205,7 @@ const QA = {
   differently: {
     question: 'Looking back, what would you do differently?',
     answer:
-      "If I were designing this today, I would push much harder for the system to be color-blind proof. At the time, I tried really hard to come up with a system that used both color and text so the user didn't have to rely only on color to understand machine states, but the client decided not to focus on that.",
+      'The project had an amazing team and everything was carefully considered. I learned a lot from the people around me. But if I had to pick one thing, I would be more conservative with typography. Fewer sizes and weights, and more use of position and colour to carry hierarchy.',
   },
 };
 
@@ -808,7 +808,7 @@ function IntroHeroCover() {
         >
           <div className={BIG_TEXT}>
             <p className="mb-0">
-              <Words text="I was part of the product team as Senior Product Designer, owning key features including real time tracking and monitoring of heavy machinery in the field." />
+              <Words text="I was part of the UI design team as a senior designer, owning key features including real time tracking and monitoring of heavy machinery in the field." />
             </p>
           </div>
           <div className="mt-[40px] md:mt-[88px] flex max-w-[640px] flex-col text-metadata-md text-text-primary">
@@ -1042,7 +1042,7 @@ export default function HercV3Page() {
               </LearnRow>,
               <LearnRow n="3" key="3">
                 <LearnLead>Data visualisation accessibility is hard.</LearnLead>
-                {' I studied accessible colour palettes for colour blindness carefully and ended up with something technically correct but visually confusing for everyone else. I was solving for a minority of users at the expense of the majority. The decision was to keep colours close to what users in this context already recognise as meaningful. I felt this as a failure, not being able to find a inclusive solution on time.'}
+                {' I studied accessible colour palettes for colour blindness carefully and ended up with something technically correct but visually confusing for everyone else. I was solving for a minority of users at the expense of the majority. The decision was to keep colours close to what users in this context already recognise as meaningful.'}
               </LearnRow>,
             ]}
           />
