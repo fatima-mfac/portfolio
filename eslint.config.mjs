@@ -8,13 +8,20 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Override default ignores of eslint-config-next.
+  // Note: a globalIgnores() call REPLACES ESLint's built-in defaults rather
+  // than extending them, so node_modules has to be listed explicitly here —
+  // without it, ESLint walks every dependency it can reach.
   globalIgnores([
+    // ESLint's own default, restored:
+    "**/node_modules/**",
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Build artefacts and local Claude Code data (worktrees, sessions).
+    "storybook-static/**",
+    ".claude/**",
   ]),
   ...storybook.configs["flat/recommended"]
 ]);
