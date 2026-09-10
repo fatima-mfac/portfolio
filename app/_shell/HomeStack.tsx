@@ -318,27 +318,37 @@ function FocusedContent({
   );
 
   if (isStatic) {
-    // The intro card heading has a manual line break after the first
-    // sentence, so we render it here with InlineWords + <br /> instead
-    // of via SplitWords (which only accepts a flat string).
+    // The intro heading breaks between its two sentences on desktop (the
+    // deliberate two-block look), but reflows freely on mobile — a forced
+    // break there strands the second sentence in a narrow column.
+    // The copy itself lives only in `card.description`; we split it on the
+    // sentence boundary rather than repeating it here.
+    const sentenceEnd = card.description.indexOf('. ');
+    const firstSentence =
+      sentenceEnd === -1 ? card.description : card.description.slice(0, sentenceEnd + 1);
+    const restSentences = sentenceEnd === -1 ? '' : card.description.slice(sentenceEnd + 2);
     return (
       <div
         ref={refEl as React.RefObject<HTMLDivElement | null>}
         className="block max-w-[940px]"
       >
         {labelEl}
-        <p
-          className="mt-2 font-medium text-text-primary"
-          style={{
-            fontSize: headingFont,
-            lineHeight: headingLine,
-            letterSpacing: '-2px',
-          }}
-        >
-          <InlineWords text="I design products for brands like Vodafone and Pizza Hut." />
-          <br />
-          <InlineWords text="Lately I shipped my own app and built an AI design workflow." />
-        </p>
+        {mobile || !restSentences ? (
+          headingEl
+        ) : (
+          <p
+            className="mt-2 font-medium text-text-primary"
+            style={{
+              fontSize: headingFont,
+              lineHeight: headingLine,
+              letterSpacing: '-2px',
+            }}
+          >
+            <InlineWords text={firstSentence} />
+            <br />
+            <InlineWords text={restSentences} />
+          </p>
+        )}
       </div>
     );
   }
