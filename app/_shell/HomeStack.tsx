@@ -53,7 +53,8 @@ const CARDS: Card[] = [
     id: 'intro',
     project: 'patina',
     label: 'FATIMA CUNHA',
-    description: "I design and improve products. Lately I shipped my own app and created an agentic design system.",
+    description:
+      "I design products for brands like Vodafone and Pizza Hut. Lately I shipped my own app and built an AI design workflow.",
     image: '/home/default-home.png',
     imageMobile: '/home/default-home-M.png',
     categories: ['Product Thinking', 'AI Native'],
@@ -317,9 +318,9 @@ function FocusedContent({
   );
 
   if (isStatic) {
-    // The intro card heading has a manual line break after "products.",
-    // so we render it here with InlineWords + <br /> instead of via
-    // SplitWords (which only accepts a flat string).
+    // The intro card heading has a manual line break after the first
+    // sentence, so we render it here with InlineWords + <br /> instead
+    // of via SplitWords (which only accepts a flat string).
     return (
       <div
         ref={refEl as React.RefObject<HTMLDivElement | null>}
@@ -334,9 +335,9 @@ function FocusedContent({
             letterSpacing: '-2px',
           }}
         >
-          <InlineWords text="I design and improve products." />
+          <InlineWords text="I design products for brands like Vodafone and Pizza Hut." />
           <br />
-          <InlineWords text="Lately I shipped my own app and created an agentic design system." />
+          <InlineWords text="Lately I shipped my own app and built an AI design workflow." />
         </p>
       </div>
     );
