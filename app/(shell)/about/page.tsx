@@ -44,10 +44,11 @@ const LETTERS: AboutLetter[] = [
   { ch: 'A', angle: 210, rotate: -63.95  },
 ];
 
-// Q&A content for the cards below the hero. Order matches the Figma
-// frame node 264:2881. `answer` can be a string (paragraphs separated
-// by `\n\n`) or an array of React nodes when a paragraph needs inline
-// formatting (e.g. card 5's link to the LinkedIn recommendations).
+// Q&A content for the cards below the hero, in display order. (Started
+// from the Figma frame node 264:2881; the order is now set here.)
+// `answer` can be a string (paragraphs separated by `\n\n`) or an array
+// of React nodes when a paragraph needs inline formatting (e.g. the
+// LinkedIn recommendations link in "What's it like to work with you?").
 const RECOMMENDATIONS_URL =
   'https://www.linkedin.com/in/fatimacunhadesigner/details/recommendations/';
 
@@ -56,14 +57,20 @@ const QUESTIONS: Array<{
   answer: string | ReadonlyArray<ReactNode>;
 }> = [
   {
-    question: 'Who are you in three words?',
-    answer: 'Curious. Curious. Curious.',
+    question: 'What makes you different?',
+    answer:
+      "In consultancy, I was the one chosen from a 20+ designer team to lead the design work with new clients and new markets, to make the first impression and build the relationship. Some clients asked for me by name, year after year.\n\nI'm comfortable making decisions and living with the tradeoffs, not just designing and prototyping screens. I believe that what makes the difference in design is a mix of taste, judgment, and instinct. That's why curiosity is something I cultivate.",
+  },
+  {
+    question: 'Yeah, clients like you, what about devs and PMs?',
+    answer:
+      "They also like me, and I like them (usually). I've learned how to negotiate, when to push for the detail and when to let go, and how to keep them on the design's side.\n\nI get things done, staying calm when things get messy, without complicating them further. I don't have a design diva complex.\n\nAnd I'm a bit of a geek. I like technology, I experiment a lot, and I speak enough dev language to make them feel understood.",
   },
   {
     question:
       'After years in agency and consultancy, you chose to step away. Why?',
     answer:
-      "I wanted the intimacy with a product that consultancy couldn't give me. To stay long enough with a challenge and help shape not just the experience but also the vision.\n\nSo I took a break to travel, study and get more creative. I painted, wrote, built an app, an agentic design system, and learned how to work with AI as a creative partner. Now I'm ready to get back.",
+      "I wanted the intimacy with a product that consultancy couldn't give me. To stay long enough with a challenge and help shape not just the experience but also the vision.\n\nSo I took a break to travel, study and get more creative. I painted, wrote, built an app, an AI design workflow, and made AI part of how I work. Now I'm back building my own products, freelancing, and looking for the right team.",
   },
   {
     question: 'What were you working on before you left?',
@@ -97,11 +104,6 @@ const QUESTIONS: Array<{
         .
       </>,
     ],
-  },
-  {
-    question: 'What makes you different?',
-    answer:
-      "I like to go deep on things, especially when they're complex or unclear, and then bring them into focus. I'm comfortable making decisions and living with the tradeoffs, not just designing and prototyping screens.\n\nI'm also a bit of a geek. I like technology, I experiment a lot, and I document everything as I go. The rationale, the doubts, the things to check later. I believe that what makes the difference in design is a mix of taste, judgment, and instinct.",
   },
   {
     question: 'What do you do that annoys people?',
@@ -217,8 +219,8 @@ export default function AboutPage() {
             // article) so every card is the same width regardless of
             // content length. Without this, a flex column with
             // items-center shrinks each wrapper to its content width,
-            // and the short card 1 ("Curious. Curious. Curious.") ends
-            // up visibly narrower than the others.
+            // and a card with a short answer ends up visibly narrower
+            // than the others.
             const article = (
               <article className="bg-background-card rounded-sm p-7 md:p-10 w-full">
                 <QAItem question={q.question} answer={q.answer} size="sm" />
