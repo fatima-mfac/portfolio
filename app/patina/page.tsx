@@ -791,7 +791,7 @@ function IntroHeroCover() {
         .iho-stack { margin-top: 1.08em; }
         .iho-text { padding-bottom: 40px; }
         @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-          .iho-stack { display: grid; margin-top: 128px; }
+          .iho-stack { display: grid; margin-top: 198px; }
           .iho-stack > * { grid-area: 1 / 1; }
           .iho-text { padding-bottom: calc(100dvh + 88px); }
         }
@@ -810,7 +810,7 @@ function IntroHeroCover() {
 
       {/* Opening line — words stagger in once fonts are ready. */}
       <div
-        className={`pt-[24px] md:pt-[104px] ${TEXT_PAD}`}
+        className={`pt-[24px] md:pt-[144px] ${TEXT_PAD}`}
         style={{ visibility: textReady ? 'visible' : 'hidden' }}
       >
         <div className={BIG_TEXT}>

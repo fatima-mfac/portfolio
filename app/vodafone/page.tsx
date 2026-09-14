@@ -285,15 +285,20 @@ function IntroHeroCover() {
   }, []);
 
   const TEXT_PAD = 'pl-0 md:pl-8 @[1100px]:pl-[max(80px,calc(25cqw_-_229px))]';
-  const BIG_TEXT =
-    'max-w-[935px] font-[350] text-[clamp(32px,calc(23.09px_+_2.286vw),56px)] leading-[1.08] tracking-[-0.045em] text-text-primary';
+  const BIG_TYPE =
+    'font-[350] text-[clamp(32px,calc(23.09px_+_2.286vw),56px)] leading-[1.08] tracking-[-0.045em] text-text-primary';
+  const BIG_TEXT = `max-w-[935px] ${BIG_TYPE}`;
+  // Vodafone's opening line is longer than Patina's and Herc's; at 935px it
+  // wraps to 4 lines at full size, which pushes the hero lower than on the
+  // other case studies. 1000px keeps it to 3 (975px is the tightest fit).
+  const OPENING_TEXT = `max-w-[1000px] ${BIG_TYPE}`;
 
   return (
     <div ref={rootRef} className="md:relative">
       {/* The cover-and-reveal grid is plain CSS (not Tailwind utilities) so it
           ships in the server HTML and is active on first paint — no layout
           shift on load — and so the desktop overlap isn't subject to
-          arbitrary-variant source-order quirks. GAP_TOP = 128/48 (grid
+          arbitrary-variant source-order quirks. GAP_TOP = 198/48 (grid
           margin, desktop/mobile), GAP_END = 88 (in the text layer's
           padding-bottom). The grid turns on at every width with motion
           allowed; under reduced motion it's a normal column with all text
@@ -305,7 +310,7 @@ function IntroHeroCover() {
         /* DESKTOP cover-and-reveal: grid overlap + pinned hero. Mobile uses
            the slide-down stage in the JSX instead. */
         @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-          .vfh-stack { display: grid; margin-top: 128px; }
+          .vfh-stack { display: grid; margin-top: 198px; }
           .vfh-stack > * { grid-area: 1 / 1; }
           .vfh-text { padding-bottom: calc(100dvh + 88px); }
         }
@@ -324,10 +329,10 @@ function IntroHeroCover() {
 
       {/* Opening line — hidden until fonts.ready, then words stagger in. */}
       <div
-        className={`pt-[24px] md:pt-[104px] ${TEXT_PAD}`}
+        className={`pt-[24px] md:pt-[144px] ${TEXT_PAD}`}
         style={{ visibility: textReady ? 'visible' : 'hidden' }}
       >
-        <div className={BIG_TEXT}>
+        <div className={OPENING_TEXT}>
           <p className="mb-0">
             <Words text="Vodafone Broadband," className="font-medium" />{' '}
             <Words text="an award-winning app that lets millions of customers manage their home broadband." />
