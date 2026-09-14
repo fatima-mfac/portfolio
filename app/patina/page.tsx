@@ -845,9 +845,13 @@ function IntroHeroCover() {
         </div>
 
         {/* Hero — covers the text on desktop (grid); on mobile it's just the
-            last item in the stack. 70dvh on mobile, full height on desktop. */}
-        <div ref={heroTrackRef} className="relative z-10">
-          <div ref={heroPinRef} className="will-change-transform">
+            last item in the stack. 70dvh on mobile, full height on desktop.
+            The track stretches to the full grid cell, so it sits over the
+            text layer even where the text has emerged above the pinned hero —
+            it ignores pointer events (only the hero itself takes them) so the
+            patinascreen.com link stays clickable. */}
+        <div ref={heroTrackRef} className="relative z-10 pointer-events-none">
+          <div ref={heroPinRef} className="will-change-transform pointer-events-auto">
             <div className="iho-hero-in w-full h-[70dvh] md:h-[100dvh] rounded-[20px] overflow-hidden bg-background-dark relative">
               <PatinaHeroVideo />
             </div>
