@@ -59,7 +59,7 @@ const QUESTIONS: Array<{
   {
     question: 'What makes you different?',
     answer:
-      "In consultancy, I was the one chosen from a 20+ designer team to lead the design work with new clients and new markets, to make the first impression and build the relationship. Some clients asked for me by name, year after year.\n\nI'm comfortable making decisions and living with the tradeoffs, not just designing and prototyping screens. I believe that what makes the difference in design is a mix of taste, judgment, and instinct. That's why curiosity is something I cultivate.",
+      "In consultancy, whenever a new client or market came in, I was the designer chosen to make the first impression and build the relationship. Some clients asked for me by name, year after year.\n\nI'm comfortable making decisions and living with the tradeoffs, not just designing and prototyping screens. I believe that what makes the difference in design is a mix of taste, judgment, and instinct.",
   },
   {
     question: 'Yeah, clients like you, what about devs and PMs?',
