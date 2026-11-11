@@ -2,6 +2,7 @@
 # (Next's redirects() can't run in a static export — see next.config.ts.)
 
 # Old dev route names → clean public case-study URLs.
+/patina-v2     /patina    301
 /patina-v3     /patina    301
 /vodafone-v3   /vodafone  301
 /herc-v3       /herc      301

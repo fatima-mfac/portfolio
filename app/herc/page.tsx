@@ -11,7 +11,7 @@ import { BackButton } from '../../src/components/BackButton/BackButton';
 import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScroll';
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { Screensaver } from '../../src/components/Screensaver/Screensaver';
-import { SmokeCanvas } from '../patina-v2/SmokeCanvas';
+import { SmokeCanvas } from '../../src/components/SmokeCanvas/SmokeCanvas';
 import { FleetCrossfade } from '../_shell/FleetCrossfade';
 import { CaseStudyReadMarker } from '../_shell/CaseStudyReadMarker';
 import { CaseStudyViewTracker } from '../_shell/CaseStudyViewTracker';
@@ -20,7 +20,7 @@ import { projectHref } from '../../src/lib/projectNavSource';
 /**
  * EXPERIMENT — Patina case study, HYBRID (v3).
  *
- * Same content + sequence as /patina-v2, but rendered in the calm
+ * Same content + sequence as /patina, but rendered in the calm
  * `@container` 50/50 cream-card grid of the original case study
  * (app/_shell/PatinaContent.tsx). Mostly gentle fade-ins; the pinned
  * phones / pinned text from v2 are kept, but now housed INSIDE the cream
@@ -102,7 +102,7 @@ function SmoothScroll() {
 }
 
 /**
- * Frame-synced pin (copied from patina-v2). Holds its child via translateY
+ * Frame-synced pin (shared across the case studies). Holds its child via translateY
  * written each Lenis frame; releases once the LAST item of the sibling grid
  * column reaches the bottom of the viewport. Active only ≥ md; below that the
  * child is a normal in-flow block. The pinned child must be SHORTER than the
@@ -167,7 +167,7 @@ function PinnedColumn({
   );
 }
 
-// ─────────────────────────── DATA (from patina-v2) ───────────────────────────
+// ─────────────────────────── DATA (shared across the case studies) ───────────────────────────
 
 const METADATA_LINES = [
   'Role .......... Senior Designer',
@@ -224,7 +224,7 @@ const STATS: ReadonlyArray<{ value: string; label: string; caption: string }> = 
 
 // ──────────────── GRID HELPERS (adapted from PatinaContent.tsx) ────────────────
 
-/** Q&A typography matched to patina-v2 (question 30px / −1px / lh 36; answer
+/** Q&A typography matched across the case studies (question 30px / −1px / lh 36; answer
  *  18px / −0.02em / lh 26), but as fluid clamp() font-sizes so it scales down
  *  smoothly toward mobile. Letter-spacing and line-height are em/unitless so
  *  they scale with the font. Applied to the shared QAItem via child selectors —
@@ -397,7 +397,7 @@ function TintPhonePanel() {
  *
  *  The canvas is rendered 10% smaller (`scale-90`) and nudged 20px right
  *  (`translate-x-[20px]`) via CSS — scoped to this page so the shared
- *  SmokeCanvas shader (also used by the live /patina-v2) stays untouched.
+ *  SmokeCanvas shader (also used by the live /patina page) stays untouched.
  *  The canvas is transparent and the cell is cream, so shrinking/shifting it
  *  only moves the smoke blob; the surrounding cream is unaffected. */
 function SmokeCell() {
@@ -408,7 +408,7 @@ function SmokeCell() {
   );
 }
 
-// ─────────────── "What did you learn?" rows (kept from patina-v2) ───────────────
+// ─────────────── "What did you learn?" rows (shared across the case studies) ───────────────
 
 /** One learning — a row with a hairline top divider (v2 style), in the right
  *  portion (number + answer aligned to the right-hand Q&A column). `first`
@@ -625,7 +625,7 @@ function LearningsReveal({ rows }: { rows: ReactNode[] }) {
   );
 }
 
-/** Small related-project card (kept from patina-v2). */
+/** Small related-project card (shared across the case studies). */
 function ProjectCard({
   slug,
   src,
@@ -791,10 +791,10 @@ function IntroHeroCover() {
         style={{ visibility: textReady ? 'visible' : 'hidden' }}
       >
         <div className={BIG_TEXT}>
-          <p className="mb-0">
+          <h1 className="mb-0">
             <Words text="Herc Rentals," className="font-medium" />{' '}
             <Words text="a B2B platform for renting and managing heavy equipment across app and website." />
-          </p>
+          </h1>
         </div>
       </div>
 
