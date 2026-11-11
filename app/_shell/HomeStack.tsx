@@ -904,7 +904,11 @@ export function HomeStack() {
             entire block (including underlines/period) is invisible during
             the pre-roll. */}
         <div
-          className="relative mt-2"
+          // shrink-0: the column is h-full, so without it flex compresses this
+          // block below its content height and the last line of a long heading
+          // renders out of the box, under the thumbnail. The cards stack below
+          // (flex-1 min-h-0) is the element meant to absorb leftover space.
+          className="relative mt-2 shrink-0"
           style={{
             opacity: headlineRevealed ? 1 : 0,
             transition: 'opacity 500ms ease-out',
@@ -937,7 +941,7 @@ export function HomeStack() {
           <Link
             href={projectHref(focused.project)}
             onClick={() => markProjectNavSource('card')}
-            className="block w-full"
+            className="block w-full shrink-0"
             onMouseEnter={() => setThumbHovered(true)}
             onMouseLeave={() => setThumbHovered(false)}
           >
