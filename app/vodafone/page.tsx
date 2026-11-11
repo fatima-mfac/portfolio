@@ -1007,7 +1007,9 @@ export default function VodafoneV3Page() {
                 src="/vodafone/rogue.png"
                 alt="Vodafone app — rogue device detection"
                 imgAspect="aspect-[1173/2418]"
-                imgHeight="h-[70%]"
+                // max-h caps the phone so it keeps its size as the Q&A column
+                // beside it grows; the extra panel height becomes background.
+                imgHeight="h-[70%] max-h-[700px]"
               />
               <div className="flex flex-col gap-[16px] @[768px]:grid @[768px]:grid-rows-2 @[768px]:h-full">
                 <QACard {...QA.designSystem} />
