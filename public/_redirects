@@ -12,3 +12,7 @@
 
 # Zebra Finch has no standalone page — open it as the homepage overlay.
 /zebra-finch   /?project=zebra-finch   301
+
+# The CV is tailored per application and sent directly, so there is no
+# public copy — send anyone holding the old link to the About page.
+/cv.pdf        /about     301
