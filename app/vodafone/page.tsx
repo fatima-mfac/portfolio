@@ -99,7 +99,7 @@ function SmoothScroll() {
 }
 
 /**
- * Frame-synced pin (copied from patina-v2). Holds its child via translateY
+ * Frame-synced pin (shared across the case studies). Holds its child via translateY
  * written each Lenis frame; releases once the LAST item of the sibling grid
  * column reaches the bottom of the viewport. Active only ≥ md; below that the
  * child is a normal in-flow block. The pinned child must be SHORTER than the
@@ -333,10 +333,10 @@ function IntroHeroCover() {
         style={{ visibility: textReady ? 'visible' : 'hidden' }}
       >
         <div className={OPENING_TEXT}>
-          <p className="mb-0">
+          <h1 className="mb-0">
             <Words text="Vodafone Broadband," className="font-medium" />{' '}
             <Words text="an award-winning app that lets millions of customers manage their home broadband." />
-          </p>
+          </h1>
         </div>
       </div>
 
@@ -383,7 +383,7 @@ function IntroHeroCover() {
   );
 }
 
-// ─────────────────────────── DATA (from patina-v2) ───────────────────────────
+// ─────────────────────────── DATA (shared across the case studies) ───────────────────────────
 
 const METADATA_LINES = [
   'Role .......... Senior Product Designer as a Contractor',
@@ -413,16 +413,15 @@ const QA = {
     answer:
       "I worked across the entire product, improving existing flows and taking features through different stages of the design process. I was part of the research process, helping decide what to test and building the prototypes we took into user sessions. I wrote copy, had hands on the design system, and was very close to the dev team daily. In a product this technical that proximity wasn't optional, it was how the work actually got done. What I remember most are the enormous flow maps and all the decision trees we had to maintain to cover every use case.",
   },
-  reliable: {
-    question:
-      'How do you design an app that depends on a physical device behaving reliably?',
+  designSystem: {
+    question: 'What about the design system?',
     answer:
-      "It's genuinely hard, especially when it comes to testing with real users. You have physical devices like routers and extenders that communicate with the app and vice versa. There is a lot that could go wrong and I needed to anticipate more use cases than you can imagine and have fallbacks for pretty much everything.",
+      "It was already big when I joined. A core system, plus a library for each product with its own local components. So the daily questions were about where things belong. New component, or a variant? Core, or product?\n\nDesign work ran in Figma branches named after Jira tickets, so anyone could go from a ticket to the exact change. The main file only had approved designs. Merging could get ugly when someone edited main directly, but most of the time it went well, and it kept everything organized.\n\nTranslations ran through Transifex. We designed in English, and every line of text had a string to keep in check.",
   },
-  complexity: {
-    question: 'How did you manage all that complexity?',
+  collaboration: {
+    question: 'How did you work with developers and product managers?',
     answer:
-      'Our workflow was methodic. Figma branches, design system governance, and Transifex for translation strings so we could design in English and trust the platform to distribute the rest. Every line of text had a string attached that we needed to keep in check. Two refinement sessions per week with developers and product managers kept everyone aligned and were crucial to spot problems early, flag edge cases, and readjust flows before handoff.',
+      "Two refinement sessions a week. That's where we spotted problems early, flagged edge cases and readjusted flows before handoff.\n\nEach Jira ticket was linked to its own Figma branch, so anyone could open the exact change at any time. It also kept the main file free of visitors wandering around.",
   },
   technical: {
     question:
@@ -440,7 +439,7 @@ const QA = {
 
 // ──────────────── GRID HELPERS (adapted from PatinaContent.tsx) ────────────────
 
-/** Q&A typography matched to patina-v2 (question 30px / −1px / lh 36; answer
+/** Q&A typography matched across the case studies (question 30px / −1px / lh 36; answer
  *  18px / −0.02em / lh 26), but as fluid clamp() font-sizes so it scales down
  *  smoothly toward mobile. Letter-spacing and line-height are em/unitless so
  *  they scale with the font. Applied to the shared QAItem via child selectors —
@@ -595,7 +594,7 @@ function ImageBleedPanel({
   );
 }
 
-// ─────────────── "What did you learn?" rows (kept from patina-v2) ───────────────
+// ─────────────── "What did you learn?" rows (shared across the case studies) ───────────────
 
 /** One learning — a row with a hairline top divider (v2 style), in the right
  *  portion (number + answer aligned to the right-hand Q&A column). `first`
@@ -1000,7 +999,7 @@ export default function VodafoneV3Page() {
           {/* Plausible read-depth: reached roughly halfway (same as v1). */}
           <CaseStudyReadMarker project="vodafone" depth="middle" />
 
-          {/* 6 — reliable / complexity Q&As stacked left, phone-welcome filling
+          {/* 6 — design-system / collaboration Q&As stacked left, phone-welcome filling
               the right column. */}
           <RevealOnScroll offset={72} duration={900}>
             <section className={ROW}>
@@ -1011,8 +1010,8 @@ export default function VodafoneV3Page() {
                 imgHeight="h-[70%]"
               />
               <div className="flex flex-col gap-[16px] @[768px]:grid @[768px]:grid-rows-2 @[768px]:h-full">
-                <QACard {...QA.reliable} />
-                <QACard {...QA.complexity} />
+                <QACard {...QA.designSystem} />
+                <QACard {...QA.collaboration} />
               </div>
             </section>
           </RevealOnScroll>
