@@ -192,6 +192,11 @@ const QA = {
     answer:
       "We spent a lot of time finding the right balance between functionality and sleekness because the standards were high. But we also had to design for the reality of a job site. This platform was being used on tablets and phones in direct sunlight by stressed project managers.\n\nIn an interface full of data visualization, decoration wasn't an option. We stripped it back as much as possible while still feeling intentional and premium, obsessing over typography scale, color balance, and attention to detail to ensure everything was readable in those harsh conditions.",
   },
+  designSystem: {
+    question: 'What was it like building the design system from scratch?',
+    answer:
+      "It was the first one I'd built from nothing, and a fleet platform with an ecommerce side attached is a hard place to learn. The product is mostly states. Equipment is moving, idling, broken, overdue, outside a geofence, and each of those has to be legible on a live map, in a dense table and on a phone. Variables didn't exist in Figma yet, so everything was variants. Management was harder and the files got heavy fast.",
+  },
   hardest: {
     question: 'What was the hardest design challenge?',
     answer:
@@ -946,10 +951,13 @@ export default function HercV3Page() {
           {/* Plausible read-depth: reached roughly halfway (same as v1). */}
           <CaseStudyReadMarker project="herc-rentals" depth="middle" />
 
-          {/* 6 — UI Q&A + equipment phone */}
+          {/* 6 — UI + design-system Q&As stacked left, equipment phone right */}
           <RevealOnScroll offset={72} duration={900}>
             <section className={ROW}>
-              <QACard {...QA.ui} />
+              <div className="flex flex-col gap-[16px] @[768px]:grid @[768px]:grid-rows-2 @[768px]:h-full">
+                <QACard {...QA.ui} />
+                <QACard {...QA.designSystem} />
+              </div>
               <PhonePanelCard
                 src="/herc/lights.png"
                 alt="Herc Rentals app — light towers & diagnostics"
