@@ -181,22 +181,22 @@ const QA = {
   whyBuild: {
     question: 'Why did you build Patina?',
     answer:
-      "I wanted to use my phone less, and I was tired of seeing people get lost in their devices. Other apps solve this through notifications or restrictions, but notifications are easy to ignore, we get too many to notice one more, and restrictions feel like punishment. So I thought about color, something that changes gradually through the day so you notice it before you even unlock. Simple, quiet, no judgment. For people who want awareness, not discipline tools.",
+      "I wanted to use my phone less, and I was tired of seeing people get lost in their devices. Other apps solve this through notifications or restrictions, but notifications are easy to ignore, we get too many to notice one more, and restrictions feel like punishment. So I thought about colour, something that changes gradually through the day so you notice it before you even unlock. Simple, quiet, no judgment. For people who want awareness, not discipline tools.",
   },
   validate: {
     question: 'How did you validate the concept before starting?',
     answer:
-      "Before designing anything I spent one hour manually creating tinted versions of the same wallpaper and set up Android's automation tool to swap them at different times of day. Then I tried it for two days. The color shifts were noticeable and not annoying, so I decided it was worth building it, at least for myself, and it was a chance to experiment with vibe coding and ship a real product solo.",
+      "Before designing anything I spent one hour manually creating tinted versions of the same wallpaper and set up Android's automation tool to swap them at different times of day. Then I tried it for two days. The colour shifts were noticeable and not annoying, so I decided it was worth building it, at least for myself, and it was a chance to experiment with vibe coding and ship a real product solo.",
   },
   impulse: {
-    question: 'Can color actually change an automatic impulse?',
+    question: 'Can colour actually change an automatic impulse?',
     answer:
-      "Reaching for the phone is a deep habit that's difficult to break, which is why I chose color, it carries meaning we don't have to learn. Yellow and red signal warning across cultures, so my bet was that something this embedded could hold meaning even after repeated exposure, when most signals lose their impact.\n\nFirst users said the color made them pause before unlocking. Some put the phone down, so the results are promising but I'm still measuring whether it holds up over time, and what could make the signal stronger.",
+      "Reaching for the phone is a deep habit that's difficult to break, which is why I chose colour, it carries meaning we don't have to learn. Yellow and red signal warning across cultures, so my bet was that something this embedded could hold meaning even after repeated exposure, when most signals lose their impact.\n\nFirst users said the colour made them pause before unlocking. Some put the phone down, so the results are promising but I'm still measuring whether it holds up over time, and what could make the signal stronger.",
   },
   colorBlind: {
-    question: 'What if you are color blind?',
+    question: 'What if you are colour blind?',
     answer:
-      "I thought about that limitation from the beginning and I tested the colors for color blindness. They read differently but not differently enough to make the signal clear. I made the decision to design for most users first and ship. I'm working now on a solution for people with color vision differences.",
+      "I thought about that limitation from the beginning and I tested the colours for colour blindness. They read differently but not differently enough to make the signal clear. I made the decision to design for most users first and ship. I'm working now on a solution for people with colour vision differences.",
   },
   nameOrigin: {
     question: 'Why the name Patina?',
@@ -206,13 +206,13 @@ const QA = {
   minimalist: {
     question: 'The app experience is very minimalist. Why?',
     answer:
-      "Every decision followed three rules: quiet, simple, no friction. Anything that didn't meet them was removed. Visually, the app had to feel warm, calm, and easy to use.\n\nThe homepage reflects that: your daily screen time limit and active wallpaper are visible upfront, with no need to open a settings page.\n\nThere is also a subtle living element that shifts color over time, mirroring the wallpaper. It's just color and shape moving slowly, intended to create a calming effect and gently slow you down.",
+      "Every decision followed three rules: quiet, simple, no friction. Anything that didn't meet them was removed. Visually, the app had to feel warm, calm, and easy to use.\n\nThere is also a subtle living element that shifts colour over time, mirroring the wallpaper. It's just colour and shape moving slowly, intended to create a calming effect and gently slow you down.\n\nThere's no navigation bar at the bottom. Everything is reached through tabs at the top: Today, Week, Month and Settings. Keeping it simple was always the goal, with nothing that isn't needed.",
   },
   websiteIntro: {
     question:
-      "The website intro has a completely different visual style from Patina's color palette and vibe. Why?",
+      "The website intro has a completely different visual style from Patina's colour palette and vibe. Why?",
     answer:
-      'I wanted to tell a story of a problem that meets a solution. So I thought about what visual environment could express the feeling of being trapped, of repetition with no control. Black and white felt right for that, it reinforces the heaviness of it. Then color arrives as the solution. You snap out of the repetition and back into the real colorful world. That contrast is intentional.',
+      'I wanted to tell a story of a problem that meets a solution. So I thought about what visual environment could express the feeling of being trapped, of repetition with no control. Black and white felt right for that, it reinforces the heaviness of it. Then colour arrives as the solution. You snap out of the repetition and back into the real colourful world. That contrast is intentional.',
   },
   giveUp: {
     question: 'What almost made you give up?',
@@ -225,9 +225,9 @@ const QA = {
       "Ignoring a pain point I knew would hurt acquisition. What I really wanted was to tint the user's existing wallpaper without them having to choose a new one. Android doesn't allow that. So users had to find an image in their gallery just to complete onboarding. That's real friction at the worst possible moment. I knew it was a problem and launched anyway. I've since added in-app wallpaper options so users can pick one and move on.",
   },
   whatsNext: {
-    question: "What's next for Patina?",
+    question: "What were the iterations, and how did you decide on them?",
     answer:
-      "Two things are coming before real distribution:\n\nFirst, the homepage is getting today and weekly screen time stats, which means reorganising the layout and moving settings out. Tabs system make it easier jumping between today, week and settings. Simple nav.\n\nSecond, I am testing a lock screen shake feature that shows your exact screen time without unlocking, offering more precise awareness and a partial solution for color blindness. Because shaking feels a bit contradictory to Patina's quiet nature, it might become a setting to keep the number always visible instead. Either way, it was fun to build.\n\nPatina is still early. I haven't started active distribution because I want clean measurement in place first. The core question is whether the wallpaper actually shifts screen time, not just whether people notice the colour.",
+      "Version 2.0 turned Patina into a subscription. The challenge was charging for it without breaking what people liked.\n\nPatina only makes sense after a few days of watching the wallpaper shift, so the 14-day trial doesn't ask for a card. Asking upfront would stop people before they felt it.\n\nPaying had to feel worth it, so I added Week and Month views, because a trend shows whether a habit is changing. The Week graph uses the smoky colour cloud from the homepage instead of bars, which read like a score. It moves slightly, like time passing. And shaking the phone on the lock screen shows your exact screen time, since colour alone isn't precise.\n\nI track where people drop off during setup and at the subscription screen, and I'm watching those numbers before real distribution.",
   },
 };
 
@@ -955,7 +955,7 @@ export default function PatinaV3Page() {
           <RevealOnScroll offset={72} duration={900}>
             <FillImage
               src="/patina/color-banner2.png"
-              alt="Patina color palette banner"
+              alt="Patina colour palette banner"
               aspect="aspect-[1217/720]"
             />
           </RevealOnScroll>
