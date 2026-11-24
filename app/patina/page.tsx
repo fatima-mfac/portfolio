@@ -1067,7 +1067,7 @@ export default function PatinaV3Page() {
                 />
                 <PhonePanelCard
                   src="/patina/newPatina2.png"
-                  alt="Patina — settings: daily limit, reset time, wallpaper"
+                  alt="Patina — 14-day free trial, no card required"
                   imgAspect="aspect-[858/1720]"
                 />
                 <div className="w-full aspect-[1920/1400] rounded-[32px] overflow-hidden relative">
