@@ -14,6 +14,7 @@ import { Screensaver } from '../../src/components/Screensaver/Screensaver';
 import { SmokeCanvas } from '../../src/components/SmokeCanvas/SmokeCanvas';
 import { FleetCrossfade } from '../_shell/FleetCrossfade';
 import { CaseStudyReadMarker } from '../_shell/CaseStudyReadMarker';
+import { HeroMorphTarget } from '../_shell/HeroMorphTarget';
 import { CaseStudyViewTracker } from '../_shell/CaseStudyViewTracker';
 import { projectHref } from '../../src/lib/projectNavSource';
 
@@ -829,14 +830,18 @@ function IntroHeroCover() {
             last item in the stack. 70dvh on mobile, full height on desktop. */}
         <div ref={heroTrackRef} className="relative z-10">
           <div ref={heroPinRef} className="will-change-transform">
-            <div className="iho-hero-in w-full h-[70dvh] md:h-[100dvh] rounded-[20px] overflow-hidden bg-background-hero relative">
+            <HeroMorphTarget
+              project="herc-rentals"
+              entranceClass="iho-hero-in"
+              className="w-full h-[70dvh] md:h-[100dvh] rounded-[20px] overflow-hidden bg-background-hero relative"
+            >
               <iframe
                 src="/herc/hero-animation.html"
                 title="Herc Rentals — fleet map prototype"
                 className="absolute inset-0 w-full h-full border-0"
                 loading="lazy"
               />
-            </div>
+            </HeroMorphTarget>
           </div>
         </div>
       </div>

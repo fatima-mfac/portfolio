@@ -36,6 +36,37 @@ export function consumeProjectNavSource(): ProjectNavSource {
 }
 
 /**
+ * The homepage card → case study hero morph.
+ *
+ * The homepage thumbnail and the case study hero share a view-transition
+ * name, so a card click morphs one into the other across the route change.
+ * The hero normally fades in on load; arriving through the morph it's
+ * already in place, so a card click stamps the time here and the hero
+ * skips its own entrance if it mounts within a moment of it.
+ *
+ * A timestamp rather than a consume-once flag: strict-mode dev renders the
+ * hero twice, and a consumed flag would read differently the second time.
+ */
+let heroMorphAt = -Infinity;
+const HERO_MORPH_WINDOW_MS = 1500;
+
+/** Called by a homepage card click that opens a case study. */
+export function markHeroMorph(): void {
+  heroMorphAt = performance.now();
+}
+
+/** True if the current page arrived through the card → hero morph. */
+export function arrivedByHeroMorph(): boolean {
+  if (typeof window === 'undefined') return false;
+  return performance.now() - heroMorphAt < HERO_MORPH_WINDOW_MS;
+}
+
+/** The view-transition name pairing a project's thumbnail with its hero. */
+export function heroTransitionName(slug: string): string {
+  return `project-hero-${slug}`;
+}
+
+/**
  * Destination route for a project slug. Patina, Herc, and Vodafone have their
  * own standalone case-study pages, so they route straight there; anything else
  * (currently Zebra Finch) still renders as a v1 use case on the homepage via
