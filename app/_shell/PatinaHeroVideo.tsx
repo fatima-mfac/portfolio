@@ -35,10 +35,8 @@ export function PatinaHeroVideo() {
   // <video>, positioned identically, so the page opens on the real
   // first frame — no flash of a different image while the video buffers.
   //
-  // The mobile source has a thin scroll indicator on its right edge.
-  // The .patina-hero-layer class below extends the element past the
-  // container's right edge on mobile — wrapper's overflow-hidden
-  // clips the artefact. Tune the negative right value to taste.
+  // Both sources are captured at the hero box's own proportions, so
+  // object-cover fills the box without cropping the composition.
   return (
     <>
       <style>{`
@@ -50,17 +48,10 @@ export function PatinaHeroVideo() {
              edge-to-edge before object-cover scales the content. */
           position: absolute;
           inset: 0;
-          right: -40px;
-          width: calc(100% + 40px);
+          width: 100%;
           height: 100%;
           display: block;
           object-fit: cover;
-        }
-        @media (min-width: 828px) {
-          .patina-hero-layer {
-            right: 0;
-            width: 100%;
-          }
         }
       `}</style>
       {/* First-frame poster behind the video — matches each video's
