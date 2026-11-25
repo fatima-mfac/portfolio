@@ -12,6 +12,7 @@ import { RevealOnScroll } from '../../src/components/RevealOnScroll/RevealOnScro
 import { QAItem } from '../../src/components/QAItem/QAItem';
 import { Screensaver } from '../../src/components/Screensaver/Screensaver';
 import { CaseStudyReadMarker } from '../_shell/CaseStudyReadMarker';
+import { HeroMorphTarget } from '../_shell/HeroMorphTarget';
 import { CaseStudyViewTracker } from '../_shell/CaseStudyViewTracker';
 import { projectHref } from '../../src/lib/projectNavSource';
 
@@ -366,7 +367,11 @@ function IntroHeroCover() {
             last item in the stack. 70dvh on mobile, full height on desktop. */}
         <div ref={heroTrackRef} className="relative z-10">
           <div ref={heroPinRef} className="will-change-transform">
-            <div className="vfh-hero-in w-full h-[70dvh] md:h-[100dvh] rounded-[20px] overflow-hidden bg-background-card-cool relative">
+            <HeroMorphTarget
+              project="vodafone"
+              entranceClass="vfh-hero-in"
+              className="w-full h-[70dvh] md:h-[100dvh] rounded-[20px] overflow-hidden bg-background-card-cool relative"
+            >
               <Image
                 src="/vodafone/hero.webp"
                 alt="Vodafone Broadband — 3D house illustration"
@@ -375,7 +380,7 @@ function IntroHeroCover() {
                 className="object-cover"
                 priority
               />
-            </div>
+            </HeroMorphTarget>
           </div>
         </div>
       </div>

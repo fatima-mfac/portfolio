@@ -34,8 +34,8 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* EXPLORATION — homepage v3 stack: subtle fade + zoom-in for slots whose
-   content changes on focus advance. Avoids any sliding/dragging motion. */
+/* Homepage deck: subtle fade + zoom-in for the focused card's thumbnail
+   (and mobile heading area) when the focused card changes. */
 @keyframes home-stack-in {
   from {
     opacity: 0;
@@ -55,5 +55,40 @@ body {
   to {
     opacity: 0;
     transform: scale(0.96);
+  }
+}
+
+/* Homepage card → case study hero morph. The homepage thumbnail and the
+   case study hero share a view-transition name (see HeroMorphTarget), so
+   opening a project grows one into the other across the route change. */
+::view-transition-group(.hero-morph) {
+  animation-duration: var(--duration-slow);
+  animation-timing-function: var(--ease-out);
+}
+
+/* Thumbnail and hero are different images at similar proportions: fill
+   the morphing box rather than letterboxing, and crossfade between them.
+   The crossfade runs in the first half of the morph: the thumbnail is a
+   small snapshot that blurs as it's scaled up, while the hero snapshot is
+   sharp — so the box spends most of its journey showing the hero. */
+::view-transition-old(.hero-morph),
+::view-transition-new(.hero-morph) {
+  height: 100%;
+  object-fit: cover;
+  animation-duration: var(--duration-base);
+  animation-timing-function: var(--ease-out);
+}
+
+/* The rest of the page crossfades underneath, quicker, so the morph leads. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-base);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
