@@ -1072,7 +1072,7 @@ export default function PatinaV3Page() {
                 />
                 <PhonePanelCard
                   src="/patina/newPatina2.png"
-                  alt="Patina — 14-day free trial, no card required"
+                  alt="Patina — Week view, screen time as a colour cloud"
                   imgAspect="aspect-[858/1720]"
                 />
                 <div className="w-full aspect-[1920/1400] rounded-[32px] overflow-hidden relative">
